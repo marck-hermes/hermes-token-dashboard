@@ -1,0 +1,40 @@
+[
+  {
+    "date": "2026-07-03",
+    "period": "Jul 02, 2026 \u2014 Jul 03, 2026",
+    "sessions": 9,
+    "messages": 769,
+    "tool_calls": 329,
+    "user_messages": 61,
+    "input_tokens": 20140758,
+    "output_tokens": 113599,
+    "total_tokens": 33362581,
+    "active_time": "",
+    "avg_session": "",
+    "avg_msgs_session": 85,
+    "top_model": "nemotron-3-ultra-550b-a55b:f",
+    "platforms": [
+      {
+        "platform": "cli",
+        "sessions": "5",
+        "messages": "434",
+        "tokens": "19,219,017"
+      },
+      {
+        "platform": "telegram",
+        "sessions": "3",
+        "messages": "251",
+        "tokens": "12,206,108"
+      },
+      {
+        "platform": "cron",
+        "sessions": "1",
+        "messages": "84",
+        "tokens": "1,937,456"
+      }
+    ],
+    "notable": {
+      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      13h 41m            (Jul 02, 20260702_225913_)\nMost messages        423 msgs           (Jul 03, 20260703_081758_)\nMost tokens          11,241,315 tokens  (Jul 03, 20260703_081758_)\nMost tool calls      191 calls          (Jul 03, 20260703_081758_)\n"
+    }
+  }
+]
