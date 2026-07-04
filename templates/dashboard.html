@@ -214,6 +214,105 @@
             <div id="history-table">{{HISTORY_ROWS}}</div>
         </div>
 
+        <!-- Monitoring Guide -->
+        <details class="guide-card" style="margin-top: 32px;">
+            <summary style="cursor: pointer; font-weight: 600; color: var(--accent); padding: 12px; background: var(--accent-bg); border-radius: var(--radius); border: 1px solid var(--border);">
+                📖 Como Acompanhar Este Dashboard (clique para expandir)
+            </summary>
+            <div style="padding: 20px; font-size: 0.85rem; line-height: 1.7;">
+                
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">1. 📱 Relatório Diário Automático (Telegram)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Horário</th><th style="text-align: left; padding: 8px;">O que recebe no chat 1192838517</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px; font-family: var(--font-mono);">23h00</td><td style="padding: 8px;">Resumo <code>hermes insights --days 1</code> (sessões, tokens, plataformas, alertas)</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 8px; color: var(--fg-muted);">Job: <code>Daily Token Usage Monitor</code> (<code>ae87415eb290</code>)</p>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">2. 🌐 Dashboard Visual (Web)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">URL</th><th style="text-align: left; padding: 8px;">O que vê</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;"><code>token-dashboard-tau-five.vercel.app</code></td><td style="padding: 8px;">Dashboard completo com 4 gráficos + tabela (atualiza ~22h30)</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 8px;"><strong>Gráficos para monitorar:</strong></p>
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                    <li>📈 <strong>Token Trends</strong>: Input (azul) vs Output (amarelo) vs Total (verde tracejado)</li>
+                    <li>📊 <strong>Sessions & Messages</strong>: Barras sessões + linha mensagens</li>
+                    <li>📱 <strong>Platform Comparison</strong>: CLI (azul) vs Telegram (cyan) — últimos 7 dias</li>
+                    <li>📉 <strong>Daily Delta</strong>: Barras verdes (aumento) / vermelhas (redução)</li>
+                </ul>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">3. ⚠️ Alertas Automáticos (Telegram)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Condição</th><th style="text-align: left; padding: 8px;">Alerta</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;">Output tokens/dia > 300.000</td><td style="padding: 8px;">⚠️ "ALERTA: Volume alto!"</td></tr>
+                        <tr><td style="padding: 8px;">Total tokens/dia > 50.000.000</td><td style="padding: 8px;">⚠️ "ALERTA: Volume alto!"</td></tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">4. 📅 Análise Semanal (Manual)</h4>
+                <pre style="background: var(--bg); padding: 12px; border-radius: var(--radius-sm); font-size: 0.75rem; overflow-x: auto;"><code># Terminal - visão 7 dias
+hermes insights --days 7
+
+# Baseline (Jul 03) para comparação:
+# Sessions/dia: ~9-10
+# Output tokens/dia: ~100-120K
+# % Telegram vs CLI: ~35/65</code></pre>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">5. 🎯 Validação Pós-Otimização</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Métrica</th><th style="text-align: left; padding: 8px;">Baseline</th><th style="text-align: left; padding: 8px;">Target</th><th style="text-align: left; padding: 8px;">Como ver</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;">Skills catálogo (Telegram)</td><td style="padding: 8px;">89</td><td style="padding: 8px;">9</td><td style="padding: 8px;"><code>/usage</code> no Telegram</td></tr>
+                        <tr><td style="padding: 8px;">Toolset tokens/call (browser)</td><td style="padding: 8px;">+1.258</td><td style="padding: 8px;">0</td><td style="padding: 8px;">Dashboard → Platform</td></tr>
+                        <tr><td style="padding: 8px;">Input tokens/call</td><td style="padding: 8px;">~17-23K</td><td style="padding: 8px;">~14-19K</td><td style="padding: 8px;"><code>/usage</code></td></tr>
+                        <tr><td style="padding: 8px;">Custo estimado (se pago)</td><td style="padding: 8px;">Baseline</td><td style="padding: 8px;">-15 a -20%</td><td style="padding: 8px;"><code>hermes insights --days 7</code></td></tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">6. 🔗 APIs para Automação</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Endpoint</th><th style="text-align: left; padding: 8px;">Retorna</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px; font-family: var(--font-mono);"><code>/data/history.json</code></td><td style="padding: 8px;">Array 30 dias de métricas</td></tr>
+                        <tr><td style="padding: 8px; font-family: var(--font-mono);"><code>/data/chart.json</code></td><td style="padding: 8px;">Dados prontos para Chart.js</td></tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">7. 🔄 Rotina de Acompanhamento</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Frequência</th><th style="text-align: left; padding: 8px;">Ação</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;">Diário</td><td style="padding: 8px;">Recebe Telegram 23h → olha alerta ⚠️</td></tr>
+                        <tr><td style="padding: 8px;">Semanal</td><td style="padding: 8px;">Abre dashboard web → compara tendências</td></tr>
+                        <tr><td style="padding: 8px;">Mensal</td><td style="padding: 8px;"><code>hermes insights --days 30</code> → valida economia</td></tr>
+                        <tr><td style="padding: 8px;">Sempre</td><td style="padding: 8px;">Dashboard auto-atualiza com <code>git push</code></td></tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 0.8rem;">
+                    <strong>Pipeline automático:</strong> 
+                    <code>hermes insights (cron 22h30)</code> → <code>generate_dashboard.py</code> → <code>git push</code> → <code>GitHub webhook → Vercel</code> → <code>https://token-dashboard-tau-five.vercel.app</code>
+                </p>
+            </div>
+        </details>
+
         <footer>
             Generated by <a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> ·
             Data from <code>hermes insights</code> ·

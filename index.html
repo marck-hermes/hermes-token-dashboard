@@ -125,7 +125,7 @@
             <h1>📊 Hermes Token Usage Dashboard</h1>
             <p class="subtitle">Tracking API token consumption across CLI, Telegram, and Cron platforms</p>
             <div class="meta">
-                <span>📅 Generated: 2026-07-03 20:21</span>
+                <span>📅 Generated: 2026-07-03 21:55</span>
                 <span>📈 Days tracked: 1</span>
                 <span>🤖 Model: <code id="top-model">—</code></span>
                 <span>💰 Cost: <code id="est-cost">Free tier</code></span>
@@ -169,7 +169,7 @@
         <!-- Platform Breakdown -->
         <div class="platform-card">
             <h3 style="margin-bottom: 12px;">📱 Platform Distribution (Last 7 Days)</h3>
-            <div id="platform-breakdown"><div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">19,219,017</span></div><div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">12,206,108</span></div><div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">1,937,456</span></div></div>
+            <div id="platform-breakdown"><div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">19,219,017</span></div><div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">21,042,562</span></div><div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">2,256,300</span></div></div>
         </div>
 
         <!-- Charts -->
@@ -214,15 +214,114 @@
             <div id="history-table">
             <div class="table-row">
                 <div class="date">2026-07-03</div>
-                <div class="muted">9</div>
-                <div class="muted">769</div>
-                <div class="muted">20,140,758</div>
-                <div class="muted">113,599</div>
-                <div class="muted">33,362,581</div>
+                <div class="muted">10</div>
+                <div class="muted">877</div>
+                <div class="muted">25,423,453</div>
+                <div class="muted">130,330</div>
+                <div class="muted">42,517,879</div>
                 <div class="muted"><code>nemotron-3-ultra-550b-a55b:f</code></div>
             </div>
         </div>
         </div>
+
+        <!-- Monitoring Guide -->
+        <details class="guide-card" style="margin-top: 32px;">
+            <summary style="cursor: pointer; font-weight: 600; color: var(--accent); padding: 12px; background: var(--accent-bg); border-radius: var(--radius); border: 1px solid var(--border);">
+                📖 Como Acompanhar Este Dashboard (clique para expandir)
+            </summary>
+            <div style="padding: 20px; font-size: 0.85rem; line-height: 1.7;">
+                
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">1. 📱 Relatório Diário Automático (Telegram)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Horário</th><th style="text-align: left; padding: 8px;">O que recebe no chat 1192838517</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px; font-family: var(--font-mono);">23h00</td><td style="padding: 8px;">Resumo <code>hermes insights --days 1</code> (sessões, tokens, plataformas, alertas)</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 8px; color: var(--fg-muted);">Job: <code>Daily Token Usage Monitor</code> (<code>ae87415eb290</code>)</p>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">2. 🌐 Dashboard Visual (Web)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">URL</th><th style="text-align: left; padding: 8px;">O que vê</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;"><code>token-dashboard-tau-five.vercel.app</code></td><td style="padding: 8px;">Dashboard completo com 4 gráficos + tabela (atualiza ~22h30)</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 8px;"><strong>Gráficos para monitorar:</strong></p>
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                    <li>📈 <strong>Token Trends</strong>: Input (azul) vs Output (amarelo) vs Total (verde tracejado)</li>
+                    <li>📊 <strong>Sessions & Messages</strong>: Barras sessões + linha mensagens</li>
+                    <li>📱 <strong>Platform Comparison</strong>: CLI (azul) vs Telegram (cyan) — últimos 7 dias</li>
+                    <li>📉 <strong>Daily Delta</strong>: Barras verdes (aumento) / vermelhas (redução)</li>
+                </ul>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">3. ⚠️ Alertas Automáticos (Telegram)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Condição</th><th style="text-align: left; padding: 8px;">Alerta</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;">Output tokens/dia > 300.000</td><td style="padding: 8px;">⚠️ "ALERTA: Volume alto!"</td></tr>
+                        <tr><td style="padding: 8px;">Total tokens/dia > 50.000.000</td><td style="padding: 8px;">⚠️ "ALERTA: Volume alto!"</td></tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">4. 📅 Análise Semanal (Manual)</h4>
+                <pre style="background: var(--bg); padding: 12px; border-radius: var(--radius-sm); font-size: 0.75rem; overflow-x: auto;"><code># Terminal - visão 7 dias
+hermes insights --days 7
+
+# Baseline (Jul 03) para comparação:
+# Sessions/dia: ~9-10
+# Output tokens/dia: ~100-120K
+# % Telegram vs CLI: ~35/65</code></pre>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">5. 🎯 Validação Pós-Otimização</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Métrica</th><th style="text-align: left; padding: 8px;">Baseline</th><th style="text-align: left; padding: 8px;">Target</th><th style="text-align: left; padding: 8px;">Como ver</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;">Skills catálogo (Telegram)</td><td style="padding: 8px;">89</td><td style="padding: 8px;">9</td><td style="padding: 8px;"><code>/usage</code> no Telegram</td></tr>
+                        <tr><td style="padding: 8px;">Toolset tokens/call (browser)</td><td style="padding: 8px;">+1.258</td><td style="padding: 8px;">0</td><td style="padding: 8px;">Dashboard → Platform</td></tr>
+                        <tr><td style="padding: 8px;">Input tokens/call</td><td style="padding: 8px;">~17-23K</td><td style="padding: 8px;">~14-19K</td><td style="padding: 8px;"><code>/usage</code></td></tr>
+                        <tr><td style="padding: 8px;">Custo estimado (se pago)</td><td style="padding: 8px;">Baseline</td><td style="padding: 8px;">-15 a -20%</td><td style="padding: 8px;"><code>hermes insights --days 7</code></td></tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">6. 🔗 APIs para Automação</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Endpoint</th><th style="text-align: left; padding: 8px;">Retorna</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px; font-family: var(--font-mono);"><code>/data/history.json</code></td><td style="padding: 8px;">Array 30 dias de métricas</td></tr>
+                        <tr><td style="padding: 8px; font-family: var(--font-mono);"><code>/data/chart.json</code></td><td style="padding: 8px;">Dados prontos para Chart.js</td></tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin: 16px 0 8px; color: var(--accent);">7. 🔄 Rotina de Acompanhamento</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 8px;">Frequência</th><th style="text-align: left; padding: 8px;">Ação</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 8px;">Diário</td><td style="padding: 8px;">Recebe Telegram 23h → olha alerta ⚠️</td></tr>
+                        <tr><td style="padding: 8px;">Semanal</td><td style="padding: 8px;">Abre dashboard web → compara tendências</td></tr>
+                        <tr><td style="padding: 8px;">Mensal</td><td style="padding: 8px;"><code>hermes insights --days 30</code> → valida economia</td></tr>
+                        <tr><td style="padding: 8px;">Sempre</td><td style="padding: 8px;">Dashboard auto-atualiza com <code>git push</code></td></tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 0.8rem;">
+                    <strong>Pipeline automático:</strong> 
+                    <code>hermes insights (cron 22h30)</code> → <code>generate_dashboard.py</code> → <code>git push</code> → <code>GitHub webhook → Vercel</code> → <code>https://token-dashboard-tau-five.vercel.app</code>
+                </p>
+            </div>
+        </details>
 
         <footer>
             Generated by <a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> ·
@@ -233,8 +332,8 @@
 
     <script>
         // Inject data
-        const CHART_DATA = {"dates": ["2026-07-03"], "input_tokens": [20140758], "output_tokens": [113599], "total_tokens": [33362581], "sessions": [9], "messages": [769], "platform_dates": ["2026-07-03"], "cli_tokens": [19219017], "telegram_tokens": [12206108]};
-        const LATEST_METRICS = {"date": "2026-07-03", "period": "Jul 02, 2026 \u2014 Jul 03, 2026", "sessions": 9, "messages": 769, "tool_calls": 329, "user_messages": 61, "input_tokens": 20140758, "output_tokens": 113599, "total_tokens": 33362581, "active_time": "", "avg_session": "", "avg_msgs_session": 85, "top_model": "nemotron-3-ultra-550b-a55b:f", "platforms": [{"platform": "cli", "sessions": "5", "messages": "434", "tokens": "19,219,017"}, {"platform": "telegram", "sessions": "3", "messages": "251", "tokens": "12,206,108"}, {"platform": "cron", "sessions": "1", "messages": "84", "tokens": "1,937,456"}], "notable": {"raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      13h 41m            (Jul 02, 20260702_225913_)\nMost messages        423 msgs           (Jul 03, 20260703_081758_)\nMost tokens          11,241,315 tokens  (Jul 03, 20260703_081758_)\nMost tool calls      191 calls          (Jul 03, 20260703_081758_)\n"}};
+        const CHART_DATA = {"dates": ["2026-07-03"], "input_tokens": [25423453], "output_tokens": [130330], "total_tokens": [42517879], "sessions": [10], "messages": [877], "platform_dates": ["2026-07-03"], "cli_tokens": [19219017], "telegram_tokens": [21042562]};
+        const LATEST_METRICS = {"date": "2026-07-03", "period": "Jul 02, 2026 \u2014 Jul 03, 2026", "sessions": 10, "messages": 877, "tool_calls": 373, "user_messages": 71, "input_tokens": 25423453, "output_tokens": 130330, "total_tokens": 42517879, "active_time": "", "avg_session": "", "avg_msgs_session": 87, "top_model": "nemotron-3-ultra-550b-a55b:f", "platforms": [{"platform": "cli", "sessions": "5", "messages": "434", "tokens": "19,219,017"}, {"platform": "telegram", "sessions": "3", "messages": "343", "tokens": "21,042,562"}, {"platform": "cron", "sessions": "2", "messages": "100", "tokens": "2,256,300"}], "notable": {"raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      13h 41m            (Jul 02, 20260702_225913_)\nMost messages        423 msgs           (Jul 03, 20260703_081758_)\nMost tokens          13,100,051 tokens  (Jul 03, 20260703_124021_)\nMost tool calls      191 calls          (Jul 03, 20260703_081758_)\n"}};
 
         // Format numbers
         function fmt(n) { return n.toLocaleString(); }
