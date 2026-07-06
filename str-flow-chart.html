@@ -535,6 +535,12 @@ flowchart TD
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.min.js"></script>
+        <script>
+            // Register COSE-Bilkent layout extension
+            if (typeof cytoscape !== 'undefined' && typeof cytoscapeCoseBilkent !== 'undefined') {
+                cytoscape.use(cytoscapeCoseBilkent);
+            }
+        </script>
         <style>
             /* Mind Map Node Styles */
             .mm-tooltip {
