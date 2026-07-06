@@ -378,6 +378,25 @@ flowchart TD
             <div class="legend-item"><div class="legend-color edge-delivery"></div><span>Delivery Path</span></div>
         </div>
 
+        <!-- Visual Mind Map -->
+        <section style="margin-top: 40px;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; color: var(--text-strong);">🧠 Mapa Mental Interativo</h2>
+            <p style="color: var(--muted); margin-bottom: 20px;">Visualização estilo mapa mental — arraste, zoom (scroll), clique nos nós para expandir/colapsar</p>
+            <div class="mindmap-controls" style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;">
+                <button id="mm-fit" class="mm-btn" style="padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); cursor: pointer; font-size: 13px; transition: all .2s;">🔍 Ajustar Tela</button>
+                <button id="mm-reset" class="mm-btn" style="padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); cursor: pointer; font-size: 13px; transition: all .2s;">↺ Reset</button>
+                <select id="mm-layout" style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px;">
+                    <option value="cose">🌐 Orgânico (cose)</option>
+                    <option value="concentric">🎯 Concêntrico</option>
+                    <option value="breadthfirst">🌳 Hierárquico</option>
+                    <option value="grid">⬜ Grade</option>
+                    <option value="circle">⭕ Circular</option>
+                </select>
+                <span id="mm-info" style="margin-left: auto; font-size: 12px; color: var(--muted);">Nós: <span id="mm-node-count">0</span> | Arestas: <span id="mm-edge-count">0</span></span>
+            </div>
+            <div id="mindmap" style="width: 100%; height: 700px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;"></div>
+        </section>
+
         <!-- Details Cards -->
         <div class="details-grid">
             <div class="detail-card">
@@ -513,10 +532,513 @@ flowchart TD
             <a href="https://token-dashboard-tau-five.vercel.app" target="_blank">Token Dashboard</a>
         </footer>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.min.js"></script>
+        <style>
+            /* Mind Map Node Styles */
+            .mm-tooltip {
+                position: absolute;
+                background: var(--panel-2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 12px 16px;
+                font-size: 13px;
+                pointer-events: none;
+                z-index: 1000;
+                max-width: 280px;
+                box-shadow: var(--shadow-lg);
+                backdrop-filter: blur(10px);
+            }
+            .mm-tooltip-title { font-weight: 700; margin-bottom: 8px; color: var(--text-strong); }
+            .mm-tooltip-row { display: flex; gap: 8px; margin: 4px 0; font-size: 12px; }
+            .mm-tooltip-label { color: var(--muted); min-width: 80px; }
+            .mm-tooltip-value { color: var(--text); font-family: var(--font-mono); }
+            .mm-btn:hover { background: var(--panel-2); border-color: var(--border-strong); }
+            .mm-btn:active { transform: scale(0.98); }
+        </style>
+        <script>
+            // ============================================================
+            // MIND MAP DATA - STR Pipeline
+            // ============================================================
+            const mindmapData = {
+                nodes: [
+                    // Root
+                    { id: 'root', label: 'STR Pipeline', type: 'root', group: 'root', desc: 'Swing Trading Analysis Pipeline', details: ['Manual + Cron', 'Hybrid Vision', 'Vercel Deploy', 'Telegram Delivery'] },
 
-    <script>
-        // Initialize Mermaid
-        mermaid.initialize({
+                    // Main Branches
+                    { id: 'manual', label: '🔵 Manual (On-Demand)', type: 'branch', group: 'manual', parent: 'root', desc: 'Triggered via Telegram', details: ['Skill: str-vision-manual', 'Chat: 1192838517', 'Inline or watchlist'] },
+                    { id: 'cron', label: '🟣 Cron (Automated)', type: 'branch', group: 'cron', parent: 'root', desc: '3× Daily automated runs', details: ['03:00 Lista A', '05:00 Lista B', '07:00 Lista C', 'Timeout: 7200s'] },
+                    { id: 'vision', label: '🟢 Hybrid Vision', type: 'branch', group: 'vision', parent: 'root', desc: 'Shared vision pipeline', details: ['OpenRouter primary', 'Ollama fallback', 'Cross-validation', '3 workers parallel'] },
+                    { id: 'deploy', label: '🔷 Deploy & Delivery', type: 'branch', group: 'deploy', parent: 'root', desc: 'HTML gen → Vercel → Telegram', details: ['gen_html.py', 'Git push main', 'Vercel auto-deploy', 'Chat 8543961065'] },
+
+                    // Manual sub-nodes
+                    { id: 'm-parse', label: '📝 Parse Symbols', type: 'leaf', group: 'manual', parent: 'manual', desc: 'Parse inline or watchlist', details: ['Format: SYMBOL 1W D 240', 'Timeframes: 1W,D,240,4H,1H'] },
+                    { id: 'm-check', label: '🔍 Check Images', type: 'leaf', group: 'manual', parent: 'manual', desc: 'mtime = canonical timestamp', details: ['Reuse existing', 'Skip if present'] },
+                    { id: 'm-capture', label: '📸 Capture (tv_shot.js)', type: 'leaf', group: 'capture', parent: 'manual', desc: 'Playwright headless Chromium', details: ['PNG per symbol/TF', 'Naming: EXCH:SYM_TF_DATE.png'] },
+
+                    // Cron sub-nodes
+                    { id: 'c-warmup', label: '🔥 Warmup Ollama', type: 'leaf', group: 'cron', parent: 'cron', desc: 'Pre-load 3 models', details: ['qwen2.5vl:7b (vision)', 'qwen3.5:9b (text)', 'llama3.2:3b (fallback)'] },
+                    { id: 'c-load', label: '📋 Load Watchlist', type: 'leaf', group: 'cron', parent: 'cron', desc: 'watchlist_{a,b,c}.json', details: ['Lista A: IBOV+9 (28 img)', 'Lista B: 9 B3 (27 img)', 'Lista C: 9 B3+BTC (30 img)'] },
+                    { id: 'c-capture', label: '📸 Capture All', type: 'leaf', group: 'capture', parent: 'cron', desc: 'Batch capture 28-30 images', details: ['Same tv_shot.js', 'Parallel capture'] },
+
+                    // Vision sub-nodes
+                    { id: 'v-batch', label: '🚀 str_vision_batch.py', type: 'leaf', group: 'vision', parent: 'vision', desc: 'Entry point, 3 workers', details: ['STR_VISION_WORKERS=3', 'Loads .env from STR profile'] },
+                    { id: 'v-openrouter', label: '☁️ OpenRouter Primary', type: 'leaf', group: 'vision', parent: 'vision', desc: 'gemma-4-26b-a4b:free', details: ['~8-20s/image', 'Free tier ~3 req/min', 'Professional SMC/PA/Fib/Liq'] },
+                    { id: 'v-fallback', label: '❌ Rate Limit Check', type: 'leaf', group: 'decision', parent: 'vision', desc: '429 / timeout / 5xx?', details: ['Delay: 10s between calls', 'Fallback to Ollama on error'] },
+                    { id: 'v-ollama', label: '💻 Ollama Fallback', type: 'leaf', group: 'vision', parent: 'vision', desc: 'qwen2.5vl:7b Q4_K_M CPU', details: ['~90-100s (1W)', '~180-295s (D/240)', '4 vCPUs, no GPU'] },
+                    { id: 'v-crossval', label: '✅ Cross-Validation', type: 'leaf', group: 'vision', parent: 'vision', desc: 'vs yfinance OHLCV', details: ['SMC levels', 'Price Action', 'Fibonacci', 'Liquidity', 'Wyckoff', 'VSA'] },
+                    { id: 'v-output', label: '📝 Generate Outputs', type: 'leaf', group: 'data', parent: 'vision', desc: 'Markdown + JSON cache', details: ['analise_str.md', 'vision_cache.json', 'Confluence scores 0-6'] },
+
+                    // Deploy sub-nodes
+                    { id: 'd-html', label: '🔧 gen_html.py', type: 'leaf', group: 'deploy', parent: 'deploy', desc: 'Parse MD → HTML', details: ['Single-ticker: direct link', 'Multi-ticker: expand cards', 'Filter: diario, IBOV'] },
+                    { id: 'd-git', label: '📦 Git Commit & Push', type: 'leaf', group: 'deploy', parent: 'deploy', desc: 'Auto-commit to main', details: ['git add .', 'git commit -m', 'git push origin main'] },
+                    { id: 'd-vercel', label: '☁️ Vercel Deploy', type: 'leaf', group: 'deploy', parent: 'deploy', desc: 'str-web-murex.vercel.app', details: ['Auto-deploy on push', '/analise/<run_id>/', 'Images served from Vercel'] },
+                    { id: 'd-telegram', label: '📱 Telegram Delivery', type: 'leaf', group: 'deliver', parent: 'deploy', desc: 'Chat 8543961065', details: ['Markdown report', 'Vercel URL', 'Disclaimer included'] },
+                    { id: 'd-web', label: '📊 STR Web Index', type: 'leaf', group: 'data', parent: 'deploy', desc: 'Expandable cards', details: ['Click → asset page', 'Full history', 'Confluence badges'] },
+
+                    // External deps
+                    { id: 'ext-tv', label: 'TradingView', type: 'external', group: 'external', parent: 'capture', desc: 'charts.tradingview.com' },
+                    { id: 'ext-or', label: 'OpenRouter API', type: 'external', group: 'external', parent: 'vision', desc: 'openrouter.ai' },
+                    { id: 'ext-ol', label: 'Ollama Local', type: 'external', group: 'external', parent: 'vision', desc: 'localhost:11434' },
+                    { id: 'ext-yf', label: 'yfinance OHLCV', type: 'external', group: 'external', parent: 'vision', desc: 'Real market data' },
+                    { id: 'ext-gh', label: 'GitHub', type: 'external', group: 'external', parent: 'deploy', desc: 'Repository' },
+                    { id: 'ext-vc', label: 'Vercel', type: 'external', group: 'external', parent: 'deploy', desc: 'vercel.app' },
+                    { id: 'ext-tg', label: 'Telegram Bot API', type: 'external', group: 'external', parent: 'deploy', desc: 'Delivery' },
+                ],
+                edges: [
+                    // Main branches from root
+                    { source: 'root', target: 'manual' },
+                    { source: 'root', target: 'cron' },
+                    { source: 'root', target: 'vision' },
+                    { source: 'root', target: 'deploy' },
+
+                    // Manual flow
+                    { source: 'manual', target: 'm-parse' },
+                    { source: 'm-parse', target: 'm-check' },
+                    { source: 'm-check', target: 'm-capture', label: 'missing' },
+                    { source: 'm-check', target: 'vision', label: 'exists' },
+                    { source: 'm-capture', target: 'vision' },
+
+                    // Cron flow
+                    { source: 'cron', target: 'c-warmup' },
+                    { source: 'c-warmup', target: 'c-load' },
+                    { source: 'c-load', target: 'c-capture' },
+                    { source: 'c-capture', target: 'vision' },
+
+                    // Vision pipeline
+                    { source: 'vision', target: 'v-batch' },
+                    { source: 'v-batch', target: 'v-openrouter' },
+                    { source: 'v-openrouter', target: 'v-fallback' },
+                    { source: 'v-fallback', target: 'v-ollama', label: 'Yes (429/5xx)' },
+                    { source: 'v-fallback', target: 'v-crossval', label: 'No' },
+                    { source: 'v-ollama', target: 'v-crossval' },
+                    { source: 'v-crossval', target: 'v-output' },
+
+                    // Deploy pipeline
+                    { source: 'v-output', target: 'deploy' },
+                    { source: 'deploy', target: 'd-html' },
+                    { source: 'd-html', target: 'd-git' },
+                    { source: 'd-git', target: 'd-vercel' },
+                    { source: 'd-vercel', target: 'd-telegram' },
+                    { source: 'd-vercel', target: 'd-web' },
+
+                    // External dependencies
+                    { source: 'm-capture', target: 'ext-tv', type: 'external' },
+                    { source: 'c-capture', target: 'ext-tv', type: 'external' },
+                    { source: 'v-openrouter', target: 'ext-or', type: 'external' },
+                    { source: 'v-ollama', target: 'ext-ol', type: 'external' },
+                    { source: 'v-crossval', target: 'ext-yf', type: 'external' },
+                    { source: 'd-git', target: 'ext-gh', type: 'external' },
+                    { source: 'd-vercel', target: 'ext-vc', type: 'external' },
+                    { source: 'd-telegram', target: 'ext-tg', type: 'external' },
+                ]
+            };
+
+            // Group colors
+            const groupColors = {
+                root: { bg: '#3b82f6', border: '#60a5fa', text: '#fff' },
+                manual: { bg: '#3b82f6', border: '#60a5fa', text: '#fff' },
+                cron: { bg: '#a78bfa', border: '#c084fc', text: '#fff' },
+                capture: { bg: '#fb923c', border: '#fdba74', text: '#fff' },
+                vision: { bg: '#22c55e', border: '#4ade80', text: '#fff' },
+                deploy: { bg: '#00d4aa', border: '#2dd4bf', text: '#0b1020' },
+                deliver: { bg: '#f59e0b', border: '#fbbf24', text: '#0b1020' },
+                data: { bg: '#64748b', border: '#94a3b8', text: '#fff' },
+                decision: { bg: '#ef4444', border: '#f87171', text: '#fff' },
+                external: { bg: '#334155', border: '#475569', text: '#fff' }
+            };
+
+            // Initialize Cytoscape
+            let cy = null;
+            let currentLayout = 'cose';
+
+            function initMindmap() {
+                const container = document.getElementById('mindmap');
+                if (!container) return;
+
+                cy = cytoscape({
+                    container: container,
+                    elements: {
+                        nodes: mindmapData.nodes.map(n => ({
+                            data: {
+                                id: n.id,
+                                label: n.label,
+                                type: n.type,
+                                group: n.group,
+                                parent: n.parent || undefined,
+                                desc: n.desc,
+                                details: n.details || []
+                            },
+                            classes: n.group
+                        })),
+                        edges: mindmapData.edges.map(e => ({
+                            data: {
+                                source: e.source,
+                                target: e.target,
+                                label: e.label || '',
+                                type: e.type || 'default'
+                            },
+                            classes: e.type === 'external' ? 'external-edge' : ''
+                        }))
+                    },
+                    style: [
+                        {
+                            selector: 'node',
+                            style: {
+                                'label': 'data(label)',
+                                'text-valign': 'center',
+                                'text-halign': 'center',
+                                'font-size': '12px',
+                                'font-family': 'Inter, system-ui, sans-serif',
+                                'font-weight': 600,
+                                'color': 'data(text)',
+                                'background-color': 'data(bg)',
+                                'border-width': 2,
+                                'border-color': 'data(border)',
+                                'padding': '10px 14px',
+                                'text-wrap': 'wrap',
+                                'text-max-width': 120,
+                                'min-width': 80,
+                                'min-height': 40,
+                                'transition-property': 'background-color, border-color, width, height',
+                                'transition-duration': '200ms'
+                            }
+                        },
+                        {
+                            selector: 'node[type="root"]',
+                            style: {
+                                'font-size': '16px',
+                                'font-weight': 800,
+                                'padding': '16px 24px',
+                                'min-width': 140,
+                                'min-height': 60,
+                                'border-width': 3,
+                                'shape': 'round-rectangle'
+                            }
+                        },
+                        {
+                            selector: 'node[type="branch"]',
+                            style: {
+                                'font-size': '13px',
+                                'font-weight': 700,
+                                'padding': '12px 16px',
+                                'min-width': 100,
+                                'min-height': 48,
+                                'shape': 'round-rectangle'
+                            }
+                        },
+                        {
+                            selector: 'node[type="leaf"]',
+                            style: {
+                                'font-size': '11px',
+                                'font-weight': 600,
+                                'padding': '8px 12px',
+                                'min-width': 70,
+                                'min-height': 36,
+                                'shape': 'rectangle'
+                            }
+                        },
+                        {
+                            selector: 'node[type="external"]',
+                            style: {
+                                'font-size': '10px',
+                                'font-weight': 500,
+                                'padding': '6px 10px',
+                                'min-width': 60,
+                                'min-height': 30,
+                                'shape': 'ellipse',
+                                'border-style': 'dashed'
+                            }
+                        },
+                        {
+                            selector: 'edge',
+                            style: {
+                                'width': 2,
+                                'line-color': '#64748b',
+                                'target-arrow-shape': 'triangle',
+                                'target-arrow-color': '#64748b',
+                                'curve-style': 'bezier',
+                                'label': 'data(label)',
+                                'font-size': '10px',
+                                'font-weight': 600,
+                                'text-background-color': '#0b1020',
+                                'text-background-padding': '3px',
+                                'text-background-opacity': 0.9,
+                                'text-border-opacity': 0,
+                                'color': '#94a3b8'
+                            }
+                        },
+                        {
+                            selector: 'edge.external-edge',
+                            style: {
+                                'line-style': 'dashed',
+                                'line-color': '#475569',
+                                'target-arrow-shape': 'none',
+                                'width': 1.5
+                            }
+                        },
+                        {
+                            selector: ':selected',
+                            style: {
+                                'border-width': 4,
+                                'border-color': '#00d4aa',
+                                'z-index': 999
+                            }
+                        },
+                        {
+                            selector: '.highlighted',
+                            style: {
+                                'background-color': '#00d4aa',
+                                'color': '#0b1020',
+                                'border-color': '#2dd4bf'
+                            }
+                        }
+                    ],
+                    layout: {
+                        name: 'cose',
+                        animate: true,
+                        animationDuration: 500,
+                        nodeDimensionsIncludeLabels: true,
+                        padding: 50,
+                        randomize: false,
+                        componentSpacing: 80,
+                        nodeRepulsion: 4500,
+                        idealEdgeLength: 120,
+                        edgeLengthVal: (edge) => edge.data('type') === 'external' ? 200 : 120,
+                        nestingFactor: 0.5,
+                        gravity: 80,
+                        numIter: 1000,
+                        initialTemp: 1000,
+                        coolingFactor: 0.95,
+                        minTemp: 1
+                    },
+                    zoomingEnabled: true,
+                    userZoomingEnabled: true,
+                    zoom: 1,
+                    minZoom: 0.1,
+                    maxZoom: 3,
+                    pan: { x: 0, y: 0 },
+                    boxSelectionEnabled: true,
+                    selectionType: 'single'
+                });
+
+                // Add node data (colors, etc.) after initialization
+                cy.nodes().forEach(node => {
+                    const group = node.data('group');
+                    const colors = groupColors[group] || groupColors.root;
+                    node.data('bg', colors.bg);
+                    node.data('border', colors.border);
+                    node.data('text', colors.text);
+                });
+
+                // Update counts
+                updateCounts();
+
+                // Event handlers
+                cy.on('tap', 'node', function(evt) {
+                    const node = evt.target;
+                    showTooltip(node);
+                });
+
+                cy.on('tap', function(evt) {
+                    if (evt.target === cy) {
+                        hideTooltip();
+                    }
+                });
+
+                // Control buttons
+                document.getElementById('mm-fit').addEventListener('click', () => {
+                    cy.fit(null, 50);
+                });
+
+                document.getElementById('mm-reset').addEventListener('click', () => {
+                    cy.elements().removeClass('highlighted');
+                    runLayout(currentLayout);
+                });
+
+                document.getElementById('mm-layout').addEventListener('change', (e) => {
+                    currentLayout = e.target.value;
+                    runLayout(currentLayout);
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                    if (e.key === 'f') cy.fit(null, 50);
+                    if (e.key === 'r') { cy.elements().removeClass('highlighted'); runLayout(currentLayout); }
+                    if (e.key === '+' || e.key === '=') cy.zoom(cy.zoom() * 1.2);
+                    if (e.key === '-') cy.zoom(cy.zoom() / 1.2);
+                    if (e.key === '0') cy.zoom(1);
+                });
+
+                // Initial fit after layout
+                cy.on('layoutstop', () => {
+                    cy.fit(null, 50);
+                });
+            }
+
+            function runLayout(name) {
+                const layoutOptions = {
+                    cose: {
+                        name: 'cose',
+                        animate: true,
+                        animationDuration: 500,
+                        nodeDimensionsIncludeLabels: true,
+                        padding: 50,
+                        randomize: false,
+                        componentSpacing: 80,
+                        nodeRepulsion: 4500,
+                        idealEdgeLength: 120,
+                        edgeLengthVal: (edge) => edge.data('type') === 'external' ? 200 : 120,
+                        nestingFactor: 0.5,
+                        gravity: 80,
+                        numIter: 1000,
+                        initialTemp: 1000,
+                        coolingFactor: 0.95,
+                        minTemp: 1
+                    },
+                    concentric: {
+                        name: 'concentric',
+                        animate: true,
+                        animationDuration: 500,
+                        padding: 50,
+                        startAngle: 3/2 * Math.PI,
+                        sweep: Math.PI * 2,
+                        clockwise: true,
+                        equidistant: false,
+                        minNodeSpacing: 30,
+                        boundingBox: undefined,
+                        avoidOverlap: true,
+                        height: 600,
+                        width: 1200,
+                        concentric: (node) => {
+                            const type = node.data('type');
+                            if (type === 'root') return 4;
+                            if (type === 'branch') return 3;
+                            if (type === 'leaf') return 2;
+                            return 1;
+                        },
+                        levelWidth: (nodes) => 2
+                    },
+                    breadthfirst: {
+                        name: 'breadthfirst',
+                        animate: true,
+                        animationDuration: 500,
+                        padding: 50,
+                        directed: true,
+                        roots: '#root',
+                        maximal: false,
+                        spacingFactor: 1.5,
+                        avoidOverlap: true
+                    },
+                    grid: {
+                        name: 'grid',
+                        animate: true,
+                        animationDuration: 500,
+                        padding: 50,
+                        avoidOverlap: true,
+                        spacingFactor: 1.2,
+                        sort: (a, b) => a.data('id').localeCompare(b.data('id'))
+                    },
+                    circle: {
+                        name: 'circle',
+                        animate: true,
+                        animationDuration: 500,
+                        padding: 50,
+                        radius: 300,
+                        startAngle: 3/2 * Math.PI,
+                        sweep: Math.PI * 2,
+                        clockwise: true,
+                        equidistant: false
+                    }
+                };
+
+                if (layoutOptions[name]) {
+                    cy.layout(layoutOptions[name]).run();
+                }
+            }
+
+            // Tooltip
+            let tooltip = null;
+            function showTooltip(node) {
+                hideTooltip();
+                const data = node.data();
+                const pos = node.renderedPosition();
+                const container = document.getElementById('mindmap');
+
+                tooltip = document.createElement('div');
+                tooltip.className = 'mm-tooltip';
+                tooltip.innerHTML = `
+                    <div class="mm-tooltip-title">${data.label}</div>
+                    <div class="mm-tooltip-row"><span class="mm-tooltip-label">Grupo:</span><span class="mm-tooltip-value">${data.group}</span></div>
+                    <div class="mm-tooltip-row"><span class="mm-tooltip-label">Tipo:</span><span class="mm-tooltip-value">${data.type}</span></div>
+                    ${data.desc ? `<div class="mm-tooltip-row"><span class="mm-tooltip-label">Descrição:</span><span class="mm-tooltip-value">${data.desc}</span></div>` : ''}
+                    ${data.details && data.details.length ? `
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+                            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">Detalhes:</div>
+                            ${data.details.map(d => `<div class="mm-tooltip-row"><span class="mm-tooltip-label">•</span><span class="mm-tooltip-value">${d}</span></div>`).join('')}
+                        </div>
+                    ` : ''}
+                `;
+
+                // Position tooltip near node but within viewport
+                const rect = tooltip.getBoundingClientRect();
+                let left = pos.x + 30;
+                let top = pos.y - rect.height / 2;
+
+                if (left + rect.width > container.clientWidth) left = pos.x - rect.width - 30;
+                if (top < 0) top = 10;
+                if (top + rect.height > container.clientHeight) top = container.clientHeight - rect.height - 10;
+
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+
+                container.appendChild(tooltip);
+                node.addClass('highlighted');
+            }
+
+            function hideTooltip() {
+                if (tooltip) {
+                    tooltip.remove();
+                    tooltip = null;
+                }
+                cy.nodes().removeClass('highlighted');
+            }
+
+            function updateCounts() {
+                if (!cy) return;
+                document.getElementById('mm-node-count').textContent = cy.nodes().length;
+                document.getElementById('mm-edge-count').textContent = cy.edges().length;
+            }
+
+            // Initialize when DOM ready
+            document.addEventListener('DOMContentLoaded', initMindmap);
+        </script>
+
+        <script>
+            // Initialize Mermaid
+            mermaid.initialize({
             startOnLoad: true,
             theme: 'dark',
             themeVariables: {
