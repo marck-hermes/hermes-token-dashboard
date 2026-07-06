@@ -1,1 +1,1 @@
-{"dates": ["2026-07-03"], "input_tokens": [25423453], "output_tokens": [130330], "total_tokens": [42517879], "sessions": [10], "messages": [877], "platform_dates": ["2026-07-03"], "cli_tokens": [19219017], "telegram_tokens": [21042562]}
+{"dates": ["2026-07-03", "2026-07-04"], "input_tokens": [27708330, 817866], "output_tokens": [134606, 16357], "total_tokens": [46734968, 2934063], "sessions": [10, 4], "messages": [920, 113], "platform_dates": ["2026-07-03", "2026-07-04"], "cli_tokens": [21450206, 0], "telegram_tokens": [22997166, 2463687]}

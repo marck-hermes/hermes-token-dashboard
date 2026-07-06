@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STR Pipeline Flow Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0b1020;
+            --bg-card: #11171d;
+            --bg-hover: #1a222d;
+            --fg: #e8edf2;
+            --fg-muted: #8b9ab0;
+            --accent: #00d4aa;
+            --accent-dim: #00b894;
+            --accent-bg: rgba(0, 212, 170, 0.1);
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --blue: #3b82f6;
+            --blue-bg: rgba(59, 130, 246, 0.1);
+            --purple: #a78bfa;
+            --purple-bg: rgba(167, 139, 250, 0.1);
+            --orange: #fb923c;
+            --orange-bg: rgba(251, 146, 60, 0.1);
+            --green: #22c55e;
+            --green-bg: rgba(34, 197, 94, 0.1);
+            --red: #ef4444;
+            --red-bg: rgba(239, 68, 68, 0.1);
+            --border: #232d3a;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+            --transition: 0.2s ease;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f7fa;
+                --bg-card: #fff;
+                --bg-hover: #eef2f7;
+                --fg: #1a222d;
+                --fg-muted: #5a6a7a;
+                --border: #d0d9e3;
+                --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            }
+        }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            letter-spacing: -0.02em;
+        }
+        .nav-brand svg { flex-shrink: 0; }
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg-muted);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--fg); background: var(--bg-hover); }
+        .nav-tab.active { color: var(--bg); background: var(--accent); }
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .nav-link {
+            font-size: 0.85rem;
+            color: var(--fg-muted);
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all var(--transition);
+        }
+        .nav-link:hover { color: var(--accent); background: var(--accent-bg); }
+
+        /* Main Content */
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        header { margin-bottom: 32px; }
+        h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
+        .subtitle { color: var(--fg-muted); font-size: 0.95rem; margin-top: 4px; }
+        .meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; font-size: 0.85rem; color: var(--fg-muted); }
+        .meta span { background: var(--bg-card); padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+
+        /* Flow Chart Container */
+        .flow-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            overflow-x: auto;
+        }
+        .mermaid { text-align: center; }
+
+        /* Legend */
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 24px;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+        .legend-color { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
+        .legend-color.node-manual { background: var(--blue); }
+        .legend-color.node-cron { background: var(--purple); }
+        .legend-color.node-capture { background: var(--orange); }
+        .legend-color.node-vision { background: var(--green); }
+        .legend-color.node-deploy { background: var(--accent); }
+        .legend-color.node-deliver { background: var(--warn); }
+        .legend-color.edge-primary { border: 2px solid var(--blue); background: transparent; }
+        .legend-color.edge-fallback { border: 2px dashed var(--orange); background: transparent; }
+        .legend-color.edge-delivery { border: 2px solid var(--warn); background: transparent; }
+
+        /* Details Cards */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+        .detail-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .detail-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .detail-card h3 .icon { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; font-size: 14px; }
+        .detail-card .detail-list { display: flex; flex-direction: column; gap: 10px; }
+        .detail-card .detail-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .detail-card .detail-item:last-child { border-bottom: none; }
+        .detail-card .detail-label { color: var(--fg-muted); }
+        .detail-card .detail-value { font-family: var(--font-mono); font-weight: 600; color: var(--fg); }
+
+        footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 0.8rem; text-align: center; }
+
+        @media (max-width: 900px) {
+            .nav-tabs { order: 3; width: 100%; justify-content: center; }
+            .nav-link { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Hermes Dashboards
+            </div>
+            <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='index.html'">
+                    📊 Token Usage Dashboard
+                </button>
+                <button class="nav-tab active" role="tab" aria-selected="true" onclick="location.href='str-flow-chart.html'">
+                    📈 STR Pipeline Flow
+                </button>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
+                <a class="nav-link" href="https://token-dashboard-tau-five.vercel.app" target="_blank">Token Dashboard</a>
+                <a class="nav-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Repo</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header>
+            <h1>📈 STR Pipeline Flow Chart</h1>
+            <p class="subtitle">Complete visualization of the Swing Trading Analysis pipeline — both Manual (on-demand) and Cron (automated) flows</p>
+            <div class="meta">
+                <span>🔄 Hybrid Vision: OpenRouter gemma-4-26b-a4b:free → Ollama qwen2.5vl:7b fallback</span>
+                <span>⏱️ Cron: 03:00 / 05:00 / 07:00 (Watchlists A/B/C)</span>
+                <span>🚀 Deploy: Vercel (str-web-murex.vercel.app)</span>
+                <span>📱 Delivery: Telegram chat 8543961065</span>
+            </div>
+        </header>
+
+        <!-- Main Flow Chart -->
+        <div class="flow-container">
+            <div class="mermaid">
+flowchart TD
+    %% ============================================================
+    %% STYLES
+    %% ============================================================
+    classDef manual fill:#3b82f6,color:#fff,stroke:#60a5fa,stroke-width:2px,rx:8,ry:8
+    classDef cron fill:#a78bfa,color:#fff,stroke:#c084fc,stroke-width:2px,rx:8,ry:8
+    classDef capture fill:#fb923c,color:#fff,stroke:#fdba74,stroke-width:2px,rx:8,ry:8
+    classDef vision fill:#22c55e,color:#fff,stroke:#4ade80,stroke-width:2px,rx:8,ry:8
+    classDef deploy fill:#00d4aa,color:#0b1020,stroke:#2dd4bf,stroke-width:2px,rx:8,ry:8
+    classDef deliver fill:#f59e0b,color:#0b1020,stroke:#fbbf24,stroke-width:2px,rx:8,ry:8
+    classDef decision fill:#ef4444,color:#fff,stroke:#f87171,stroke-width:2px,rx:8,ry:8
+    classDef data fill:#64748b,color:#fff,stroke:#94a3b8,stroke-width:1px,stroke-dasharray: 5 5,rx:6,ry:6
+    classDef external fill:#334155,color:#fff,stroke:#475569,stroke-width:1px,rx:6,ry:6
+
+    %% Edge styles
+    linkStyle default stroke:#64748b,stroke-width:2px
+    classDef edgeFallback stroke:#fb923c,stroke-width:2px,stroke-dasharray: 5 5
+    classDef edgeDelivery stroke:#f59e0b,stroke-width:2px
+
+    %% ============================================================
+    %% MANUAL TRIGGER
+    %% ============================================================
+    subgraph MANUAL ["🔵 MANUAL (On-Demand via Telegram)"]
+        direction TB
+        M1[("👤 User triggers\n\"analisa BPAC11 1W D 240\"")]:::manual
+        M2["📝 Parse symbols &\ntimeframes\n(inline or watchlist)"]:::manual
+        M3{"🔍 Images exist\nfor all symbols?"}:::decision
+        M4["📸 Capture missing\nvia tv_shot.js\n(Playwright headless)"]:::capture
+        M5["✅ Use existing\nimages (mtime\n= canonical)"]:::data
+    end
+
+    %% ============================================================
+    %% CRON TRIGGER
+    %% ============================================================
+    subgraph CRON ["🟣 CRON (Automated 3× Daily)"]
+        direction TB
+        C1[("⏰ Cron triggers\n03:00 Lista A | 05:00 Lista B | 07:00 Lista C")]:::cron
+        C2["🔥 Warmup Ollama\n(qwen2.5vl:7b\nqwen3.5:9b\nllama3.2:3b)"]:::cron
+        C3["📋 Load watchlist\nwatchlist_{a,b,c}.json\n(9-10 symbols × 3 TF)"]:::cron
+        C4["📸 Capture all\nvia tv_shot.js\n(28-30 images)"]:::capture
+    end
+
+    %% ============================================================
+    %% SHARED VISION PIPELINE
+    %% ============================================================
+    subgraph VISION ["🟢 HYBRID VISION PIPELINE (Shared)"]
+        direction TB
+        V1["🚀 str_vision_batch.py\nSTR_VISION_WORKERS=3"]:::vision
+        V2["☁️ OpenRouter\nPrimary: gemma-4-26b-a4b:free\n~8-20s/img\nFree tier: ~3 req/min"]:::vision
+        V3{"❌ Rate limit\n429 / timeout /\n5xx error?"}:::decision
+        V4["💻 Ollama Fallback\nqwen2.5vl:7b Q4_K_M\nCPU-only 4 vCPUs\n~90-100s/img (1W)\n~180-295s/img (D/240)"]:::vision
+        V5["✅ Cross-validation\nvs real OHLCV (yfinance)\nSMC / PA / Fib / Liq\nWyckoff / VSA"]:::vision
+        V6["📝 Generate outputs\nanalise_str.md\nvision_cache.json"]:::data
+    end
+
+    %% ============================================================
+    %% DEPLOY & DELIVERY
+    %% ============================================================
+    subgraph DEPLOY ["🔷 DEPLOY & DELIVERY"]
+        direction TB
+        D1["🔧 gen_html.py\nParse markdown → HTML\nSingle-ticker vs\nmulti-ticker UX"]:::deploy
+        D2["📦 Git commit &\npush to GitHub\n(main branch)"]:::deploy
+        D3["☁️ Vercel auto-deploy\nstr-web-murex.vercel.app\n/analise/<run_id>/"]:::deploy
+        D4["📱 Telegram delivery\nChat: 8543961065\nMarkdown + site link"]:::deliver
+        D5["📊 STR Web index\nExpandable cards\nClick → asset page"]:::data
+    end
+
+    %% ============================================================
+    %% CONNECTIONS
+    %% ============================================================
+    %% Manual flow
+    M1 --> M2 --> M3
+    M3 -- "No" --> M4
+    M3 -- "Yes" --> M5
+    M4 --> V1
+    M5 --> V1
+
+    %% Cron flow
+    C1 --> C2 --> C3 --> C4 --> V1
+
+    %% Vision pipeline
+    V1 --> V2
+    V2 --> V3
+    V3 -- "Yes" --> V4
+    V3 -- "No" --> V5
+    V4 --> V5
+    V5 --> V6
+
+    %% Deploy & delivery
+    V6 --> D1 --> D2 --> D3
+    D3 --> D4
+    D3 --> D5
+
+    %% Cross-links
+    M1 -. "Same pipeline" .-> C1
+    M4 -. "Same capture" .-> C4
+    V2 -. "Fallback" .-> V4
+
+    %% ============================================================
+    %% EXTERNAL DEPENDENCIES
+    %% ============================================================
+    subgraph EXT ["🔗 EXTERNAL DEPENDENCIES"]
+        direction LR
+        E1["TradingView\ncharts.tradingview.com"]:::external
+        E2["OpenRouter API\nopenrouter.ai"]:::external
+        E3["Ollama Local\nlocalhost:11434"]:::external
+        E4["yfinance\nOHLCV data"]:::external
+        E5["GitHub\nRepository"]:::external
+        E6["Vercel\nvercel.app"]:::external
+        E7["Telegram Bot\nAPI"]:::external
+    end
+
+    M4 -.-> E1
+    C4 -.-> E1
+    V2 -.-> E2
+    V4 -.-> E3
+    V5 -.-> E4
+    D2 -.-> E5
+    D3 -.-> E6
+    D4 -.-> E7
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-grid" role="region" aria-label="Flow chart legend">
+            <div class="legend-item"><div class="legend-color node-manual"></div><span>Manual Trigger Nodes</span></div>
+            <div class="legend-item"><div class="legend-color node-cron"></div><span>Cron Trigger Nodes</span></div>
+            <div class="legend-item"><div class="legend-color node-capture"></div><span>Chart Capture (tv_shot.js)</span></div>
+            <div class="legend-item"><div class="legend-color node-vision"></div><span>Vision Analysis</span></div>
+            <div class="legend-item"><div class="legend-color node-deploy"></div><span>Deploy (gen_html + Vercel)</span></div>
+            <div class="legend-item"><div class="legend-color node-deliver"></div><span>Telegram Delivery</span></div>
+            <div class="legend-item"><div class="legend-color decision"></div><span>Decision Points</span></div>
+            <div class="legend-item"><div class="legend-color data"></div><span>Data Artifacts</span></div>
+            <div class="legend-item"><div class="legend-color edge-primary"></div><span>Primary Flow</span></div>
+            <div class="legend-item"><div class="legend-color edge-fallback"></div><span>Fallback Path (OpenRouter → Ollama)</span></div>
+            <div class="legend-item"><div class="legend-color edge-delivery"></div><span>Delivery Path</span></div>
+        </div>
+
+        <!-- Details Cards -->
+        <div class="details-grid">
+            <div class="detail-card">
+                <h3><span class="icon" style="background: var(--blue-bg); color: var(--blue);">👤</span> Manual Trigger</h3>
+                <div class="detail-list">
+                    <div class="detail-item"><span class="detail-label">Entry Point</span><span class="detail-value">Telegram chat 1192838517</span></div>
+                    <div class="detail-item"><span class="detail-label">Triggers</span><span class="detail-value">"analisa SYMBOL 1W D 240"</span></div>
+                    <div class="detail-item"><span class="detail-label">Skill</span><span class="detail-value">str-vision-manual</span></div>
+                    <div class="detail-item"><span class="detail-label">Script</span><span class="detail-value">analyze_str_manual.py</span></div>
+                    <div class="detail-item"><span class="detail-label">Watchlist Support</span><span class="detail-value">--watchlist watchlist_a.json</span></div>
+                    <div class="detail-item"><span class="detail-label">Timeframes</span><span class="detail-value">1W, D, 240, 4H, 1H</span></div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3><span class="icon" style="background: var(--purple-bg); color: var(--purple);">⏰</span> Cron Schedule</h3>
+                <div class="detail-list">
+                    <div class="detail-item"><span class="detail-label">Lista A (03:00)</span><span class="detail-value">IBOV + 9 B3 | 28 images</span></div>
+                    <div class="detail-item"><span class="detail-label">Lista B (05:00)</span><span class="detail-value">9 B3 | 27 images</span></div>
+                    <div class="detail-item"><span class="detail-label">Lista C (07:00)</span><span class="detail-value">9 B3 + BTC | 30 images</span></div>
+                    <div class="detail-item"><span class="detail-label">Wrapper</span><span class="detail-value">str_daily_pipeline.sh</span></div>
+                    <div class="detail-item"><span class="detail-label">Workdir</span><span class="detail-value">~/.hermes/profiles/str/tv-shot</span></div>
+                    <div class="detail-item"><span class="detail-label">Timeout</span><span class="detail-value">7200s (cron.script_timeout_seconds)</span></div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3><span class="icon" style="background: var(--orange-bg); color: var(--orange);">📸</span> Chart Capture</h3>
+                <div class="detail-list">
+                    <div class="detail-item"><span class="detail-label">Tool</span><span class="detail-value">tv_shot.js (Playwright)</span></div>
+                    <div class="detail-item"><span class="detail-label">Mode</span><span class="detail-value">Headless Chromium</span></div>
+                    <div class="detail-item"><span class="detail-label">Output</span><span class="detail-value">PNG per symbol/timeframe</span></div>
+                    <div class="detail-item"><span class="detail-label">Naming</span><span class="detail-value">EXCHANGE:SYMBOL_TF_DATE.png</span></div>
+                    <div class="detail-item"><span class="detail-label">Timestamp</span><span class="detail-value">mtime = canonical</span></div>
+                    <div class="detail-item"><span class="detail-label">Reuse</span><span class="detail-value">Skip if exists (manual)</span></div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3><span class="icon" style="background: var(--green-bg); color: var(--green);">🤖</span> Hybrid Vision</h3>
+                <div class="detail-list">
+                    <div class="detail-item"><span class="detail-label">Primary</span><span class="detail-value">OpenRouter gemma-4-26b-a4b:free</span></div>
+                    <div class="detail-item"><span class="detail-label">Primary Speed</span><span class="detail-value">~8-20s/image</span></div>
+                    <div class="detail-item"><span class="detail-label">Fallback</span><span class="detail-value">Ollama qwen2.5vl:7b Q4_K_M</span></div>
+                    <div class="detail-item"><span class="detail-label">Fallback Speed</span><span class="detail-value">~90-100s (1W), ~180-295s (D/240)</span></div>
+                    <div class="detail-item"><span class="detail-label">Workers</span><span class="detail-value">3 parallel (STR_VISION_WORKERS)</span></div>
+                    <div class="detail-item"><span class="detail-label">Cross-Validation</span><span class="detail-value">yfinance OHLCV (SMC/PA/Fib/Liq)</span></div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3><span class="icon" style="background: var(--accent-bg); color: var(--accent);">🚀</span> Deploy Pipeline</h3>
+                <div class="detail-list">
+                    <div class="detail-item"><span class="detail-label">HTML Generator</span><span class="detail-value">gen_html.py</span></div>
+                    <div class="detail-item"><span class="detail-label">Single Ticker UX</span><span class="detail-value">Direct link (no expand)</span></div>
+                    <div class="detail-item"><span class="detail-label">Multi Ticker UX</span><span class="detail-value">Expandable cards</span></div>
+                    <div class="detail-item"><span class="detail-label">Ticker Filter</span><span class="detail-value">Excludes 'diario', 'IBOV'</span></div>
+                    <div class="detail-item"><span class="detail-label">Git Push</span><span class="detail-value">Auto-commit & push main</span></div>
+                    <div class="detail-item"><span class="detail-label">Vercel URL</span><span class="detail-value">str-web-murex.vercel.app</span></div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3><span class="icon" style="background: var(--yellow-bg); color: var(--warn);">📱</span> Delivery</h3>
+                <div class="detail-list">
+                    <div class="detail-item"><span class="detail-label">Target Chat</span><span class="detail-value">8543961065 (STR/Trading)</span></div>
+                    <div class="detail-item"><span class="detail-label">Content</span><span class="detail-value">Markdown + Vercel link</span></div>
+                    <div class="detail-item"><span class="detail-label">Format</span><span class="detail-value">SMC, PA, Fib, Liq, Wyckoff</span></div>
+                    <div class="detail-item"><span class="detail-label">Confluence Score</span><span class="detail-value">0-6 per asset</span></div>
+                    <div class="detail-item"><span class="detail-label">Disclaimer</span><span class="detail-value">Educational only</span></div>
+                    <div class="detail-item"><span class="detail-label">Web Access</span><span class="detail-value">Full history on STR Web</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Config Details -->
+        <div class="detail-card" style="margin-top: 20px;">
+            <h3><span class="icon" style="background: var(--blue-bg); color: var(--blue);">⚙️</span> Key Configuration (.env)</h3>
+            <div class="detail-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div>
+                    <div class="detail-item"><span class="detail-label">STR_VISION_TIMEOUT</span><span class="detail-value">600s (Ollama timeout)</span></div>
+                    <div class="detail-item"><span class="detail-label">STR_VISION_OPENROUTER_TIMEOUT</span><span class="detail-value">30s</span></div>
+                    <div class="detail-item"><span class="detail-label">STR_VISION_OPENROUTER_DELAY</span><span class="detail-value">10s (avoid 429)</span></div>
+                    <div class="detail-item"><span class="detail-label">STR_VISION_WORKERS</span><span class="detail-value">3</span></div>
+                </div>
+                <div>
+                    <div class="detail-item"><span class="detail-label">STR_CROSS_VALIDATE_ENABLED</span><span class="detail-value">1</span></div>
+                    <div class="detail-item"><span class="detail-label">OPENROUTER_API_KEY</span><span class="detail-value">In ~/.hermes/profiles/str/.env</span></div>
+                    <div class="detail-item"><span class="detail-label">cron.script_timeout_seconds</span><span class="detail-value">7200 (global, default profile)</span></div>
+                    <div class="detail-item"><span class="detail-label">OLLAMA_KEEP_ALIVE</span><span class="detail-value">-1 (pre-loaded models)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Common Issues -->
+        <details class="detail-card" style="margin-top: 20px;">
+            <summary style="cursor: pointer; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 8px;">
+                <span style="background: var(--accent-bg); color: var(--accent); width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px;">⚠️</span>
+                Known Issues & Fixes (click to expand)
+            </summary>
+            <div style="padding-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; font-size: 0.85rem;">
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <h4 style="color: var(--orange); margin-bottom: 8px;">🕐 Ollama Timeouts</h4>
+                    <p><strong>Symptom:</strong> ERROR timed out at ~295s (default 300s)</p>
+                    <p><strong>Cause:</strong> CPU-only 7B vision on 4 vCPUs, dense charts exceed 300s</p>
+                    <p><strong>Fix:</strong> STR_VISION_TIMEOUT=600 in .env</p>
+                </div>
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <h4 style="color: var(--orange); margin-bottom: 8px;">🚫 OpenRouter Rate Limits</h4>
+                    <p><strong>Symptom:</strong> HTTP 429 on 2nd+ request, fallback to Ollama</p>
+                    <p><strong>Cause:</strong> Free tier ~3 req/min, burst ~1 req/10s</p>
+                    <p><strong>Mitigation:</strong> STR_VISION_OPENROUTER_DELAY=10, accept ~70% fallback</p>
+                </div>
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <h4 style="color: var(--orange); margin-bottom: 8px;">🔑 OpenRouter Auth</h4>
+                    <p><strong>Symptom:</strong> HTTP 401 Missing Authentication header</p>
+                    <p><strong>Cause:</strong> .env has placeholder OPENROUTER_API_KEY=***</p>
+                    <p><strong>Fix:</strong> User edits /home/ubuntu/.hermes/profiles/str/.env with real key</p>
+                </div>
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <h4 style="color: var(--orange); margin-bottom: 8px;">⏱️ Cron Script Field</h4>
+                    <p><strong>Symptom:</strong> "Script not found: cd ... && bash ..."</p>
+                    <p><strong>Cause:</strong> Cron script field expects filename only, not full command</p>
+                    <p><strong>Fix:</strong> script: "str_daily_pipeline.sh", workdir: "/home/ubuntu/.hermes/profiles/str/tv-shot"</p>
+                </div>
+            </div>
+        </details>
+
+        <footer>
+            Generated by <a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> ·
+            STR Pipeline: <code>str-trading-pipeline</code> + <code>str-vision-manual</code> skills ·
+            <a href="https://str-web-murex.vercel.app" target="_blank">STR Web</a> ·
+            <a href="https://token-dashboard-tau-five.vercel.app" target="_blank">Token Dashboard</a>
+        </footer>
+    </main>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#60a5fa',
+                lineColor: '#64748b',
+                secondaryColor: '#a78bfa',
+                tertiaryColor: '#22c55e',
+                background: '#11171d',
+                mainBkg: '#11171d',
+                secondBkg: '#1a222d',
+                tertiaryBkg: '#0f1428',
+                textColor: '#e8edf2',
+                nodeBorder: '#64748b',
+                clusterBkg: '#0f1428',
+                clusterBorder: '#232d3a',
+                defaultLinkColor: '#64748b',
+                titleColor: '#e8edf2',
+                edgeLabelBackground: '#0f1428',
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: '14px'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20,
+                nodeSpacing: 50,
+                rankSpacing: 80,
+                subGraphTitleMargin: {
+                    top: 10,
+                    bottom: 10
+                }
+            },
+            securityLevel: 'loose'
+        });
+
+        // Re-render on theme change (if needed)
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', () => {
+            location.reload();
+        });
+    </script>
+</body>
+</html>

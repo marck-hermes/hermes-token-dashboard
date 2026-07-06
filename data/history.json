@@ -3,38 +3,70 @@
     "date": "2026-07-03",
     "period": "Jul 02, 2026 \u2014 Jul 03, 2026",
     "sessions": 10,
-    "messages": 877,
-    "tool_calls": 373,
+    "messages": 920,
+    "tool_calls": 394,
     "user_messages": 71,
-    "input_tokens": 25423453,
-    "output_tokens": 130330,
-    "total_tokens": 42517879,
+    "input_tokens": 27708330,
+    "output_tokens": 134606,
+    "total_tokens": 46734968,
     "active_time": "",
     "avg_session": "",
-    "avg_msgs_session": 87,
+    "avg_msgs_session": 92,
     "top_model": "nemotron-3-ultra-550b-a55b:f",
     "platforms": [
       {
         "platform": "cli",
         "sessions": "5",
-        "messages": "434",
-        "tokens": "19,219,017"
-      },
-      {
-        "platform": "telegram",
-        "sessions": "3",
-        "messages": "343",
-        "tokens": "21,042,562"
+        "messages": "460",
+        "tokens": "21,450,206"
       },
       {
         "platform": "cron",
+        "sessions": "3",
+        "messages": "101",
+        "tokens": "2,287,596"
+      },
+      {
+        "platform": "telegram",
         "sessions": "2",
-        "messages": "100",
-        "tokens": "2,256,300"
+        "messages": "359",
+        "tokens": "22,997,166"
       }
     ],
     "notable": {
-      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      13h 41m            (Jul 02, 20260702_225913_)\nMost messages        423 msgs           (Jul 03, 20260703_081758_)\nMost tokens          13,100,051 tokens  (Jul 03, 20260703_124021_)\nMost tool calls      191 calls          (Jul 03, 20260703_081758_)\n"
+      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      13h 41m            (Jul 02, 20260702_225913_)\nMost messages        449 msgs           (Jul 03, 20260703_081758_)\nMost tokens          13,988,526 tokens  (Jul 03, 20260703_124021_)\nMost tool calls      203 calls          (Jul 03, 20260703_081758_)\n"
+    }
+  },
+  {
+    "date": "2026-07-04",
+    "period": "Jul 04, 2026 \u2014 Jul 04, 2026",
+    "sessions": 4,
+    "messages": 113,
+    "tool_calls": 51,
+    "user_messages": 7,
+    "input_tokens": 817866,
+    "output_tokens": 16357,
+    "total_tokens": 2934063,
+    "active_time": "",
+    "avg_session": "",
+    "avg_msgs_session": 28,
+    "top_model": "nemotron-3-super-120b-a12b:f",
+    "platforms": [
+      {
+        "platform": "telegram",
+        "sessions": "3",
+        "messages": "77",
+        "tokens": "2,463,687"
+      },
+      {
+        "platform": "cron",
+        "sessions": "1",
+        "messages": "36",
+        "tokens": "470,376"
+      }
+    ],
+    "notable": {
+      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      6h 15m             (Jul 04, 20260704_000140_)\nMost messages        73 msgs            (Jul 04, 20260704_061700_)\nMost tokens          564,652 tokens     (Jul 04, 20260704_061700_)\nMost tool calls      32 calls           (Jul 04, 20260704_061700_)\n"
     }
   }
 ]
