@@ -237,6 +237,56 @@
             </div>
         </header>
 
+        <!-- Visual Flow Overview -->
+        <section class="visual-flow" style="margin-bottom: 32px;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--text-strong);">🔄 Pipeline Overview</h2>
+            <div class="flow-diagram" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; overflow-x: auto; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; white-space: pre; color: var(--text);">
+🔵 MANUAL TRIGGER          🟣 CRON SCHEDULE
+   (Telegram on-demand)       (03:00/05:00/07:00 daily)
+        │                          │
+        ▼                          ▼
+   Parse Symbols            Warmup Ollama (3 modelos)
+        │                          │
+        ▼                          ▼
+   Check Images (mtime)      Load Watchlist A/B/C
+        │                          │
+        ▼                          ▼
+   Capture (tv_shot.js)  ─────►  Capture All (28-30 img)
+        │                          │
+        └──────────────┬───────────┘
+                       ▼
+              🟢 HYBRID VISION PIPELINE
+              (shared by both paths)
+                       │
+         ┌─────────────┴─────────────┐
+         ▼                           ▼
+    ☁️ OpenRouter                💻 Ollama Fallback
+    gemma-4-26b-a4b:free         qwen2.5vl:7b Q4_K_M
+    ~8-20s/img (primary)         ~90-295s/img (CPU)
+         │                           │
+         └─────────────┬─────────────┘
+                       ▼
+              ✅ Cross-Validation (yfinance OHLCV)
+              SMC / PA / Fib / Liq / Wyckoff / VSA
+                       │
+                       ▼
+              📝 Outputs: analise_str.md + vision_cache.json
+                       │
+                       ▼
+              🔷 DEPLOY & DELIVERY (shared)
+                       │
+         ┌─────────────┼─────────────┐
+         ▼             ▼             ▼
+    gen_html.py   Git Push        Vercel Deploy
+    (HTML gen)    (auto-commit)   (str-web-murex)
+         │             │             │
+         └─────────────┼─────────────┘
+                       ▼
+              📱 Telegram (chat 8543961065)
+              📊 STR Web Index
+            </div>
+        </section>
+
         <!-- Main Flow Chart -->
         <div class="flow-container">
             <div class="mermaid">
