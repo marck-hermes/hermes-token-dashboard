@@ -563,26 +563,25 @@ flowchart TD
             // ============================================================
             const mindmapData = {
                 nodes: [
-                    // Root
-                    { id: 'root', label: 'STR Pipeline', type: 'root', group: 'root', desc: 'Swing Trading Analysis Pipeline', details: ['Manual + Cron', 'Hybrid Vision', 'Vercel Deploy', 'Telegram Delivery'] },
+                    // Two Root Nodes: Manual Trigger & Cron Schedule
+                    { id: 'manual-root', label: '🔵 Manual Trigger', type: 'root', group: 'manual', desc: 'On-demand analysis via Telegram', details: ['Skill: str-vision-manual', 'Chat: 1192838517', 'Command: "analisa SYMBOL 1W D 240"', 'Inline or --watchlist'] },
+                    { id: 'cron-root', label: '🟣 Cron Schedule', type: 'root', group: 'cron', desc: '3× Daily automated runs', details: ['03:00 Lista A (IBOV+9)', '05:00 Lista B (9 B3)', '07:00 Lista C (9 B3+BTC)', 'Timeout: 7200s'] },
 
-                    // Main Branches
-                    { id: 'manual', label: '🔵 Manual (On-Demand)', type: 'branch', group: 'manual', parent: 'root', desc: 'Triggered via Telegram', details: ['Skill: str-vision-manual', 'Chat: 1192838517', 'Inline or watchlist'] },
-                    { id: 'cron', label: '🟣 Cron (Automated)', type: 'branch', group: 'cron', parent: 'root', desc: '3× Daily automated runs', details: ['03:00 Lista A', '05:00 Lista B', '07:00 Lista C', 'Timeout: 7200s'] },
-                    { id: 'vision', label: '🟢 Hybrid Vision', type: 'branch', group: 'vision', parent: 'root', desc: 'Shared vision pipeline', details: ['OpenRouter primary', 'Ollama fallback', 'Cross-validation', '3 workers parallel'] },
-                    { id: 'deploy', label: '🔷 Deploy & Delivery', type: 'branch', group: 'deploy', parent: 'root', desc: 'HTML gen → Vercel → Telegram', details: ['gen_html.py', 'Git push main', 'Vercel auto-deploy', 'Chat 8543961065'] },
+                    // Shared Convergent Branches
+                    { id: 'vision', label: '🟢 Hybrid Vision Pipeline', type: 'branch', group: 'vision', desc: 'Shared vision (both paths converge)', details: ['OpenRouter primary → Ollama fallback', 'Cross-validation vs OHLCV', '3 parallel workers', 'Outputs: MD + JSON'] },
+                    { id: 'deploy', label: '🔷 Deploy & Delivery', type: 'branch', group: 'deploy', desc: 'HTML gen → Vercel → Telegram', details: ['gen_html.py', 'Git push main', 'Vercel auto-deploy', 'Chat 8543961065'] },
 
                     // Manual sub-nodes
-                    { id: 'm-parse', label: '📝 Parse Symbols', type: 'leaf', group: 'manual', parent: 'manual', desc: 'Parse inline or watchlist', details: ['Format: SYMBOL 1W D 240', 'Timeframes: 1W,D,240,4H,1H'] },
-                    { id: 'm-check', label: '🔍 Check Images', type: 'leaf', group: 'manual', parent: 'manual', desc: 'mtime = canonical timestamp', details: ['Reuse existing', 'Skip if present'] },
-                    { id: 'm-capture', label: '📸 Capture (tv_shot.js)', type: 'leaf', group: 'capture', parent: 'manual', desc: 'Playwright headless Chromium', details: ['PNG per symbol/TF', 'Naming: EXCH:SYM_TF_DATE.png'] },
+                    { id: 'm-parse', label: '📝 Parse Symbols', type: 'leaf', group: 'manual', parent: 'manual-root', desc: 'Parse inline or watchlist', details: ['Format: SYMBOL 1W D 240', 'Timeframes: 1W,D,240,4H,1H'] },
+                    { id: 'm-check', label: '🔍 Check Images', type: 'leaf', group: 'manual', parent: 'manual-root', desc: 'mtime = canonical timestamp', details: ['Reuse existing', 'Skip if present'] },
+                    { id: 'm-capture', label: '📸 Capture (tv_shot.js)', type: 'leaf', group: 'capture', parent: 'manual-root', desc: 'Playwright headless Chromium', details: ['PNG per symbol/TF', 'Naming: EXCH:SYM_TF_DATE.png'] },
 
                     // Cron sub-nodes
-                    { id: 'c-warmup', label: '🔥 Warmup Ollama', type: 'leaf', group: 'cron', parent: 'cron', desc: 'Pre-load 3 models', details: ['qwen2.5vl:7b (vision)', 'qwen3.5:9b (text)', 'llama3.2:3b (fallback)'] },
-                    { id: 'c-load', label: '📋 Load Watchlist', type: 'leaf', group: 'cron', parent: 'cron', desc: 'watchlist_{a,b,c}.json', details: ['Lista A: IBOV+9 (28 img)', 'Lista B: 9 B3 (27 img)', 'Lista C: 9 B3+BTC (30 img)'] },
-                    { id: 'c-capture', label: '📸 Capture All', type: 'leaf', group: 'capture', parent: 'cron', desc: 'Batch capture 28-30 images', details: ['Same tv_shot.js', 'Parallel capture'] },
+                    { id: 'c-warmup', label: '🔥 Warmup Ollama', type: 'leaf', group: 'cron', parent: 'cron-root', desc: 'Pre-load 3 models', details: ['qwen2.5vl:7b (vision)', 'qwen3.5:9b (text)', 'llama3.2:3b (fallback)'] },
+                    { id: 'c-load', label: '📋 Load Watchlist', type: 'leaf', group: 'cron', parent: 'cron-root', desc: 'watchlist_{a,b,c}.json', details: ['Lista A: IBOV+9 (28 img)', 'Lista B: 9 B3 (27 img)', 'Lista C: 9 B3+BTC (30 img)'] },
+                    { id: 'c-capture', label: '📸 Capture All', type: 'leaf', group: 'capture', parent: 'cron-root', desc: 'Batch capture 28-30 images', details: ['Same tv_shot.js', 'Parallel capture'] },
 
-                    // Vision sub-nodes
+                    // Vision sub-nodes (shared)
                     { id: 'v-batch', label: '🚀 str_vision_batch.py', type: 'leaf', group: 'vision', parent: 'vision', desc: 'Entry point, 3 workers', details: ['STR_VISION_WORKERS=3', 'Loads .env from STR profile'] },
                     { id: 'v-openrouter', label: '☁️ OpenRouter Primary', type: 'leaf', group: 'vision', parent: 'vision', desc: 'gemma-4-26b-a4b:free', details: ['~8-20s/image', 'Free tier ~3 req/min', 'Professional SMC/PA/Fib/Liq'] },
                     { id: 'v-fallback', label: '❌ Rate Limit Check', type: 'leaf', group: 'decision', parent: 'vision', desc: '429 / timeout / 5xx?', details: ['Delay: 10s between calls', 'Fallback to Ollama on error'] },
@@ -590,7 +589,7 @@ flowchart TD
                     { id: 'v-crossval', label: '✅ Cross-Validation', type: 'leaf', group: 'vision', parent: 'vision', desc: 'vs yfinance OHLCV', details: ['SMC levels', 'Price Action', 'Fibonacci', 'Liquidity', 'Wyckoff', 'VSA'] },
                     { id: 'v-output', label: '📝 Generate Outputs', type: 'leaf', group: 'data', parent: 'vision', desc: 'Markdown + JSON cache', details: ['analise_str.md', 'vision_cache.json', 'Confluence scores 0-6'] },
 
-                    // Deploy sub-nodes
+                    // Deploy sub-nodes (shared)
                     { id: 'd-html', label: '🔧 gen_html.py', type: 'leaf', group: 'deploy', parent: 'deploy', desc: 'Parse MD → HTML', details: ['Single-ticker: direct link', 'Multi-ticker: expand cards', 'Filter: diario, IBOV'] },
                     { id: 'd-git', label: '📦 Git Commit & Push', type: 'leaf', group: 'deploy', parent: 'deploy', desc: 'Auto-commit to main', details: ['git add .', 'git commit -m', 'git push origin main'] },
                     { id: 'd-vercel', label: '☁️ Vercel Deploy', type: 'leaf', group: 'deploy', parent: 'deploy', desc: 'str-web-murex.vercel.app', details: ['Auto-deploy on push', '/analise/<run_id>/', 'Images served from Vercel'] },
@@ -607,24 +606,53 @@ flowchart TD
                     { id: 'ext-tg', label: 'Telegram Bot API', type: 'external', group: 'external', parent: 'deploy', desc: 'Delivery' },
                 ],
                 edges: [
-                    // Main branches from root
-                    { source: 'root', target: 'manual' },
-                    { source: 'root', target: 'cron' },
-                    { source: 'root', target: 'vision' },
-                    { source: 'root', target: 'deploy' },
-
                     // Manual flow
-                    { source: 'manual', target: 'm-parse' },
+                    { source: 'manual-root', target: 'm-parse' },
                     { source: 'm-parse', target: 'm-check' },
                     { source: 'm-check', target: 'm-capture', label: 'missing' },
                     { source: 'm-check', target: 'vision', label: 'exists' },
                     { source: 'm-capture', target: 'vision' },
 
                     // Cron flow
-                    { source: 'cron', target: 'c-warmup' },
+                    { source: 'cron-root', target: 'c-warmup' },
                     { source: 'c-warmup', target: 'c-load' },
                     { source: 'c-load', target: 'c-capture' },
                     { source: 'c-capture', target: 'vision' },
+
+                    // Cross-links: both roots connect to vision (convergence)
+                    { source: 'manual-root', target: 'vision', label: '→ Vision', type: 'converge' },
+                    { source: 'cron-root', target: 'vision', label: '→ Vision', type: 'converge' },
+
+                    // Vision pipeline
+                    { source: 'vision', target: 'v-batch' },
+                    { source: 'v-batch', target: 'v-openrouter' },
+                    { source: 'v-openrouter', target: 'v-fallback' },
+                    { source: 'v-fallback', target: 'v-ollama', label: 'Yes (429/5xx)' },
+                    { source: 'v-fallback', target: 'v-crossval', label: 'No' },
+                    { source: 'v-ollama', target: 'v-crossval' },
+                    { source: 'v-crossval', target: 'v-output' },
+
+                    // Vision → Deploy convergence
+                    { source: 'v-output', target: 'deploy', label: '→ Deploy' },
+
+                    // Deploy pipeline
+                    { source: 'deploy', target: 'd-html' },
+                    { source: 'd-html', target: 'd-git' },
+                    { source: 'd-git', target: 'd-vercel' },
+                    { source: 'd-vercel', target: 'd-telegram' },
+                    { source: 'd-vercel', target: 'd-web' },
+
+                    // External dependencies
+                    { source: 'm-capture', target: 'ext-tv', type: 'external' },
+                    { source: 'c-capture', target: 'ext-tv', type: 'external' },
+                    { source: 'v-openrouter', target: 'ext-or', type: 'external' },
+                    { source: 'v-ollama', target: 'ext-ol', type: 'external' },
+                    { source: 'v-crossval', target: 'ext-yf', type: 'external' },
+                    { source: 'd-git', target: 'ext-gh', type: 'external' },
+                    { source: 'd-vercel', target: 'ext-vc', type: 'external' },
+                    { source: 'd-telegram', target: 'ext-tg', type: 'external' },
+                ]
+            };
 
                     // Vision pipeline
                     { source: 'vision', target: 'v-batch' },
@@ -947,7 +975,7 @@ flowchart TD
                         animationDuration: 500,
                         padding: 50,
                         directed: true,
-                        roots: '#root',
+                        roots: '#manual-root, #cron-root',
                         maximal: false,
                         spacingFactor: 1.5,
                         avoidOverlap: true
