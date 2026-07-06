@@ -262,7 +262,7 @@ flowchart TD
     %% ============================================================
     %% MANUAL TRIGGER
     %% ============================================================
-    subgraph MANUAL ["🔵 MANUAL (On-Demand via Telegram)"]
+    subgraph MANUAL ["MANUAL (On-Demand via Telegram)"]
         direction TB
         M1[("👤 User triggers\n\"analisa BPAC11 1W D 240\"")]:::manual
         M2["📝 Parse symbols &\ntimeframes\n(inline or watchlist)"]:::manual
@@ -274,7 +274,7 @@ flowchart TD
     %% ============================================================
     %% CRON TRIGGER
     %% ============================================================
-    subgraph CRON ["🟣 CRON (Automated 3× Daily)"]
+    subgraph CRON ["CRON (Automated 3× Daily)"]
         direction TB
         C1[("⏰ Cron triggers\n03:00 Lista A | 05:00 Lista B | 07:00 Lista C")]:::cron
         C2["🔥 Warmup Ollama\n(qwen2.5vl:7b\nqwen3.5:9b\nllama3.2:3b)"]:::cron
@@ -285,7 +285,7 @@ flowchart TD
     %% ============================================================
     %% SHARED VISION PIPELINE
     %% ============================================================
-    subgraph VISION ["🟢 HYBRID VISION PIPELINE (Shared)"]
+    subgraph VISION ["HYBRID VISION PIPELINE (Shared)"]
         direction TB
         V1["🚀 str_vision_batch.py\nSTR_VISION_WORKERS=3"]:::vision
         V2["☁️ OpenRouter\nPrimary: gemma-4-26b-a4b:free\n~8-20s/img\nFree tier: ~3 req/min"]:::vision
@@ -298,7 +298,7 @@ flowchart TD
     %% ============================================================
     %% DEPLOY & DELIVERY
     %% ============================================================
-    subgraph DEPLOY ["🔷 DEPLOY & DELIVERY"]
+    subgraph DEPLOY ["DEPLOY & DELIVERY"]
         direction TB
         D1["🔧 gen_html.py\nParse markdown → HTML\nSingle-ticker vs\nmulti-ticker UX"]:::deploy
         D2["📦 Git commit &\npush to GitHub\n(main branch)"]:::deploy
@@ -341,7 +341,7 @@ flowchart TD
     %% ============================================================
     %% EXTERNAL DEPENDENCIES
     %% ============================================================
-    subgraph EXT ["🔗 EXTERNAL DEPENDENCIES"]
+    subgraph EXT ["EXTERNAL DEPENDENCIES"]
         direction LR
         E1["TradingView\ncharts.tradingview.com"]:::external
         E2["OpenRouter API\nopenrouter.ai"]:::external
@@ -1066,8 +1066,12 @@ flowchart TD
                 document.getElementById('mm-edge-count').textContent = cy.edges().length;
             }
 
-            // Initialize when DOM ready
-            document.addEventListener('DOMContentLoaded', initMindmap);
+            // Initialize when DOM ready (handles case where DOMContentLoaded already fired)
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMindmap);
+            } else {
+                initMindmap();
+            }
         </script>
 
         <script>
