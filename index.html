@@ -7,122 +7,53 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-                :root {
-                    --bg: #0b1020;
-                    --bg-card: #11171d;
-                    --bg-hover: #1a222d;
-                    --fg: #e8edf2;
-                    --fg-muted: #8b9ab0;
-                    --accent: #00d4aa;
-                    --accent-dim: #00b894;
-                    --accent-bg: rgba(0, 212, 170, 0.1);
-                    --danger: #ff4757;
-                    --warn: #ffa502;
-                    --border: #232d3a;
-                    --cli: #3b82f6;
-                    --telegram: #0088cc;
-                    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-                    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    --radius: 16px;
-                    --radius-sm: 8px;
-                    --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-                    --transition: 0.2s ease;
-                }
-                @media (prefers-color-scheme: light) {
-                    :root {
-                        --bg: #f5f7fa;
-                        --bg-card: #fff;
-                        --bg-hover: #eef2f7;
-                        --fg: #1a222d;
-                        --fg-muted: #5a6a7a;
-                        --border: #d0d9e3;
-                        --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-                    }
-                }
-                html { font-size: 16px; -webkit-font-smoothing: antialiased; }
-                body {
-                    font-family: var(--font-sans);
-                    background: var(--bg);
-                    color: var(--fg);
-                    line-height: 1.6;
-                    min-height: 100vh;
-                }
-                a { color: var(--accent); text-decoration: none; }
-                a:hover { text-decoration: underline; }
+        :root {
+            --bg: #0b1020;
+            --bg-card: #11171d;
+            --bg-hover: #1a222d;
+            --fg: #e8edf2;
+            --fg-muted: #8b9ab0;
+            --accent: #00d4aa;
+            --accent-dim: #00b894;
+            --accent-bg: rgba(0, 212, 170, 0.1);
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --border: #232d3a;
+            --cli: #3b82f6;
+            --telegram: #0088cc;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+            --transition: 0.2s ease;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f7fa;
+                --bg-card: #fff;
+                --bg-hover: #eef2f7;
+                --fg: #1a222d;
+                --fg-muted: #5a6a7a;
+                --border: #d0d9e3;
+                --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            }
+        }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
 
-                /* Navigation Bar */
-                .nav-bar {
-                    position: sticky;
-                    top: 0;
-                    z-index: 100;
-                    background: var(--bg-card);
-                    border-bottom: 1px solid var(--border);
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                }
-                .nav-inner {
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    padding: 12px 24px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 16px;
-                    flex-wrap: wrap;
-                }
-                .nav-brand {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    font-weight: 700;
-                    font-size: 1.1rem;
-                    color: var(--fg);
-                    letter-spacing: -0.02em;
-                }
-                .nav-brand svg { flex-shrink: 0; }
-                .nav-tabs {
-                    display: flex;
-                    gap: 4px;
-                    background: var(--bg);
-                    padding: 4px;
-                    border-radius: var(--radius-sm);
-                    border: 1px solid var(--border);
-                }
-                .nav-tab {
-                    padding: 8px 16px;
-                    border-radius: 6px;
-                    font-size: 0.85rem;
-                    font-weight: 600;
-                    color: var(--fg-muted);
-                    background: transparent;
-                    border: none;
-                    cursor: pointer;
-                    transition: all var(--transition);
-                    white-space: nowrap;
-                }
-                .nav-tab:hover { color: var(--fg); background: var(--bg-hover); }
-                .nav-tab.active { color: var(--bg); background: var(--accent); }
-                .nav-links {
-                    display: flex;
-                    gap: 12px;
-                    align-items: center;
-                }
-                .nav-link {
-                    font-size: 0.85rem;
-                    color: var(--fg-muted);
-                    padding: 6px 10px;
-                    border-radius: 6px;
-                    transition: all var(--transition);
-                }
-                .nav-link:hover { color: var(--accent); background: var(--accent-bg); }
+        .container { max-width: 1200px; margin: 0 auto; }
 
-                .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-
-                @media (max-width: 900px) {
-                    .nav-tabs { order: 3; width: 100%; justify-content: center; }
-                    .nav-link { display: none; }
-                    body { padding: 0; }
-                }
+        /* Header */
         header { margin-bottom: 32px; }
         h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
         .subtitle { color: var(--fg-muted); font-size: 0.95rem; margin-top: 4px; }
@@ -189,40 +120,13 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <div class="nav-brand">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-                Hermes Dashboards
-            </div>
-            <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
-                <button class="nav-tab active" role="tab" aria-selected="true" onclick="location.href='index.html'">
-                    📊 Token Usage Dashboard
-                </button>
-                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='str-flow-chart.html'">
-                    📈 STR Pipeline Flow
-                </button>
-            </div>
-            <div class="nav-links">
-                <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
-                <a class="nav-link" href="https://token-dashboard-tau-five.vercel.app" target="_blank">Token Dashboard</a>
-                <a class="nav-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Repo</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container">
+    <div class="container">
         <header>
             <h1>📊 Hermes Token Usage Dashboard</h1>
             <p class="subtitle">Tracking API token consumption across CLI, Telegram, and Cron platforms</p>
             <div class="meta">
-                <span>📅 Generated: 2026-07-05 22:30</span>
-                <span>📈 Days tracked: 3</span>
+                <span>📅 Generated: 2026-07-07 17:36</span>
+                <span>📈 Days tracked: 5</span>
                 <span>🤖 Model: <code id="top-model">—</code></span>
                 <span>💰 Cost: <code id="est-cost">Free tier</code></span>
             </div>
@@ -265,7 +169,7 @@
         <!-- Platform Breakdown -->
         <div class="platform-card">
             <h3 style="margin-bottom: 12px;">📱 Platform Distribution (Last 7 Days)</h3>
-            <div id="platform-breakdown"><div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">202,849</span></div><div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">7,810,627</span></div><div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">48,493,275</span></div></div>
+            <div id="platform-breakdown"><div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">21,012,653</span></div><div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">17,810</span></div><div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">235,113</span></div></div>
         </div>
 
         <!-- Charts -->
@@ -308,6 +212,28 @@
                 <div>Top Model</div>
             </div>
             <div id="history-table">
+            <div class="table-row">
+                <div class="date">2026-07-07</div>
+                <div class="muted">10</div>
+                <div class="muted">360</div>
+                <div class="muted">12,970,869</div>
+                <div class="muted">65,075</div>
+                <div class="muted">21,265,576</div>
+                <div class="muted"><code>nemotron-3-ultra-550b-a55b:f</code></div>
+            </div>
+        
+
+            <div class="table-row">
+                <div class="date">2026-07-06</div>
+                <div class="muted">6</div>
+                <div class="muted">403</div>
+                <div class="muted">10,322,890</div>
+                <div class="muted">62,312</div>
+                <div class="muted">20,577,586</div>
+                <div class="muted"><code>nemotron-3-ultra-550b-a55b:f</code></div>
+            </div>
+        
+
             <div class="table-row">
                 <div class="date">2026-07-05</div>
                 <div class="muted">5</div>
@@ -439,19 +365,19 @@ hermes insights --days 7
                     <code>hermes insights (cron 22h30)</code> → <code>generate_dashboard.py</code> → <code>git push</code> → <code>GitHub webhook → Vercel</code> → <code>https://token-dashboard-tau-five.vercel.app</code>
                 </p>
             </div>
-                    </details>
-                </main>
+        </details>
 
-                <footer>
-                    Generated by <a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> ·
-                    Data from <code>hermes insights</code> ·
-                    <a href="https://vercel.com" target="_blank">Deployed on Vercel</a>
-                </footer>
+        <footer>
+            Generated by <a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> ·
+            Data from <code>hermes insights</code> ·
+            <a href="https://vercel.com" target="_blank">Deployed on Vercel</a>
+        </footer>
+    </div>
 
-                <script>
+    <script>
         // Inject data
-        const CHART_DATA = {"dates": ["2026-07-03", "2026-07-04", "2026-07-05"], "input_tokens": [27708330, 817866, 27320385], "output_tokens": [134606, 16357, 115006], "total_tokens": [46734968, 2934063, 56506751], "sessions": [10, 4, 5], "messages": [920, 113, 557], "platform_dates": ["2026-07-03", "2026-07-04", "2026-07-05"], "cli_tokens": [21450206, 0, 7810627], "telegram_tokens": [22997166, 2463687, 48493275]};
-        const LATEST_METRICS = {"date": "2026-07-05", "period": "Jul 04, 2026 \u2014 Jul 05, 2026", "sessions": 5, "messages": 557, "tool_calls": 242, "user_messages": 38, "input_tokens": 27320385, "output_tokens": 115006, "total_tokens": 56506751, "active_time": "", "avg_session": "", "avg_msgs_session": 111, "top_model": "nemotron-3-ultra-550b-a55b:f", "platforms": [{"platform": "cron", "sessions": "2", "messages": "11", "tokens": "202,849"}, {"platform": "cli", "sessions": "2", "messages": "159", "tokens": "7,810,627"}, {"platform": "telegram", "sessions": "1", "messages": "387", "tokens": "48,493,275"}], "notable": {"raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      6h 34m             (Jul 05, 20260705_145536_)\nMost messages        387 msgs           (Jul 05, 20260705_071241_)\nMost tokens          23,417,051 tokens  (Jul 05, 20260705_071241_)\nMost tool calls      172 calls          (Jul 05, 20260705_071241_)\n"}};
+        const CHART_DATA = {"dates": ["2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07"], "input_tokens": [27708330, 817866, 27320385, 10322890, 12970869], "output_tokens": [134606, 16357, 115006, 62312, 65075], "total_tokens": [46734968, 2934063, 56506751, 20577586, 21265576], "sessions": [10, 4, 5, 6, 10], "messages": [920, 113, 557, 403, 360], "platform_dates": ["2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07"], "cli_tokens": [21450206, 0, 7810627, 4943657, 21012653], "telegram_tokens": [22997166, 2463687, 48493275, 14434244, 17810]};
+        const LATEST_METRICS = {"date": "2026-07-07", "period": "Jul 06, 2026 \u2014 Jul 07, 2026", "sessions": 10, "messages": 360, "tool_calls": 160, "user_messages": 32, "input_tokens": 12970869, "output_tokens": 65075, "total_tokens": 21265576, "active_time": "", "avg_session": "", "avg_msgs_session": 36, "top_model": "nemotron-3-ultra-550b-a55b:f", "platforms": [{"platform": "cli", "sessions": "5", "messages": "343", "tokens": "21,012,653"}, {"platform": "telegram", "sessions": "3", "messages": "3", "tokens": "17,810"}, {"platform": "cron", "sessions": "2", "messages": "14", "tokens": "235,113"}], "notable": {"raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      3h 26m             (Jul 07, 20260707_103720_)\nMost messages        208 msgs           (Jul 07, 20260707_100415_)\nMost tokens          8,091,446 tokens   (Jul 07, 20260707_100415_)\nMost tool calls      89 calls           (Jul 07, 20260707_100415_)\n"}};
 
         // Format numbers
         function fmt(n) { return n.toLocaleString(); }
