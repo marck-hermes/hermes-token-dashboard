@@ -3,7 +3,9 @@
   "outputDirectory": ".",
   "framework": null,
   "rewrites": [
-    { "source": "/data/(.*)", "destination": "/data/$1" }
+    { "source": "/data/(.*)", "destination": "/data/$1" },
+    { "source": "/backup-flow.html", "destination": "/backup-flow.html" },
+    { "source": "/str-flow-chart.html", "destination": "/str-flow-chart.html" }
   ],
   "headers": [
     {
