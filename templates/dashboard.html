@@ -46,10 +46,75 @@
             color: var(--fg);
             line-height: 1.6;
             min-height: 100vh;
-            padding: 24px;
         }
         a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            letter-spacing: -0.02em;
+        }
+        .nav-brand svg { flex-shrink: 0; }
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg-muted);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--fg); background: var(--bg-hover); }
+        .nav-tab.active { color: var(--bg); background: var(--accent); }
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .nav-link {
+            font-size: 0.85rem;
+            color: var(--fg-muted);
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all var(--transition);
+        }
+        .nav-link:hover { color: var(--accent); background: var(--accent-bg); }
 
         .container { max-width: 1200px; margin: 0 auto; }
 
@@ -120,6 +185,35 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Hermes Dashboards
+            </div>
+            <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
+                <button class="nav-tab active" role="tab" aria-selected="true" onclick="location.href='https://token-dashboard-tau-five.vercel.app'">
+                    📊 Token Usage Dashboard
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/str-flow-chart.html'">
+                    📈 STR Pipeline Flow
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/backup-flow.html'">
+                    🛡️ Backup Flow
+                </button>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
+                <a class="nav-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Repo</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <header>
             <h1>📊 Hermes Token Usage Dashboard</h1>
