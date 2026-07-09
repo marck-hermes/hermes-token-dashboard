@@ -164,7 +164,12 @@
             color: var(--fg-muted);
             white-space: nowrap;
             font-size: 0.65rem;
+            cursor: pointer;
+            user-select: none;
         }
+        th:hover { color: var(--accent); background: var(--bg-hover); }
+        th.sorted-asc::after { content: ' ▲'; font-size: 0.7em; color: var(--accent); }
+        th.sorted-desc::after { content: ' ▼'; font-size: 0.7em; color: var(--accent); }
         td {
             padding: 10px;
             border-bottom: 1px solid var(--border);
@@ -298,7 +303,7 @@
     <div class="container">
         <header>
             <h1>🤖 Comparação de Modelos LLM — OpenRouter para Hermes Agent</h1>
-            <p class="subtitle">Top 10 pagos + Top 10 free tier disponíveis via API no Hermes Agent</p>
+            <p class="subtitle">Top pagos + Free tier disponíveis via API no Hermes Agent</p>
             <div class="meta">
                 <span>📅 Atualizado: Julho 2025</span>
                 <span>🔗 Fonte: <a href="https://openrouter.ai/models" target="_blank">openrouter.ai/models</a></span>
@@ -308,9 +313,9 @@
 
         <!-- Filter Tabs -->
         <div class="filter-tabs" role="tablist" aria-label="Filter by tier">
-            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">Todos (22)</button>
-            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Pagos (12)</button>
-            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (10)</button>
+            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">Todos (34)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Pagos (14)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (20)</button>
         </div>
 
         <!-- Legend -->
@@ -333,14 +338,14 @@
                 <table id="comparison-table">
                     <thead>
                         <tr>
-                            <th>Modelo</th>
-                            <th>Context</th>
-                            <th>Tool Use / Agentic</th>
-                            <th>Multimodal</th>
-                            <th>Reasoning (longo)</th>
-                            <th>Coding</th>
-                            <th>Custo Input / Output (USD/1M)</th>
-                            <th>Velocidade</th>
+                            <th data-sort="string" data-col="0">Modelo</th>
+                            <th data-sort="number" data-col="1">Context</th>
+                            <th data-sort="string" data-col="2">Tool Use / Agentic</th>
+                            <th data-sort="string" data-col="3">Multimodal</th>
+                            <th data-sort="string" data-col="4">Reasoning (longo)</th>
+                            <th data-sort="string" data-col="5">Coding</th>
+                            <th data-sort="string" data-col="6">Custo Input / Output (USD/1M)</th>
+                            <th data-sort="string" data-col="7">Velocidade</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -436,14 +441,14 @@
                             <td><span class="badge badge-fast">Muito Rápida</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">google/gemini-2.5-pro</td>
+                            <td class="model-name">google/gemini-2.5-flash</td>
                             <td class="context">1M</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$1.25 / $10.00</td>
-                            <td><span class="badge badge-medium">Média</span></td>
+                            <td class="cost">$0.15 / $0.60</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
                             <td class="model-name">deepseek/deepseek-v3</td>
@@ -464,6 +469,46 @@
                             <td><span class="badge badge-strong">Forte</span></td>
                             <td class="cost">$0.14 / $2.19</td>
                             <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">deepseek/deepseek-v4-flash</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost">$0.10 / $0.20</td>
+                            <td><span class="badge badge-fast">Muito Rápida</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">deepseek/deepseek-v4-pro</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$0.20 / $0.80</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">minimax/minimax-m3</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost">$0.50 / $2.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">google/gemma-4-26b-a4b-it</td>
+                            <td class="context">262k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.10 / $0.20</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
 
                         <!-- FREE MODELS -->
@@ -567,6 +612,96 @@
                             <td class="cost cost-free">Free</td>
                             <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">nvidia/nemotron-3-ultra-550b-a55b:free</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-veryslow">Muito Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">nvidia/nemotron-3-super-120b-a12b:free</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">google/gemma-4-26b-a4b-it:free</td>
+                            <td class="context">262k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">google/gemma-4-31b-it:free</td>
+                            <td class="context">262k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Ultra Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">google/gemma-4-26b-a4b-it</td>
+                            <td class="context">262k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.10 / $0.20</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">openai/gpt-oss-120b:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">openai/gpt-oss-20b:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">meta-llama/llama-3.3-70b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">nousresearch/hermes-3-llama-3.1-405b:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-veryslow">Muito Lenta</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -595,8 +730,8 @@
             <div class="rec-card">
                 <h3>⚡ Velocidade / Baixo Custo</h3>
                 <ul>
-                    <li><span class="label">Pago</span><span class="value">gpt-4o-mini / gemini-1.5-flash</span></li>
-                    <li><span class="label">Free</span><span class="value">llama-3.1-8b:free / gemma-3-27b:free</span></li>
+                    <li><span class="label">Pago</span><span class="value">gpt-4o-mini / gemini-1.5-flash / gemini-2.5-flash</span></li>
+                    <li><span class="label">Free</span><span class="value">llama-3.1-8b:free / gemma-3-27b:free / gemma-4-31b:free</span></li>
                     <li><span class="label">Local</span><span class="value">qwen2.5:7b / llama-3.2-3b</span></li>
                 </ul>
             </div>
@@ -604,7 +739,7 @@
                 <h3>👁️ Multimodal (Visão)</h3>
                 <ul>
                     <li><span class="label">Pago</span><span class="value">gpt-4o / claude-3.5-sonnet / gemini-1.5-pro</span></li>
-                    <li><span class="label">Free</span><span class="value">gemma-3-27b:free</span></li>
+                    <li><span class="label">Free</span><span class="value">gemma-3-27b:free / gemma-4-26b:free</span></li>
                     <li><span class="label">Local</span><span class="value">qwen2.5vl:7b</span></li>
                 </ul>
             </div>
@@ -612,7 +747,7 @@
                 <h3>🔄 Autônomo Contínuo (STR/Nexo)</h3>
                 <ul>
                     <li><span class="label">Mestre</span><span class="value">claude-3.5-sonnet</span></li>
-                    <li><span class="label">Worker rápido</span><span class="value">gpt-4o-mini / gemini-1.5-flash</span></li>
+                    <li><span class="label">Worker rápido</span><span class="value">gpt-4o-mini / gemini-1.5-flash / gemini-2.5-flash</span></li>
                     <li><span class="label">Free fallback</span><span class="value">qwen3-32b:free + llama-3.1-8b:free</span></li>
                     <li><span class="label">Local stack</span><span class="value">qwen2.5:14b + qwen2.5:7b</span></li>
                 </ul>
@@ -633,16 +768,26 @@
         roles: [worker, fast]
       - id: google/gemini-1.5-flash
         roles: [vision, fast]
+      - id: google/gemini-2.5-flash
+        roles: [vision, fast, reasoning]
       - id: deepseek/deepseek-r1
         roles: [reasoning, planning]
+      - id: minimax/minimax-m3
+        roles: [coding, vision]
       
       # Free tier (fallback / dev)
       - id: qwen/qwen3-235b-a22b:free
         roles: [reasoning, coding]
+      - id: qwen/qwen3-32b:free
+        roles: [coding, worker]
       - id: meta-llama/llama-3.1-8b-instruct:free
         roles: [fast, worker]
       - id: google/gemma-3-27b-it:free
         roles: [vision, fast]
+      - id: google/gemma-4-31b-it:free
+        roles: [vision, fast]
+      - id: nvidia/nemotron-3-ultra-550b-a55b:free
+        roles: [reasoning]
       - id: mistralai/mistral-nemo:free
         roles: [fast]
 
@@ -665,7 +810,7 @@
             <ul style="line-height: 1.8; color: var(--fg-muted);">
                 <li><strong>Rate limits Free Tier:</strong> ~20 req/min, ~1000 req/dia por modelo. Use fallback local (Ollama) para produção.</li>
                 <li><strong>Preços:</strong> Valores de referência do OpenRouter; podem variar com cache/roteamento. Verifique <a href="https://openrouter.ai/models" target="_blank">openrouter.ai/models</a> para preços atuais.</li>
-                <li><strong>Context window:</strong> Modelos com 1M+ tokens (Gemini) custam mais por token de input em contextos longos.</li>
+                <li><strong>Context window:</strong> Modelos com 1M+ tokens (Gemini, MiniMax) custam mais por token de input em contextos longos.</li>
                 <li><strong>Reasoning models (o1, r1, nemotron-3-ultra):</strong> Muito lentos (10-60s). Use apenas para planejamento, não para chat em tempo real.</li>
                 <li><strong>Hermes Agent:</strong> Configure <code>roles</code> para roteamento automático (master→worker→fallback).</li>
             </ul>
@@ -679,7 +824,119 @@
     </div>
 
     <script>
-        // Filter tabs
+        // ===== SORTING FUNCTIONALITY =====
+        const table = document.getElementById('comparison-table');
+        const headers = table.querySelectorAll('thead th');
+        const tbody = table.querySelector('tbody');
+        let sortDirection = {}; // colIndex -> 'asc' | 'desc'
+
+        // Get sort key from a cell
+        function getSortKey(cell, colIndex) {
+            const text = cell.textContent.trim();
+            
+            // Context column - extract number
+            if (colIndex === 1) {
+                const match = text.match(/(\d+)k?/i);
+                return match ? parseInt(match[1]) * (text.toLowerCase().includes('m') ? 1000 : 1) : 0;
+            }
+            
+            // Cost column - extract first number
+            if (colIndex === 6) {
+                if (text.toLowerCase().includes('free')) return -1; // Free sorts first
+                const match = text.match(/[\d.]+/);
+                return match ? parseFloat(match[0]) : 999999;
+            }
+            
+            // Speed column - map to numeric
+            if (colIndex === 7) {
+                const speedMap = {
+                    'ultra rápida': 10,
+                    'muito rápida': 9,
+                    'rápida': 8,
+                    'média': 5,
+                    'lenta': 3,
+                    'muito lenta': 1
+                };
+                const lower = text.toLowerCase();
+                for (const [key, val] of Object.entries(speedMap)) {
+                    if (lower.includes(key)) return val;
+                }
+                return 0;
+            }
+            
+            // Tool Use / Agentic - map to numeric
+            if (colIndex === 2) {
+                const lower = text.toLowerCase();
+                if (lower.includes('forte')) return 3;
+                if (lower.includes('sim')) return 2;
+                return 1;
+            }
+            
+            // Multimodal
+            if (colIndex === 3) {
+                const lower = text.toLowerCase();
+                if (lower.includes('sim')) return 2;
+                return 1;
+            }
+            
+            // Reasoning
+            if (colIndex === 4) {
+                const lower = text.toLowerCase();
+                if (lower.includes('sim')) return 3;
+                if (lower.includes('parcial')) return 2;
+                return 1;
+            }
+            
+            // Coding
+            if (colIndex === 5) {
+                const lower = text.toLowerCase();
+                if (lower.includes('forte')) return 3;
+                if (lower.includes('bom')) return 2;
+                return 1;
+            }
+            
+            // Default string comparison
+            return text.toLowerCase();
+        }
+
+        function sortTable(colIndex) {
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const header = headers[colIndex];
+            const isAsc = sortDirection[colIndex] !== 'asc';
+            sortDirection[colIndex] = isAsc ? 'asc' : 'desc';
+            
+            // Update header arrows
+            headers.forEach((h, i) => {
+                h.classList.remove('sorted-asc', 'sorted-desc');
+                if (i === colIndex) {
+                    h.classList.add(isAsc ? 'sorted-asc' : 'sorted-desc');
+                }
+            });
+            
+            rows.sort((a, b) => {
+                const cellA = a.cells[colIndex];
+                const cellB = b.cells[colIndex];
+                const keyA = getSortKey(cellA, colIndex);
+                const keyB = getSortKey(cellB, colIndex);
+                
+                if (keyA < keyB) return isAsc ? -1 : 1;
+                if (keyA > keyB) return isAsc ? 1 : -1;
+                return 0;
+            });
+            
+            // Re-append in sorted order
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        // Add click listeners to sortable headers
+        headers.forEach((header, i) => {
+            if (header.dataset.sort) {
+                header.style.cursor = 'pointer';
+                header.addEventListener('click', () => sortTable(i));
+            }
+        });
+
+        // ===== FILTER TABS =====
         const filterTabs = document.querySelectorAll('.filter-tab');
         const rows = document.querySelectorAll('#comparison-table tbody tr');
 
