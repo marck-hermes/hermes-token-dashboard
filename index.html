@@ -206,6 +206,9 @@
                 <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/backup-flow.html'">
                     🛡️ Backup Flow
                 </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/llm-comparison.html'">
+                    🤖 LLM Comparison
+                </button>
             </div>
             <div class="nav-links">
                 <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
@@ -219,8 +222,8 @@
             <h1>📊 Hermes Token Usage Dashboard</h1>
             <p class="subtitle">Tracking API token consumption across CLI, Telegram, and Cron platforms</p>
             <div class="meta">
-                <span>📅 Generated: 2026-07-07 18:12</span>
-                <span>📈 Days tracked: 5</span>
+                <span>📅 Generated: 2026-07-09 00:13</span>
+                <span>📈 Days tracked: 7</span>
                 <span>🤖 Model: <code id="top-model">—</code></span>
                 <span>💰 Cost: <code id="est-cost">Free tier</code></span>
             </div>
@@ -263,7 +266,7 @@
         <!-- Platform Breakdown -->
         <div class="platform-card">
             <h3 style="margin-bottom: 12px;">📱 Platform Distribution (Last 7 Days)</h3>
-            <div id="platform-breakdown"><div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">24,604,883</span></div><div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">17,810</span></div><div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">235,113</span></div></div>
+            <div id="platform-breakdown"><div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">10,935,939</span></div><div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">320,886</span></div><div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">1,021,516</span></div></div>
         </div>
 
         <!-- Charts -->
@@ -307,12 +310,34 @@
             </div>
             <div id="history-table">
             <div class="table-row">
+                <div class="date">2026-07-09</div>
+                <div class="muted">14</div>
+                <div class="muted">417</div>
+                <div class="muted">7,422,988</div>
+                <div class="muted">76,540</div>
+                <div class="muted">12,278,341</div>
+                <div class="muted"><code>nemotron-3-ultra-550b-a55b:f</code></div>
+            </div>
+        
+
+            <div class="table-row">
+                <div class="date">2026-07-08</div>
+                <div class="muted">13</div>
+                <div class="muted">382</div>
+                <div class="muted">6,786,894</div>
+                <div class="muted">70,538</div>
+                <div class="muted">11,022,296</div>
+                <div class="muted"><code>nemotron-3-ultra-550b-a55b:f</code></div>
+            </div>
+        
+
+            <div class="table-row">
                 <div class="date">2026-07-07</div>
-                <div class="muted">11</div>
-                <div class="muted">530</div>
-                <div class="muted">15,342,930</div>
-                <div class="muted">71,036</div>
-                <div class="muted">24,857,806</div>
+                <div class="muted">15</div>
+                <div class="muted">888</div>
+                <div class="muted">24,379,716</div>
+                <div class="muted">104,636</div>
+                <div class="muted">41,866,240</div>
                 <div class="muted"><code>nemotron-3-ultra-550b-a55b:f</code></div>
             </div>
         
@@ -470,8 +495,8 @@ hermes insights --days 7
 
     <script>
         // Inject data
-        const CHART_DATA = {"dates": ["2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07"], "input_tokens": [27708330, 817866, 27320385, 10322890, 15342930], "output_tokens": [134606, 16357, 115006, 62312, 71036], "total_tokens": [46734968, 2934063, 56506751, 20577586, 24857806], "sessions": [10, 4, 5, 6, 11], "messages": [920, 113, 557, 403, 530], "platform_dates": ["2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07"], "cli_tokens": [21450206, 0, 7810627, 4943657, 24604883], "telegram_tokens": [22997166, 2463687, 48493275, 14434244, 17810]};
-        const LATEST_METRICS = {"date": "2026-07-07", "period": "Jul 06, 2026 \u2014 Jul 07, 2026", "sessions": 11, "messages": 530, "tool_calls": 237, "user_messages": 40, "input_tokens": 15342930, "output_tokens": 71036, "total_tokens": 24857806, "active_time": "", "avg_session": "", "avg_msgs_session": 48, "top_model": "nemotron-3-ultra-550b-a55b:f", "platforms": [{"platform": "cli", "sessions": "6", "messages": "513", "tokens": "24,604,883"}, {"platform": "telegram", "sessions": "3", "messages": "3", "tokens": "17,810"}, {"platform": "cron", "sessions": "2", "messages": "14", "tokens": "235,113"}], "notable": {"raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      7h 54m             (Jul 07, 20260707_100415_)\nMost messages        289 msgs           (Jul 07, 20260707_100415_)\nMost tokens          9,304,162 tokens   (Jul 07, 20260707_100415_)\nMost tool calls      127 calls          (Jul 07, 20260707_100415_)\n"}};
+        const CHART_DATA = {"dates": ["2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09"], "input_tokens": [27708330, 817866, 27320385, 10322890, 24379716, 6786894, 7422988], "output_tokens": [134606, 16357, 115006, 62312, 104636, 70538, 76540], "total_tokens": [46734968, 2934063, 56506751, 20577586, 41866240, 11022296, 12278341], "sessions": [10, 4, 5, 6, 15, 13, 14], "messages": [920, 113, 557, 403, 888, 382, 417], "platform_dates": ["2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09"], "cli_tokens": [21450206, 0, 7810627, 4943657, 41688325, 9804714, 10935939], "telegram_tokens": [22997166, 2463687, 48493275, 14434244, 17810, 1021516, 1021516]};
+        const LATEST_METRICS = {"date": "2026-07-09", "period": "Jul 08, 2026 \u2014 Jul 09, 2026", "sessions": 14, "messages": 417, "tool_calls": 171, "user_messages": 49, "input_tokens": 7422988, "output_tokens": 76540, "total_tokens": 12278341, "active_time": "", "avg_session": "", "avg_msgs_session": 29, "top_model": "nemotron-3-ultra-550b-a55b:f", "platforms": [{"platform": "cli", "sessions": "7", "messages": "339", "tokens": "10,935,939"}, {"platform": "cron", "sessions": "4", "messages": "34", "tokens": "320,886"}, {"platform": "telegram", "sessions": "3", "messages": "44", "tokens": "1,021,516"}], "notable": {"raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      2h 17m             (Jul 08, 20260708_131134_)\nMost messages        149 msgs           (Jul 08, 20260708_153606_)\nMost tokens          3,976,187 tokens   (Jul 08, 20260708_153606_)\nMost tool calls      62 calls           (Jul 08, 20260708_153606_)\n"}};
 
         // Format numbers
         function fmt(n) { return n.toLocaleString(); }

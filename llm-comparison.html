@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Comparison — OpenRouter Models for Hermes Agent</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0b1020;
+            --bg-card: #11171d;
+            --bg-hover: #1a222d;
+            --fg: #e8edf2;
+            --fg-muted: #8b9ab0;
+            --accent: #00d4aa;
+            --accent-dim: #00b894;
+            --accent-bg: rgba(0, 212, 170, 0.1);
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --info: #3b82f6;
+            --border: #232d3a;
+            --cli: #3b82f6;
+            --telegram: #0088cc;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+            --transition: 0.2s ease;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f7fa;
+                --bg-card: #fff;
+                --bg-hover: #eef2f7;
+                --fg: #1a222d;
+                --fg-muted: #5a6a7a;
+                --border: #d0d9e3;
+                --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            }
+        }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+        pre { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; overflow-x: auto; font-size: 0.8rem; }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            letter-spacing: -0.02em;
+        }
+        .nav-brand svg { flex-shrink: 0; }
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg-muted);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--fg); background: var(--bg-hover); }
+        .nav-tab.active { color: var(--bg); background: var(--accent); }
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .nav-link {
+            font-size: 0.85rem;
+            color: var(--fg-muted);
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all var(--transition);
+        }
+        .nav-link:hover { color: var(--accent); background: var(--accent-bg); }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        /* Header */
+        header { margin-bottom: 32px; }
+        h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
+        .subtitle { color: var(--fg-muted); font-size: 0.95rem; margin-top: 4px; }
+        .meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; font-size: 0.85rem; color: var(--fg-muted); }
+        .meta span { background: var(--bg-card); padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg-muted);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .filter-tab:hover { color: var(--fg); border-color: var(--accent); }
+        .filter-tab.active { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+
+        /* Table */
+        .table-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        thead { position: sticky; top: 0; z-index: 10; }
+        th {
+            text-align: left;
+            padding: 12px 10px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--fg-muted);
+            white-space: nowrap;
+            font-size: 0.65rem;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            vertical-align: middle;
+        }
+        tr:hover td { background: var(--bg-hover); }
+        tr:last-child td { border-bottom: none; }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .badge-free { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
+        .badge-paid { background: rgba(59,130,246,0.15); color: var(--info); border: 1px solid var(--info); }
+        .badge-strong { background: rgba(0,212,170,0.15); color: var(--accent); border: 1px solid var(--accent); }
+        .badge-yes { background: rgba(0,212,170,0.15); color: var(--accent); }
+        .badge-no { background: rgba(255,71,87,0.15); color: var(--danger); }
+        .badge-partial { background: rgba(255,165,2,0.15); color: var(--warn); }
+        .badge-fast { background: rgba(0,212,170,0.15); color: var(--accent); }
+        .badge-medium { background: rgba(59,130,246,0.15); color: var(--info); }
+        .badge-slow { background: rgba(255,165,2,0.15); color: var(--warn); }
+        .badge-veryslow { background: rgba(255,71,87,0.15); color: var(--danger); }
+
+        /* Tier colors */
+        .tier-free { border-left: 3px solid var(--accent); }
+        .tier-paid { border-left: 3px solid var(--info); }
+
+        /* Cell styles */
+        .model-name { font-weight: 600; color: var(--fg); font-family: var(--font-mono); }
+        .context { font-family: var(--font-mono); }
+        .cost { font-family: var(--font-mono); color: var(--fg-muted); }
+        .cost-free { color: var(--accent); font-weight: 600; }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 24px 0;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--fg-muted); }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        /* Recommendations */
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .rec-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .rec-card h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; color: var(--accent); }
+        .rec-card ul { list-style: none; font-size: 0.8rem; line-height: 1.8; }
+        .rec-card li { display: flex; justify-content: space-between; gap: 8px; }
+        .rec-card .label { color: var(--fg-muted); }
+        .rec-card .value { color: var(--fg); font-family: var(--font-mono); font-weight: 500; }
+
+        /* Config section */
+        .config-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 32px;
+        }
+        .config-section h2 { font-size: 1.1rem; margin-bottom: 16px; color: var(--accent); }
+        .config-section pre { margin-top: 12px; }
+
+        /* Footer */
+        footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 0.8rem; text-align: center; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            th, td { padding: 8px 6px; font-size: 0.7rem; }
+            .container { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Hermes Dashboards
+            </div>
+            <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app'">
+                    📊 Token Usage
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/str-flow-chart.html'">
+                    📈 STR Pipeline
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/backup-flow.html'">
+                    🛡️ Backup Flow
+                </button>
+                <button class="nav-tab active" role="tab" aria-selected="true">
+                    🤖 LLM Comparison
+                </button>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
+                <a class="nav-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Repo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>🤖 Comparação de Modelos LLM — OpenRouter para Hermes Agent</h1>
+            <p class="subtitle">Top 10 pagos + Top 10 free tier disponíveis via API no Hermes Agent</p>
+            <div class="meta">
+                <span>📅 Atualizado: Julho 2025</span>
+                <span>🔗 Fonte: <a href="https://openrouter.ai/models" target="_blank">openrouter.ai/models</a></span>
+                <span>⚠️ Preços referências (podem variar no OpenRouter)</span>
+            </div>
+        </header>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" role="tablist" aria-label="Filter by tier">
+            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">Todos (22)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Pagos (12)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (10)</button>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item"><span class="legend-dot" style="background: var(--accent);"></span> Free tier no OpenRouter</div>
+            <div class="legend-item"><span class="legend-dot" style="background: var(--info);"></span> Modelo pago (referência)</div>
+            <div class="legend-item"><span class="legend-dot badge badge-strong"></span> Agentic/Tool Use Forte</div>
+            <div class="legend-item"><span class="legend-dot badge badge-yes"></span> Sim / Forte</div>
+            <div class="legend-item"><span class="legend-dot badge badge-partial"></span> Parcial</div>
+            <div class="legend-item"><span class="legend-dot badge badge-no"></span> Não / Básico</div>
+            <div class="legend-item"><span class="legend-dot badge badge-fast"></span> Velocidade Rápida+</div>
+            <div class="legend-item"><span class="legend-dot badge badge-medium"></span> Média</div>
+            <div class="legend-item"><span class="legend-dot badge badge-slow"></span> Lenta</div>
+            <div class="legend-item"><span class="legend-dot badge badge-veryslow"></span> Muito Lenta</div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table id="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>Context</th>
+                            <th>Tool Use / Agentic</th>
+                            <th>Multimodal</th>
+                            <th>Reasoning (longo)</th>
+                            <th>Coding</th>
+                            <th>Custo Input / Output (USD/1M)</th>
+                            <th>Velocidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- PAID MODELS -->
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">anthropic/claude-3.5-sonnet</td>
+                            <td class="context">200k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$3.00 / $15.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">anthropic/claude-3.5-haiku</td>
+                            <td class="context">200k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost">$0.80 / $4.00</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">anthropic/claude-3-opus</td>
+                            <td class="context">200k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$15.00 / $75.00</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">openai/gpt-4o</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$2.50 / $10.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">openai/gpt-4o-mini</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost">$0.15 / $0.60</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">openai/o1-preview</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$15.00 / $60.00</td>
+                            <td><span class="badge badge-veryslow">Muito Lenta</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">openai/o1-mini</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$3.00 / $12.00</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">google/gemini-1.5-pro</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$1.25 / $5.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">google/gemini-1.5-flash</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost">$0.075 / $0.30</td>
+                            <td><span class="badge badge-fast">Muito Rápida</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">google/gemini-2.5-pro</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$1.25 / $10.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">deepseek/deepseek-v3</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$0.14 / $0.28</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">deepseek/deepseek-r1</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$0.14 / $2.19</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+
+                        <!-- FREE MODELS -->
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">qwen/qwen3-235b-a22b:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">qwen/qwen3-32b:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-partial">Parcial</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">qwen/qwen2.5-72b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">qwen/qwen2.5-32b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">meta-llama/llama-3.1-70b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">meta-llama/llama-3.1-8b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Muito Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">meta-llama/llama-3.2-3b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Ultra Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">mistralai/mistral-nemo:free</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Muito Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">mistralai/mistral-small-24b:free</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">google/gemma-3-27b-it:free</td>
+                            <td class="context">128k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-fast">Rápida</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <h2 style="margin: 32px 0 16px; color: var(--accent); font-size: 1.2rem;">🎯 Recomendações Práticas para Hermes Agent</h2>
+
+        <div class="rec-grid">
+            <div class="rec-card">
+                <h3>💪 Coding / Agentic Forte</h3>
+                <ul>
+                    <li><span class="label">Pago (mestre)</span><span class="value">claude-3.5-sonnet / gpt-4o</span></li>
+                    <li><span class="label">Free (worker)</span><span class="value">qwen3-235b:free / qwen2.5-72b:free</span></li>
+                    <li><span class="label">Local (Ollama)</span><span class="value">qwen2.5-coder:32b</span></li>
+                </ul>
+            </div>
+            <div class="rec-card">
+                <h3>🧠 Raciocínio Longo / Planning</h3>
+                <ul>
+                    <li><span class="label">Pago</span><span class="value">o1-mini / deepseek-r1</span></li>
+                    <li><span class="label">Free</span><span class="value">nemotron-3-ultra:free</span></li>
+                    <li><span class="label">Local</span><span class="value">deepseek-r1:14b / qwen2.5:32b</span></li>
+                </ul>
+            </div>
+            <div class="rec-card">
+                <h3>⚡ Velocidade / Baixo Custo</h3>
+                <ul>
+                    <li><span class="label">Pago</span><span class="value">gpt-4o-mini / gemini-1.5-flash</span></li>
+                    <li><span class="label">Free</span><span class="value">llama-3.1-8b:free / gemma-3-27b:free</span></li>
+                    <li><span class="label">Local</span><span class="value">qwen2.5:7b / llama-3.2-3b</span></li>
+                </ul>
+            </div>
+            <div class="rec-card">
+                <h3>👁️ Multimodal (Visão)</h3>
+                <ul>
+                    <li><span class="label">Pago</span><span class="value">gpt-4o / claude-3.5-sonnet / gemini-1.5-pro</span></li>
+                    <li><span class="label">Free</span><span class="value">gemma-3-27b:free</span></li>
+                    <li><span class="label">Local</span><span class="value">qwen2.5vl:7b</span></li>
+                </ul>
+            </div>
+            <div class="rec-card">
+                <h3>🔄 Autônomo Contínuo (STR/Nexo)</h3>
+                <ul>
+                    <li><span class="label">Mestre</span><span class="value">claude-3.5-sonnet</span></li>
+                    <li><span class="label">Worker rápido</span><span class="value">gpt-4o-mini / gemini-1.5-flash</span></li>
+                    <li><span class="label">Free fallback</span><span class="value">qwen3-32b:free + llama-3.1-8b:free</span></li>
+                    <li><span class="label">Local stack</span><span class="value">qwen2.5:14b + qwen2.5:7b</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Config Section -->
+        <div class="config-section">
+            <h2>⚙️ Configuração no Hermes (~/.hermes/profiles/default/config.yaml)</h2>
+            <pre><code>providers:
+  openrouter:
+    api_key: ${OPENROUTER_API_KEY}
+    models:
+      # Pagos (produção)
+      - id: anthropic/claude-3.5-sonnet
+        roles: [master, coding, reasoning]
+      - id: openai/gpt-4o-mini
+        roles: [worker, fast]
+      - id: google/gemini-1.5-flash
+        roles: [vision, fast]
+      - id: deepseek/deepseek-r1
+        roles: [reasoning, planning]
+      
+      # Free tier (fallback / dev)
+      - id: qwen/qwen3-235b-a22b:free
+        roles: [reasoning, coding]
+      - id: meta-llama/llama-3.1-8b-instruct:free
+        roles: [fast, worker]
+      - id: google/gemma-3-27b-it:free
+        roles: [vision, fast]
+      - id: mistralai/mistral-nemo:free
+        roles: [fast]
+
+  # Fallback local (Ollama)
+  ollama:
+    base_url: http://localhost:11434
+    models:
+      - id: qwen2.5:14b
+        roles: [coding, reasoning]
+      - id: qwen2.5:7b
+        roles: [fast, worker]
+      - id: qwen2.5vl:7b
+        roles: [vision]
+      - id: deepseek-r1:14b
+        roles: [reasoning]</code></pre>
+        </div>
+
+        <div class="config-section" style="margin-top: 24px;">
+            <h2>📝 Notas Importantes</h2>
+            <ul style="line-height: 1.8; color: var(--fg-muted);">
+                <li><strong>Rate limits Free Tier:</strong> ~20 req/min, ~1000 req/dia por modelo. Use fallback local (Ollama) para produção.</li>
+                <li><strong>Preços:</strong> Valores de referência do OpenRouter; podem variar com cache/roteamento. Verifique <a href="https://openrouter.ai/models" target="_blank">openrouter.ai/models</a> para preços atuais.</li>
+                <li><strong>Context window:</strong> Modelos com 1M+ tokens (Gemini) custam mais por token de input em contextos longos.</li>
+                <li><strong>Reasoning models (o1, r1, nemotron-3-ultra):</strong> Muito lentos (10-60s). Use apenas para planejamento, não para chat em tempo real.</li>
+                <li><strong>Hermes Agent:</strong> Configure <code>roles</code> para roteamento automático (master→worker→fallback).</li>
+            </ul>
+        </div>
+
+        <footer>
+            Gerado por <a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> ·
+            Dados de <a href="https://openrouter.ai/models" target="_blank">OpenRouter</a> ·
+            <a href="https://vercel.com" target="_blank">Deploy Vercel</a>
+        </footer>
+    </div>
+
+    <script>
+        // Filter tabs
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const rows = document.querySelectorAll('#comparison-table tbody tr');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+                tab.classList.add('active');
+                tab.setAttribute('aria-selected', 'true');
+
+                const filter = tab.dataset.filter;
+                rows.forEach(row => {
+                    if (filter === 'all' || row.dataset.tier === filter) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Keyboard navigation for filter tabs
+        filterTabs.forEach((tab, i) => {
+            tab.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    filterTabs[(i + 1) % filterTabs.length].focus();
+                } else if (e.key === 'ArrowLeft') {
+                    filterTabs[(i - 1 + filterTabs.length) % filterTabs.length].focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
