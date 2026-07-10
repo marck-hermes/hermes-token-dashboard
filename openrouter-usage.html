@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenRouter Free Usage - Hermes Dashboards</title>
+    <title>OpenRouter Usage - Hermes Dashboards</title>
     <style>
         :root {
             --bg: #0b1020;
@@ -123,8 +123,10 @@
         .detail-label { font-size: 0.7rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .detail-value { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 600; }
 
-        .error-state { text-align: center; padding: 40px; color: var(--fg-muted); }
-        .error-state .icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+        .tier-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-bottom: 16px; }
+        .tier-badge.free { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
+        .tier-badge.paid { background: rgba(59, 130, 246, 0.15); color: var(--info); border: 1px solid var(--info); }
+
         .refresh-btn { background: var(--accent); color: #0b1020; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
         .refresh-btn:hover { opacity: 0.9; }
         .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -173,19 +175,20 @@
 
     <div class="container">
         <header>
-            <h1>OpenRouter Free Tier Usage</h1>
-            <p class="subtitle">Monitoramento de quota diária para modelos *.free no OpenRouter</p>
+            <h1>OpenRouter Usage</h1>
+            <p class="subtitle">Monitoramento de uso da API OpenRouter (Free Tier ou Conta Paga)</p>
         </header>
 
         <div class="card" id="mainCard">
-            <h2>Uso Hoje</h2>
+            <span class="tier-badge" id="tierBadge">—</span>
+            <h2 id="mainCardTitle">Uso</h2>
             <div class="metrics">
                 <div class="metric">
-                    <div class="metric-label">Requests Usados</div>
+                    <div class="metric-label" id="usedLabel">—</div>
                     <div class="metric-value used" id="usedToday">—</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-label">Limite Diário</div>
+                    <div class="metric-label" id="limitLabel">—</div>
                     <div class="metric-value limit" id="limitToday">—</div>
                 </div>
                 <div class="metric">
@@ -208,24 +211,28 @@
             <h2>Detalhes da API</h2>
             <div class="details-grid">
                 <div class="detail-card">
-                    <div class="detail-label">Status</div>
-                    <div class="detail-value" id="detailStatus">—</div>
+                    <div class="detail-label">Tipo de Conta</div>
+                    <div class="detail-value" id="detailTier">—</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Used Today</div>
+                    <div class="detail-label" id="detailUsedLabel">—</div>
                     <div class="detail-value" id="detailUsed">—</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Limit Today</div>
+                    <div class="detail-label" id="detailLimitLabel">—</div>
                     <div class="detail-value" id="detailLimit">—</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Remaining</div>
+                    <div class="detail-label">Restantes</div>
                     <div class="detail-value" id="detailRemaining">—</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Credits Remaining</div>
+                    <div class="detail-label">Créditos Restantes</div>
                     <div class="detail-value" id="detailCredits">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Limite Total</div>
+                    <div class="detail-value" id="detailTotalLimit">—</div>
                 </div>
                 <div class="detail-card">
                     <div class="detail-label">Fonte</div>
@@ -238,7 +245,7 @@
             <h2>Ações</h2>
             <button class="refresh-btn" id="refreshBtn" onclick="loadData()">Atualizar Agora</button>
             <p style="margin-top: 16px; font-size: 0.85rem; color: var(--fg-muted);">
-                Atualização automática a cada 5 minutos. Dados do cron job (a cada 30 min) via <code>~/.hermes/profiles/watchdog/scripts/openrouter_free_usage.py</code>
+                Atualização automática a cada 5 min. Dados do cron job (a cada 30 min) via <code>~/.hermes/profiles/watchdog/scripts/openrouter_free_usage.py</code>
             </p>
         </div>
     </div>
@@ -266,16 +273,48 @@
         }
 
         function updateUI(data) {
+            const isFreeTier = data.is_free_tier === true;
             const used = data.used_today || 0;
             const limit = data.limit_today || 0;
             const remaining = data.remaining_today || 0;
             const credits = data.credits_remaining || 0;
+            const limitTotal = data.limit_total || 0;
 
-            document.getElementById('usedToday').textContent = used.toLocaleString('pt-BR');
-            document.getElementById('limitToday').textContent = limit.toLocaleString('pt-BR');
-            document.getElementById('remainingToday').textContent = remaining.toLocaleString('pt-BR');
-            document.getElementById('credits').textContent = '$' + credits.toFixed(2);
+            // Tier badge
+            const tierBadge = document.getElementById('tierBadge');
+            if (isFreeTier) {
+                tierBadge.textContent = '🆓 Free Tier';
+                tierBadge.className = 'tier-badge free';
+            } else {
+                tierBadge.textContent = '💳 Conta Paga';
+                tierBadge.className = 'tier-badge paid';
+            }
 
+            // Card title
+            document.getElementById('mainCardTitle').textContent = isFreeTier ? 'Uso Diário Free' : 'Uso Mensal';
+
+            // Metric labels
+            document.getElementById('usedLabel').textContent = data.used_label || (isFreeTier ? 'Requests Usados Hoje' : 'Uso Mensal ($)');
+            document.getElementById('limitLabel').textContent = data.limit_label || (isFreeTier ? 'Limite Diário Free' : 'Limite Mensal ($)');
+
+            // Format values
+            const fmt = (n) => n.toLocaleString('pt-BR');
+            const fmtMoney = (n) => '$' + n.toFixed(2);
+
+            if (isFreeTier) {
+                document.getElementById('usedToday').textContent = fmt(used);
+                document.getElementById('limitToday').textContent = fmt(limit);
+                document.getElementById('remainingToday').textContent = fmt(remaining);
+                document.getElementById('credits').textContent = fmtMoney(credits);
+            } else {
+                // For paid, show money values
+                document.getElementById('usedToday').textContent = fmtMoney(used / 100);
+                document.getElementById('limitToday').textContent = fmtMoney(limit / 100);
+                document.getElementById('remainingToday').textContent = fmtMoney(remaining / 100);
+                document.getElementById('credits').textContent = fmtMoney(credits);
+            }
+
+            // Progress bar
             const badge = document.getElementById('statusBadge');
             const progressFill = document.getElementById('progressFill');
             const remainingEl = document.getElementById('remainingToday');
@@ -285,7 +324,7 @@
             progressFill.style.width = pct + '%';
 
             if (data.status === 'ok' || remaining > 50) {
-                badge.textContent = '✅ Quota disponível';
+                badge.textContent = isFreeTier ? '✅ Quota disponível' : '✅ Créditos disponíveis';
                 badge.className = 'status-badge ok';
                 progressFill.className = 'progress-fill ok';
                 remainingEl.className = 'metric-value remaining ok';
@@ -295,17 +334,21 @@
                 progressFill.className = 'progress-fill low';
                 remainingEl.className = 'metric-value remaining low';
             } else {
-                badge.textContent = '❌ Quota esgotada';
+                badge.textContent = isFreeTier ? '❌ Quota esgotada' : '❌ Sem créditos';
                 badge.className = 'status-badge exhausted';
                 progressFill.className = 'progress-fill exhausted';
                 remainingEl.className = 'metric-value remaining exhausted';
             }
 
-            document.getElementById('detailStatus').textContent = data.status === 'ok' ? 'OK' : 'Esgotado';
-            document.getElementById('detailUsed').textContent = used.toLocaleString('pt-BR');
-            document.getElementById('detailLimit').textContent = limit.toLocaleString('pt-BR');
-            document.getElementById('detailRemaining').textContent = remaining.toLocaleString('pt-BR');
-            document.getElementById('detailCredits').textContent = '$' + credits.toFixed(2);
+            // Details
+            document.getElementById('detailTier').textContent = isFreeTier ? 'Free Tier (modelos *.free)' : 'Conta Paga (créditos $)';
+            document.getElementById('detailUsedLabel').textContent = data.used_label || (isFreeTier ? 'Used Today' : 'Uso Mensal ($)');
+            document.getElementById('detailUsed').textContent = isFreeTier ? fmt(used) : fmtMoney(used / 100);
+            document.getElementById('detailLimitLabel').textContent = data.limit_label || (isFreeTier ? 'Limit Today' : 'Limite Mensal ($)');
+            document.getElementById('detailLimit').textContent = isFreeTier ? fmt(limit) : fmtMoney(limit / 100);
+            document.getElementById('detailRemaining').textContent = isFreeTier ? fmt(remaining) : fmtMoney(remaining / 100);
+            document.getElementById('detailCredits').textContent = fmtMoney(credits);
+            document.getElementById('detailTotalLimit').textContent = limitTotal > 0 ? fmtMoney(limitTotal) : '—';
             document.getElementById('detailsCard').style.display = 'block';
 
             const now = new Date();
