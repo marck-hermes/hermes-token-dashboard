@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRouter Free Usage - Hermes Dashboards</title>
+    <style>
+        :root {
+            --bg: #0b1020;
+            --bg-card: #11171d;
+            --accent: #00d4aa;
+            --accent-bg: rgba(0, 212, 170, 0.15);
+            --info: #3b82f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --fg: #e8edf2;
+            --fg-muted: #8b9ab0;
+            --border: #232d3a;
+            --radius: 16px;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f0f4f8;
+                --bg-card: #ffffff;
+                --fg: #1a1f2e;
+                --fg-muted: #5a6a7a;
+                --border: #d0d8e0;
+            }
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 16, 32, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .nav-tab {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--fg-muted);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .nav-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .nav-tab.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+        .nav-links { margin-left: auto; display: flex; gap: 16px; flex-wrap: wrap; }
+        .nav-link { color: var(--fg-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .nav-link:hover { color: var(--accent); }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 32px 20px; }
+        header { margin-bottom: 32px; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: var(--fg-muted); font-size: 1rem; }
+
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; }
+        .card h2 { font-size: 0.85rem; font-weight: 600; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; }
+
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .metric { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .metric-label { font-size: 0.7rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .metric-value { font-size: 2.25rem; font-weight: 700; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+        .metric-value.credits { color: var(--accent); }
+        .metric-value.used { color: var(--danger); }
+        .metric-value.limit { color: var(--info); }
+        .metric-value.remaining.ok { color: var(--accent); }
+        .metric-value.remaining.low { color: var(--warning); }
+        .metric-value.remaining.exhausted { color: var(--danger); }
+
+        .progress-bar { height: 10px; background: var(--bg); border-radius: 8px; overflow: hidden; margin-top: 16px; border: 1px solid var(--border); }
+        .progress-fill { height: 100%; border-radius: 8px; transition: width 0.5s ease, background 0.3s; }
+        .progress-fill.ok { background: var(--accent); }
+        .progress-fill.low { background: var(--warning); }
+        .progress-fill.exhausted { background: var(--danger); }
+
+        .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; margin-top: 16px; }
+        .status-badge.ok { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
+        .status-badge.low { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+        .status-badge.exhausted { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid var(--danger); }
+
+        .last-updated { font-size: 0.8rem; color: var(--fg-muted); margin-top: 16px; }
+        .last-updated span { color: var(--fg); font-family: var(--font-mono); }
+
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+        .detail-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .detail-label { font-size: 0.7rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .detail-value { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 600; }
+
+        .error-state { text-align: center; padding: 40px; color: var(--fg-muted); }
+        .error-state .icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+        .refresh-btn { background: var(--accent); color: #0b1020; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
+        .refresh-btn:hover { opacity: 0.9; }
+        .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        @media (max-width: 700px) {
+            .nav-inner { gap: 12px; }
+            .nav-brand span { display: none; }
+            .metrics { grid-template-columns: 1fr 1fr; }
+            .metric-value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                <span>Hermes Dashboards</span>
+            </div>
+            <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='index.html'">
+                    📊 Token Usage Dashboard
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='str-flow-chart.html'">
+                    📈 STR Pipeline Flow
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='backup-flow.html'">
+                    🛡️ Backup Flow
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='llm-comparison.html'">
+                    🤖 LLM Comparison
+                </button>
+                <button class="nav-tab active" role="tab" aria-selected="true" onclick="location.href='openrouter-usage.html'">
+                    🔑 OpenRouter Usage
+                </button>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
+                <a class="nav-link" href="https://token-dashboard-tau-five.vercel.app" target="_blank">Token Dashboard</a>
+                <a class="nav-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Repo</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>OpenRouter Free Tier Usage</h1>
+            <p class="subtitle">Monitoramento de quota diária para modelos *.free no OpenRouter</p>
+        </header>
+
+        <div class="card" id="mainCard">
+            <h2>Uso Hoje</h2>
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-label">Requests Usados</div>
+                    <div class="metric-value used" id="usedToday">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Limite Diário</div>
+                    <div class="metric-value limit" id="limitToday">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Restantes</div>
+                    <div class="metric-value remaining" id="remainingToday">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Créditos ($)</div>
+                    <div class="metric-value credits" id="credits">—</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="status-badge" id="statusBadge">—</div>
+            <div class="last-updated">Última atualização: <span id="lastUpdated">—</span></div>
+        </div>
+
+        <div class="card" id="detailsCard" style="display: none;">
+            <h2>Detalhes da API</h2>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value" id="detailStatus">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Used Today</div>
+                    <div class="detail-value" id="detailUsed">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Limit Today</div>
+                    <div class="detail-value" id="detailLimit">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Remaining</div>
+                    <div class="detail-value" id="detailRemaining">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Credits Remaining</div>
+                    <div class="detail-value" id="detailCredits">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Fonte</div>
+                    <div class="detail-value" id="detailSource">OpenRouter /api/v1/key</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Ações</h2>
+            <button class="refresh-btn" id="refreshBtn" onclick="loadData()">Atualizar Agora</button>
+            <p style="margin-top: 16px; font-size: 0.85rem; color: var(--fg-muted);">
+                Atualização automática a cada 5 minutos. Dados do cron job (a cada 30 min) via <code>~/.hermes/profiles/watchdog/scripts/openrouter_free_usage.py</code>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const DATA_URL = 'https://token-dashboard-tau-five.vercel.app/data/openrouter_usage.json';
+
+        async function loadData() {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true;
+            btn.textContent = 'Atualizando...';
+
+            try {
+                const response = await fetch(DATA_URL + '?' + Date.now(), { cache: 'no-store' });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                updateUI(data);
+            } catch (e) {
+                console.error(e);
+                showError('Falha ao carregar dados: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Atualizar Agora';
+            }
+        }
+
+        function updateUI(data) {
+            const used = data.used_today || 0;
+            const limit = data.limit_today || 0;
+            const remaining = data.remaining_today || 0;
+            const credits = data.credits_remaining || 0;
+
+            document.getElementById('usedToday').textContent = used.toLocaleString('pt-BR');
+            document.getElementById('limitToday').textContent = limit.toLocaleString('pt-BR');
+            document.getElementById('remainingToday').textContent = remaining.toLocaleString('pt-BR');
+            document.getElementById('credits').textContent = '$' + credits.toFixed(2);
+
+            const badge = document.getElementById('statusBadge');
+            const progressFill = document.getElementById('progressFill');
+            const remainingEl = document.getElementById('remainingToday');
+
+            let pct = 0;
+            if (limit > 0) pct = ((limit - remaining) / limit) * 100;
+            progressFill.style.width = pct + '%';
+
+            if (data.status === 'ok' || remaining > 50) {
+                badge.textContent = '✅ Quota disponível';
+                badge.className = 'status-badge ok';
+                progressFill.className = 'progress-fill ok';
+                remainingEl.className = 'metric-value remaining ok';
+            } else if (remaining > 0) {
+                badge.textContent = '⚠️ Quota baixa';
+                badge.className = 'status-badge low';
+                progressFill.className = 'progress-fill low';
+                remainingEl.className = 'metric-value remaining low';
+            } else {
+                badge.textContent = '❌ Quota esgotada';
+                badge.className = 'status-badge exhausted';
+                progressFill.className = 'progress-fill exhausted';
+                remainingEl.className = 'metric-value remaining exhausted';
+            }
+
+            document.getElementById('detailStatus').textContent = data.status === 'ok' ? 'OK' : 'Esgotado';
+            document.getElementById('detailUsed').textContent = used.toLocaleString('pt-BR');
+            document.getElementById('detailLimit').textContent = limit.toLocaleString('pt-BR');
+            document.getElementById('detailRemaining').textContent = remaining.toLocaleString('pt-BR');
+            document.getElementById('detailCredits').textContent = '$' + credits.toFixed(2);
+            document.getElementById('detailsCard').style.display = 'block';
+
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleString('pt-BR');
+        }
+
+        function showError(msg) {
+            const badge = document.getElementById('statusBadge');
+            badge.textContent = '❌ Erro: ' + msg;
+            badge.className = 'status-badge exhausted';
+        }
+
+        // Initial load
+        loadData();
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>

@@ -224,39 +224,33 @@
   {
     "date": "2026-07-09",
     "period": "Jul 08, 2026 \u2014 Jul 09, 2026",
-    "sessions": 14,
-    "messages": 417,
-    "tool_calls": 171,
-    "user_messages": 49,
-    "input_tokens": 7422988,
-    "output_tokens": 76540,
-    "total_tokens": 12278341,
+    "sessions": 12,
+    "messages": 423,
+    "tool_calls": 180,
+    "user_messages": 41,
+    "input_tokens": 2754052,
+    "output_tokens": 85991,
+    "total_tokens": 12512083,
     "active_time": "",
     "avg_session": "",
-    "avg_msgs_session": 29,
+    "avg_msgs_session": 35,
     "top_model": "nemotron-3-ultra-550b-a55b:f",
     "platforms": [
       {
-        "platform": "cli",
-        "sessions": "7",
-        "messages": "339",
-        "tokens": "10,935,939"
-      },
-      {
         "platform": "cron",
-        "sessions": "4",
-        "messages": "34",
-        "tokens": "320,886"
+        "sessions": "6",
+        "messages": "78",
+        "tokens": "983,432"
       },
       {
-        "platform": "telegram",
-        "sessions": "3",
-        "messages": "44",
-        "tokens": "1,021,516"
+        "platform": "cli",
+        "sessions": "6",
+        "messages": "345",
+        "tokens": "11,528,651"
       }
     ],
     "notable": {
-      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      2h 17m             (Jul 08, 20260708_131134_)\nMost messages        149 msgs           (Jul 08, 20260708_153606_)\nMost tokens          3,976,187 tokens   (Jul 08, 20260708_153606_)\nMost tool calls      62 calls           (Jul 08, 20260708_153606_)\n"
+      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      5h 26m             (Jul 09, 20260709_142953_)\nMost messages        116 msgs           (Jul 09, 20260709_142953_)\nMost tokens          1,050,084 tokens   (Jul 09, 20260709_112203_)\nMost tool calls      58 calls           (Jul 09, 20260709_112203_)\n"
     }
   }
 ]
