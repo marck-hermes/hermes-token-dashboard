@@ -127,9 +127,13 @@
         .tier-badge.free { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
         .tier-badge.paid { background: rgba(59, 130, 246, 0.15); color: var(--info); border: 1px solid var(--info); }
 
+        .source-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; background: var(--info); color: #0b1020; margin-left: 8px; vertical-align: middle; }
+
         .refresh-btn { background: var(--accent); color: #0b1020; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
         .refresh-btn:hover { opacity: 0.9; }
         .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .section-divider { border-top: 1px solid var(--border); margin: 32px 0; }
 
         @media (max-width: 700px) {
             .nav-inner { gap: 12px; }
@@ -179,8 +183,10 @@
             <p class="subtitle">Monitoramento de uso da API OpenRouter (Free Tier ou Conta Paga)</p>
         </header>
 
+        <!-- SECTION 1: /api/v1/key data (free_usage.py) -->
         <div class="card" id="mainCard">
             <span class="tier-badge" id="tierBadge">—</span>
+            <span class="source-badge">/api/v1/key</span>
             <h2 id="mainCardTitle">Uso</h2>
             <div class="metrics">
                 <div class="metric">
@@ -208,7 +214,7 @@
         </div>
 
         <div class="card" id="detailsCard" style="display: none;">
-            <h2>Detalhes da API</h2>
+            <h2>Detalhes — /api/v1/key</h2>
             <div class="details-grid">
                 <div class="detail-card">
                     <div class="detail-label">Tipo de Conta</div>
@@ -241,17 +247,72 @@
             </div>
         </div>
 
+        <div class="section-divider"></div>
+
+        <!-- SECTION 2: /api/v1/auth/key data (check_openrouter.py) -->
+        <div class="card" id="authCard">
+            <h2>🔐 Validação de Chave — /api/v1/auth/key <span class="source-badge">check_openrouter.py</span></h2>
+            <div class="metrics" id="authMetrics">
+                <div class="metric">
+                    <div class="metric-label">Status da Key</div>
+                    <div class="metric-value" id="authKeyStatus">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Limite Mensal ($)</div>
+                    <div class="metric-value limit" id="authLimit">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Uso Mensal ($)</div>
+                    <div class="metric-value used" id="authUsage">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Restante ($)</div>
+                    <div class="metric-value remaining" id="authRemaining">—</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="authProgressFill" style="width: 0%"></div>
+            </div>
+            <div class="status-badge" id="authStatusBadge">—</div>
+
+            <div class="details-grid" id="authDetails" style="display: none; margin-top: 16px;">
+                <div class="detail-card">
+                    <div class="detail-label">Key Válida</div>
+                    <div class="detail-value" id="authDetailValid">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Modelos Disponíveis</div>
+                    <div class="detail-value" id="authDetailModels">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Modelos Faltando</div>
+                    <div class="detail-value" id="authDetailMissing">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Timestamp</div>
+                    <div class="detail-value" id="authDetailTimestamp">—</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Fonte</div>
+                    <div class="detail-value">OpenRouter /api/v1/auth/key</div>
+                </div>
+            </div>
+        </div>
+
         <div class="card">
             <h2>Ações</h2>
             <button class="refresh-btn" id="refreshBtn" onclick="loadData()">Atualizar Agora</button>
             <p style="margin-top: 16px; font-size: 0.85rem; color: var(--fg-muted);">
-                Atualização automática a cada 5 min. Dados do cron job (a cada 30 min) via <code>~/.hermes/profiles/watchdog/scripts/openrouter_free_usage.py</code>
+                Atualização automática a cada 5 min. Dados dos cron jobs (a cada 30 min) via 
+                <code>openrouter_free_usage.py</code> (/api/v1/key) e 
+                <code>check_openrouter.py</code> (/api/v1/auth/key)
             </p>
         </div>
     </div>
 
     <script>
-        const DATA_URL = 'https://token-dashboard-tau-five.vercel.app/data/openrouter_usage.json';
+        const USAGE_URL = 'https://token-dashboard-tau-five.vercel.app/data/openrouter_usage.json';
+        const AUTH_URL = 'https://token-dashboard-tau-five.vercel.app/data/openrouter_auth_check.json';
 
         async function loadData() {
             const btn = document.getElementById('refreshBtn');
@@ -259,10 +320,19 @@
             btn.textContent = 'Atualizando...';
 
             try {
-                const response = await fetch(DATA_URL + '?' + Date.now(), { cache: 'no-store' });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                updateUI(data);
+                const [usageRes, authRes] = await Promise.all([
+                    fetch(USAGE_URL + '?' + Date.now(), { cache: 'no-store' }),
+                    fetch(AUTH_URL + '?' + Date.now(), { cache: 'no-store' })
+                ]);
+
+                if (!usageRes.ok) throw new Error(`Usage HTTP ${usageRes.status}`);
+                if (!authRes.ok) throw new Error(`Auth HTTP ${authRes.status}`);
+
+                const usageData = await usageRes.json();
+                const authData = await authRes.json();
+
+                updateUsageUI(usageData);
+                updateAuthUI(authData);
             } catch (e) {
                 console.error(e);
                 showError('Falha ao carregar dados: ' + e.message);
@@ -272,7 +342,7 @@
             }
         }
 
-        function updateUI(data) {
+        function updateUsageUI(data) {
             const isFreeTier = data.is_free_tier === true;
             const used = data.used_today || 0;
             const limit = data.limit_today || 0;
@@ -307,7 +377,6 @@
                 document.getElementById('remainingToday').textContent = fmt(remaining);
                 document.getElementById('credits').textContent = fmtMoney(credits);
             } else {
-                // For paid, show money values
                 document.getElementById('usedToday').textContent = fmtMoney(used / 100);
                 document.getElementById('limitToday').textContent = fmtMoney(limit / 100);
                 document.getElementById('remainingToday').textContent = fmtMoney(remaining / 100);
@@ -353,6 +422,61 @@
 
             const now = new Date();
             document.getElementById('lastUpdated').textContent = now.toLocaleString('pt-BR');
+        }
+
+        function updateAuthUI(data) {
+            const limit = data.limit || 0;
+            const usage = data.usage || 0;
+            const remaining = data.remaining || 0;
+            const ok = data.ok === true;
+            const keyValid = data.key_valid === true;
+            const modelsAvailable = data.models_available === true;
+            const missing = data.missing_models || [];
+            const timestamp = data.timestamp || '—';
+
+            // Key status
+            const keyStatusEl = document.getElementById('authKeyStatus');
+            if (ok && keyValid) {
+                keyStatusEl.textContent = '✅ Válida';
+                keyStatusEl.style.color = 'var(--accent)';
+            } else {
+                keyStatusEl.textContent = '❌ Inválida/Erro';
+                keyStatusEl.style.color = 'var(--danger)';
+            }
+
+            // Metrics
+            document.getElementById('authLimit').textContent = '$' + limit.toFixed(2);
+            document.getElementById('authUsage').textContent = '$' + usage.toFixed(2);
+            document.getElementById('authRemaining').textContent = '$' + remaining.toFixed(2);
+
+            // Progress bar
+            const authProgressFill = document.getElementById('authProgressFill');
+            const authBadge = document.getElementById('authStatusBadge');
+
+            let pct = 0;
+            if (limit > 0) pct = (usage / limit) * 100;
+            authProgressFill.style.width = pct + '%';
+
+            if (ok && remaining > 1) {
+                authBadge.textContent = '✅ Quota saudável';
+                authBadge.className = 'status-badge ok';
+                authProgressFill.className = 'progress-fill ok';
+            } else if (ok && remaining > 0) {
+                authBadge.textContent = '⚠️ Quota baixa';
+                authBadge.className = 'status-badge low';
+                authProgressFill.className = 'progress-fill low';
+            } else {
+                authBadge.textContent = ok ? '❌ Quota esgotada' : '❌ Erro na validação';
+                authBadge.className = 'status-badge exhausted';
+                authProgressFill.className = 'progress-fill exhausted';
+            }
+
+            // Details
+            document.getElementById('authDetailValid').textContent = keyValid ? 'Sim' : 'Não';
+            document.getElementById('authDetailModels').textContent = modelsAvailable ? 'Sim (todos)' : 'Parcial';
+            document.getElementById('authDetailMissing').textContent = missing.length > 0 ? missing.join(', ') : 'Nenhum';
+            document.getElementById('authDetailTimestamp').textContent = timestamp;
+            document.getElementById('authDetails').style.display = 'grid';
         }
 
         function showError(msg) {
