@@ -1,11 +1,11 @@
 {
   "ok": true,
   "source": "check_openrouter.py (/api/v1/auth/key)",
-  "timestamp": "2026-07-10T02:21:17.102246Z",
+  "timestamp": "2026-07-10T12:30:07.722967Z",
   "key_valid": true,
   "limit": 25,
-  "usage": 20.518073735,
-  "remaining": 4.4819262649999985,
+  "usage": 20.577056075,
+  "remaining": 4.422943924999998,
   "models_available": true,
   "missing_models": []
 }
