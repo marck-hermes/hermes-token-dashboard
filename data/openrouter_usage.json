@@ -1,7 +1,11 @@
 {
-  "credits_remaining": 0.0,
-  "used_today": 0,
-  "limit_today": 0,
-  "remaining_today": 0,
-  "status": "exhausted"
+  "is_free_tier": false,
+  "credits_remaining": 24.72540979,
+  "limit_total": 25,
+  "used_today": 27,
+  "limit_today": 2500,
+  "remaining_today": 2472,
+  "status": "ok",
+  "limit_label": "Limite Mensal ($)",
+  "used_label": "Uso Mensal ($)"
 }
