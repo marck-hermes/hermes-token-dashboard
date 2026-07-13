@@ -238,60 +238,63 @@
             <h1>📈 STR Pipeline Flow Chart</h1>
             <p class="subtitle">Complete visualization of the Swing Trading Analysis pipeline — both Manual (on-demand) and Cron (automated) flows</p>
             <div class="meta">
-                <span>🔄 Hybrid Vision: OpenRouter gemma-4-26b-a4b:free → Ollama qwen2.5vl:7b fallback</span>
+                <span>🔄 Hybrid Vision: Ollama qwen2.5vl:7b (primary, CPU) → OpenRouter gemma-4-26b-a4b:free (fallback)</span>
                 <span>⏱️ Cron: 03:00 / 05:00 / 07:00 (Watchlists A/B/C)</span>
                 <span>🚀 Deploy: Vercel (str-web-murex.vercel.app)</span>
                 <span>📱 Delivery: Telegram chat 8543961065</span>
+                <span>✅ Cross-Val: yfinance OHLCV (all B3 via auto-discovery)</span>
             </div>
         </header>
 
         <!-- Visual Flow Overview -->
-        <section class="visual-flow" style="margin-bottom: 32px;">
-            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--text-strong);">🔄 Pipeline Overview</h2>
-            <div class="flow-diagram" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; overflow-x: auto; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; white-space: pre; color: var(--text);">
-🔵 MANUAL TRIGGER          🟣 CRON SCHEDULE
-   (Telegram on-demand)       (03:00/05:00/07:00 daily)
-        │                          │
-        ▼                          ▼
-   Parse Symbols            Warmup Ollama (3 modelos)
-        │                          │
-        ▼                          ▼
-   Check Images (mtime)      Load Watchlist A/B/C
-        │                          │
-        ▼                          ▼
-   Capture (tv_shot.js)  ─────►  Capture All (28-30 img)
-        │                          │
-        └──────────────┬───────────┘
-                       ▼
-              🟢 HYBRID VISION PIPELINE
-              (shared by both paths)
-                       │
-         ┌─────────────┴─────────────┐
-         ▼                           ▼
-    ☁️ OpenRouter                💻 Ollama Fallback
-    gemma-4-26b-a4b:free         qwen2.5vl:7b Q4_K_M
-    ~8-20s/img (primary)         ~90-295s/img (CPU)
-         │                           │
-         └─────────────┬─────────────┘
-                       ▼
-              ✅ Cross-Validation (yfinance OHLCV)
-              SMC / PA / Fib / Liq / Wyckoff / VSA
-                       │
-                       ▼
-              📝 Outputs: analise_str.md + vision_cache.json
-                       │
-                       ▼
-              🔷 DEPLOY & DELIVERY (shared)
-                       │
-         ┌─────────────┼─────────────┐
-         ▼             ▼             ▼
-    gen_html.py   Git Push        Vercel Deploy
-    (HTML gen)    (auto-commit)   (str-web-murex)
-         │             │             │
-         └─────────────┼─────────────┘
-                       ▼
-              📱 Telegram (chat 8543961065)
-              📊 STR Web Index
+                <section class="visual-flow" style="margin-bottom: 32px;">
+                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--text-strong);">🔄 Pipeline Overview</h2>
+                    <div class="flow-diagram" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; overflow-x: auto; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; white-space: pre; color: var(--text);">
+        🔵 MANUAL TRIGGER          🟣 CRON SCHEDULE
+           (Telegram on-demand)       (03:00/05:00/07:00 daily)
+                │                          │
+                ▼                          ▼
+           Parse Symbols            Warmup Ollama (3 modelos)
+                │                          │
+                ▼                          ▼
+           Check Images (mtime)      Load Watchlist A/B/C
+                │                          │
+                ▼                          ▼
+           Capture (tv_shot.js)  ─────►  Capture All (28-30 img)
+                │                          │
+                └──────────────┬───────────┘
+                               ▼
+                      🟢 HYBRID VISION PIPELINE
+                      (shared by both paths)
+                               │
+                 ┌─────────────┴─────────────┐
+                 ▼                           ▼
+            💻 Ollama Primary           ☁️ OpenRouter Fallback
+            qwen2.5vl:7b Q4_K_M         gemma-4-26b-a4b:free
+            ~90-295s/img (CPU)          ~8-20s/img
+                 │                           │
+                 └─────────────┬─────────────┘
+                               ▼
+                      ✅ Cross-Validation (yfinance OHLCV)
+                      SMC / PA / Fib / Liq / Wyckoff / VSA
+                      <b>All B3 via auto-discovery</b>
+                               │
+                               ▼
+                      📝 Outputs: analise_str.md + vision_cache.json
+                               │
+                               ▼
+                      🔷 DEPLOY & DELIVERY (shared)
+                               │
+                 ┌─────────────┼─────────────┐
+                 ▼             ▼             ▼
+            gen_html.py   Git Push        Vercel Deploy
+            (HTML gen)    (auto-commit)   (str-web-murex)
+                 │             │             │
+                 └─────────────┼─────────────┘
+                               ▼
+                      📱 Telegram (chat 8543961065)
+                      📊 STR Web Index
+                    </div>
             </div>
 
             <!-- Resumo Prático — STR Pipeline -->
@@ -309,15 +312,15 @@
                     <tbody>
                         <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 12px 16px; color: var(--fg); border-right: 1px solid var(--border);"><strong>Visão (TradingView screenshots)</strong></td>
-                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--accent); border-right: 1px solid var(--border);">qwen2.5vl:7b (Ollama, CPU, JSON, timeout 600s)</td>
-                            <td style="padding: 12px 16px; color: var(--fg-muted); border-right: 1px solid var(--border);">—</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--green); border-right: 1px solid var(--border);">qwen2.5vl:7b (Ollama, CPU, JSON, timeout 600s)</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--accent); border-right: 1px solid var(--border);">gemma-4-26b-a4b:free (free tier)</td>
                             <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--orange);">llama3.2:3b (Ollama)</td>
                         </tr>
                         <tr style="border-bottom: 1px solid var(--border); background: var(--bg);">
                             <td style="padding: 12px 16px; color: var(--fg); border-right: 1px solid var(--border);"><strong>Análise (Modo Aula / STR)</strong></td>
-                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--blue); border-right: 1px solid var(--border);">openai/gpt-4o-mini (OpenRouter default)</td>
-                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--purple); border-right: 1px solid var(--border);">google/gemini-2.5-flash (OpenRouter fallback)</td>
-                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--orange);">llama3.2:3b (Ollama fallback_providers)</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--blue); border-right: 1px solid var(--border);">openai/gpt-4o-mini (OpenRouter <strong>paid</strong>, no rate limit)</td>
+                            <td style="padding: 12px 16px; color: var(--fg-muted); border-right: 1px solid var(--border);">— (rate limit resolved)</td>
+                            <td style="padding: 12px 16px; color: var(--fg-muted);">— (not used)</td>
                         </tr>
                         <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 12px 16px; color: var(--fg); border-right: 1px solid var(--border);"><strong>Free-tier OpenRouter (custo zero)</strong></td>
@@ -337,10 +340,10 @@
 
             <div style="margin-top: 16px; padding: 12px 16px; background: var(--accent-bg); border: 1px solid var(--accent); border-radius: var(--radius); font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent);">
 <strong>Cadeia de fallback efetiva (Análise):</strong>
-<pre style="margin: 8px 0 0; color: var(--fg);">openai/gpt-4o-mini (OpenRouter default)
-        ↓ falha/rate-limit
+<pre style="margin: 8px 0 0; color: var(--fg);">openai/gpt-4o-mini (OpenRouter paid — no rate limit)
+        ↓ (apenas falha crítica)
 google/gemini-2.5-flash (OpenRouter fallback)
-        ↓ falha/rate-limit
+        ↓ (apenas falha crítica)
 llama3.2:3b (Ollama local)</pre>
             </div>
 
@@ -399,11 +402,11 @@ flowchart TD
     %% ============================================================
     subgraph VISION ["HYBRID VISION PIPELINE (Shared)"]
         direction TB
-        V1["🚀 str_vision_batch.py\nSTR_VISION_WORKERS=3"]:::vision
-        V2["☁️ OpenRouter\nPrimary: gemma-4-26b-a4b:free\n~8-20s/img\nFree tier: ~3 req/min"]:::vision
-        V3{"❌ Rate limit\n429 / timeout /\n5xx error?"}:::decision
-        V4["💻 Ollama Fallback\nqwen2.5vl:7b Q4_K_M\nCPU-only 4 vCPUs\n~90-100s/img (1W)\n~180-295s/img (D/240)"]:::vision
-        V5["✅ Cross-validation\nvs real OHLCV (yfinance)\nSMC / PA / Fib / Liq\nWyckoff / VSA"]:::vision
+        V1["🚀 str_vision_batch.py\nSTR_VISION_WORKERS=1"]:::vision
+        V2["💻 Ollama Primary\nqwen2.5vl:7b Q4_K_M\nCPU-only 4 vCPUs\n~90-295s/img (1W/D/240)"]:::vision
+        V3{"❌ Ollama timeout /\nerror / OOM?"}:::decision
+        V4["☁️ OpenRouter Fallback\ngemma-4-26b-a4b:free\n~8-20s/img\nFree tier: ~3 req/min"]:::vision
+        V5["✅ Cross-validation\nvs real OHLCV (yfinance)\nSMC / PA / Fib / Liq\nWyckoff / VSA\n<b>All B3 via auto-discovery</b>"]:::vision
         V6["📝 Generate outputs\nanalise_str.md\nvision_cache.json"]:::data
     end
 
@@ -448,7 +451,7 @@ flowchart TD
     %% Cross-links
     M1 -. "Same pipeline" .-> C1
     M4 -. "Same capture" .-> C4
-    V2 -. "Fallback" .-> V4
+    V2 -. "Primary" .-> V4
 
     %% ============================================================
     %% EXTERNAL DEPENDENCIES
@@ -466,8 +469,8 @@ flowchart TD
 
     M4 -.-> E1
     C4 -.-> E1
-    V2 -.-> E2
-    V4 -.-> E3
+    V2 -.-> E3
+    V4 -.-> E2
     V5 -.-> E4
     D2 -.-> E5
     D3 -.-> E6
@@ -531,12 +534,12 @@ flowchart TD
             <div class="detail-card">
                 <h3><span class="icon" style="background: var(--green-bg); color: var(--green);">🤖</span> Hybrid Vision</h3>
                 <div class="detail-list">
-                    <div class="detail-item"><span class="detail-label">Primary</span><span class="detail-value">OpenRouter gemma-4-26b-a4b:free</span></div>
-                    <div class="detail-item"><span class="detail-label">Primary Speed</span><span class="detail-value">~8-20s/image</span></div>
-                    <div class="detail-item"><span class="detail-label">Fallback</span><span class="detail-value">Ollama qwen2.5vl:7b Q4_K_M</span></div>
-                    <div class="detail-item"><span class="detail-label">Fallback Speed</span><span class="detail-value">~90-100s (1W), ~180-295s (D/240)</span></div>
-                    <div class="detail-item"><span class="detail-label">Workers</span><span class="detail-value">3 parallel (STR_VISION_WORKERS)</span></div>
-                    <div class="detail-item"><span class="detail-label">Cross-Validation</span><span class="detail-value">yfinance OHLCV (SMC/PA/Fib/Liq)</span></div>
+                    <div class="detail-item"><span class="detail-label">Primary</span><span class="detail-value">Ollama qwen2.5vl:7b Q4_K_M (CPU)</span></div>
+                    <div class="detail-item"><span class="detail-label">Primary Speed</span><span class="detail-value">~90-295s/image (1W/D/240)</span></div>
+                    <div class="detail-item"><span class="detail-label">Fallback</span><span class="detail-value">OpenRouter gemma-4-26b-a4b:free</span></div>
+                    <div class="detail-item"><span class="detail-label">Fallback Speed</span><span class="detail-value">~8-20s/image</span></div>
+                    <div class="detail-item"><span class="detail-label">Workers</span><span class="detail-value">1 (STR_VISION_WORKERS=1, avoid OOM)</span></div>
+                    <div class="detail-item"><span class="detail-label">Cross-Validation</span><span class="detail-value">yfinance OHLCV (SMC/PA/Fib/Liq) — all B3 via auto-discovery</span></div>
                 </div>
             </div>
 
@@ -573,10 +576,10 @@ flowchart TD
                     <div class="detail-item"><span class="detail-label">STR_VISION_TIMEOUT</span><span class="detail-value">600s (Ollama timeout)</span></div>
                     <div class="detail-item"><span class="detail-label">STR_VISION_OPENROUTER_TIMEOUT</span><span class="detail-value">30s</span></div>
                     <div class="detail-item"><span class="detail-label">STR_VISION_OPENROUTER_DELAY</span><span class="detail-value">10s (avoid 429)</span></div>
-                    <div class="detail-item"><span class="detail-label">STR_VISION_WORKERS</span><span class="detail-value">3</span></div>
+                    <div class="detail-item"><span class="detail-label">STR_VISION_WORKERS</span><span class="detail-value">1 (avoid OOM CPU)</span></div>
                 </div>
                 <div>
-                    <div class="detail-item"><span class="detail-label">STR_CROSS_VALIDATE_ENABLED</span><span class="detail-value">1</span></div>
+                    <div class="detail-item"><span class="detail-label">STR_CROSS_VALIDATE_ENABLED</span><span class="detail-value">1 (all B3 via auto-discovery)</span></div>
                     <div class="detail-item"><span class="detail-label">OPENROUTER_API_KEY</span><span class="detail-value">In ~/.hermes/profiles/str/.env</span></div>
                     <div class="detail-item"><span class="detail-label">cron.script_timeout_seconds</span><span class="detail-value">7200 (global, default profile)</span></div>
                     <div class="detail-item"><span class="detail-label">OLLAMA_KEEP_ALIVE</span><span class="detail-value">-1 (pre-loaded models)</span></div>
