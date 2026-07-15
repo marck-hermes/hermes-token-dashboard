@@ -316,9 +316,9 @@
 
         <!-- Filter Tabs -->
         <div class="filter-tabs" role="tablist" aria-label="Filter by tier">
-            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">Todos (30)</button>
-            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Pagos (20)</button>
-            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (10)</button>
+            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">Todos (32)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Pagos (23)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (9)</button>
         </div>
 
         <!-- Legend -->
@@ -363,7 +363,27 @@
                             <td><span class="badge badge-slow">Lenta</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">openai/gpt-5.6-sol-pro</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$5.00 / $30.00</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
                             <td class="model-name">openai/gpt-5.6-terra</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$2.50 / $15.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">openai/gpt-5.6-terra-pro</td>
                             <td class="context">1M</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
@@ -378,58 +398,18 @@
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
                             <td class="cost">$1.00 / $6.00</td>
                             <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5.5</td>
+                            <td class="model-name">openai/gpt-5.6-luna-pro</td>
                             <td class="context">1M</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$5.00 / $30.00</td>
-                            <td><span class="badge badge-medium">Média</span></td>
-                        </tr>
-                        <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5.4</td>
-                            <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$2.50 / $15.00</td>
-                            <td><span class="badge badge-medium">Média</span></td>
-                        </tr>
-                        <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">google/gemini-2.5-flash</td>
-                            <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Bom</span></td>
-                            <td class="cost">$0.30 / $2.50</td>
-                            <td><span class="badge badge-fast">Rápida</span></td>
-                        </tr>
-                        <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">google/gemini-2.5-pro</td>
-                            <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Bom</span></td>
-                            <td class="cost">$1.25 / $10.00</td>
-                            <td><span class="badge badge-fast">Rápida</span></td>
-                        </tr>
-                        <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">deepseek/deepseek-v4-flash</td>
-                            <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-no">Não</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$0.10 / $0.20</td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$1.00 / $6.00</td>
                             <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
@@ -443,13 +423,13 @@
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">minimax/minimax-m3</td>
+                            <td class="model-name">deepseek/deepseek-v4-flash</td>
                             <td class="context">1M</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Bom</span></td>
-                            <td class="cost">$0.30 / $1.20</td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$0.10 / $0.20</td>
                             <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
@@ -458,9 +438,19 @@
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-no">Não</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
                             <td class="cost">$0.60 / $3.60</td>
-                            <td><span class="badge badge-slow">Lenta</span></td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">nvidia/nemotron-3-super-120b-a12b</td>
+                            <td class="context">1M</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.21 / $0.45</td>
+                            <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
                             <td class="model-name">x-ai/grok-4.5</td>
@@ -473,63 +463,103 @@
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5.2</td>
-                            <td class="context">400k</td>
+                            <td class="model-name">~x-ai/grok-latest</td>
+                            <td class="context">500k</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$1.75 / $14.00</td>
+                            <td class="cost">$2.00 / $6.00</td>
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5.1</td>
-                            <td class="context">400k</td>
+                            <td class="model-name">google/gemma-4-26b-a4b-it</td>
+                            <td class="context">262k</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$1.25 / $10.00</td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.10 / $0.30</td>
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5</td>
-                            <td class="context">400k</td>
+                            <td class="model-name">google/gemma-4-31b-it</td>
+                            <td class="context">262k</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$1.25 / $10.00</td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.22 / $0.55</td>
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5-mini</td>
-                            <td class="context">400k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$0.25 / $2.00</td>
-                            <td><span class="badge badge-fast">Rápida</span></td>
-                        </tr>
-                        <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">openai/gpt-5-nano</td>
-                            <td class="context">400k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$0.05 / $0.40</td>
-                            <td><span class="badge badge-medium">Média</span></td>
-                        </tr>
-                        <tr class="tier-paid" data-tier="paid">
-                            <td class="model-name">deepseek/deepseek-r1</td>
+                            <td class="model-name">deepseek/deepseek-v3.2</td>
                             <td class="context">163k</td>
                             <td><span class="badge badge-strong">Sim / Forte</span></td>
                             <td><span class="badge badge-no">Não</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-strong">Forte</span></td>
-                            <td class="cost">$0.70 / $2.50</td>
+                            <td class="cost">$0.27 / $0.40</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">deepseek/deepseek-v3.1-terminus</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td class="cost">$0.27 / $1.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">meta-llama/llama-3.1-70b-instruct</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.40 / $0.40</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">mistralai/mistral-nemo</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.02 / $0.04</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">google/gemma-3-27b-it</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.08 / $0.45</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">nousresearch/hermes-3-llama-3.1-405b</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$1.00 / $1.00</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-paid" data-tier="paid">
+                            <td class="model-name">nousresearch/hermes-3-llama-3.1-70b</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-no">Básico</span></td>
+                            <td class="cost">$0.70 / $0.70</td>
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-paid" data-tier="paid">
@@ -553,39 +583,29 @@
                             <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
                         <tr class="tier-free" data-tier="free">
-                            <td class="model-name">qwen/qwen3-coder:free</td>
-                            <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-no">Texto</span></td>
-                            <td><span class="badge badge-no">Não</span></td>
-                            <td><span class="badge badge-yes">Bom</span></td>
-                            <td class="cost cost-free">Free</td>
-                            <td><span class="badge badge-medium">Média</span></td>
-                        </tr>
-                        <tr class="tier-free" data-tier="free">
                             <td class="model-name">nvidia/nemotron-3-ultra-550b-a55b:free</td>
                             <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-no">Texto</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-strong">Forte</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
                             <td class="cost cost-free">Free</td>
                             <td><span class="badge badge-slow">Lenta</span></td>
                         </tr>
                         <tr class="tier-free" data-tier="free">
                             <td class="model-name">nvidia/nemotron-3-super-120b-a12b:free</td>
                             <td class="context">1M</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-no">Texto</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-no">Básico</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
                             <td class="cost cost-free">Free</td>
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-free" data-tier="free">
                             <td class="model-name">google/gemma-4-26b-a4b-it:free</td>
                             <td class="context">262k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-no">Básico</span></td>
@@ -595,7 +615,7 @@
                         <tr class="tier-free" data-tier="free">
                             <td class="model-name">google/gemma-4-31b-it:free</td>
                             <td class="context">262k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-no">Básico</span></td>
@@ -603,39 +623,39 @@
                             <td><span class="badge badge-fast">Rápida</span></td>
                         </tr>
                         <tr class="tier-free" data-tier="free">
-                            <td class="model-name">openrouter/free</td>
-                            <td class="context">200k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td class="model-name">nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</td>
+                            <td class="context">256k</td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
-                            <td><span class="badge badge-no">Básico</span></td>
-                            <td class="cost cost-free">Free</td>
-                            <td><span class="badge badge-medium">Média</span></td>
-                        </tr>
-                        <tr class="tier-free" data-tier="free">
-                            <td class="model-name">meta-llama/llama-3.2-3b-instruct:free</td>
-                            <td class="context">131k</td>
-                            <td><span class="badge badge-no">Não</span></td>
-                            <td><span class="badge badge-no">Texto</span></td>
-                            <td><span class="badge badge-no">Não</span></td>
-                            <td><span class="badge badge-no">Básico</span></td>
-                            <td class="cost cost-free">Free</td>
-                            <td><span class="badge badge-fast">Muito Rápida</span></td>
-                        </tr>
-                        <tr class="tier-free" data-tier="free">
-                            <td class="model-name">meta-llama/llama-3.3-70b-instruct:free</td>
-                            <td class="context">131k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
-                            <td><span class="badge badge-no">Texto</span></td>
-                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-yes">Bom</span></td>
                             <td class="cost cost-free">Free</td>
                             <td><span class="badge badge-medium">Média</span></td>
                         </tr>
                         <tr class="tier-free" data-tier="free">
+                            <td class="model-name">openrouter/free</td>
+                            <td class="context">200k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-medium">Média</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
+                            <td class="model-name">meta-llama/llama-3.3-70b-instruct:free</td>
+                            <td class="context">131k</td>
+                            <td><span class="badge badge-yes">Sim</span></td>
+                            <td><span class="badge badge-no">Texto</span></td>
+                            <td><span class="badge badge-no">Não</span></td>
+                            <td><span class="badge badge-yes">Bom</span></td>
+                            <td class="cost cost-free">Free</td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
+                        </tr>
+                        <tr class="tier-free" data-tier="free">
                             <td class="model-name">openai/gpt-oss-20b:free</td>
                             <td class="context">131k</td>
-                            <td><span class="badge badge-strong">Sim / Forte</span></td>
+                            <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-no">Texto</span></td>
                             <td><span class="badge badge-yes">Sim</span></td>
                             <td><span class="badge badge-no">Básico</span></td>
@@ -650,7 +670,7 @@
                             <td><span class="badge badge-no">Não</span></td>
                             <td><span class="badge badge-yes">Bom</span></td>
                             <td class="cost cost-free">Free</td>
-                            <td><span class="badge badge-medium">Média</span></td>
+                            <td><span class="badge badge-slow">Lenta</span></td>
                         </tr>
 </tbody>
                 </table>
