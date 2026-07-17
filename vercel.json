@@ -7,7 +7,8 @@
     { "source": "/str-flow-chart.html", "destination": "/str-flow-chart.html" },
     { "source": "/backup-flow.html", "destination": "/backup-flow.html" },
     { "source": "/llm-comparison.html", "destination": "/llm-comparison.html" },
-    { "source": "/openrouter-usage.html", "destination": "/openrouter-usage.html" }
+    { "source": "/openrouter-usage.html", "destination": "/openrouter-usage.html" },
+    { "source": "/finesse-bench-ta.html", "destination": "/finesse-bench-ta.html" }
   ],
   "headers": [
     {

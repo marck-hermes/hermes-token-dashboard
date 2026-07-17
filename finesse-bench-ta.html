@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINESSE-Bench — LLM Comparison for Technical Analysis | Hermes Dashboards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-elevated: #334155;
+            --fg: #f1f5f9;
+            --fg-muted: #94a3b8;
+            --border: #334155;
+            --border-strong: #475569;
+            --accent: #22d3ee;
+            --accent-bg: #164e63;
+            --blue: #3b82f6;
+            --blue-bg: #1e3a5f;
+            --green: #22c55e;
+            --green-bg: #14532d;
+            --yellow: #eab308;
+            --yellow-bg: #713f12;
+            --red: #ef4444;
+            --red-bg: #7f1d1d;
+            --purple: #a855f7;
+            --purple-bg: #4c1d95;
+            --orange: #f97316;
+            --orange-bg: #7c2d12;
+            --radius: 8px;
+            --radius-lg: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.6; min-height: 100vh; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        code { font-family: var(--font-mono); background: var(--bg-elevated); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+        }
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            text-decoration: none;
+        }
+        .nav-brand svg { color: var(--accent); flex-shrink: 0; }
+        .nav-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+        .nav-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--fg-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .nav-tab:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+        .nav-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+        .nav-links { display: flex; gap: 12px; margin-left: auto; }
+        .nav-link {
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--fg-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-bg); }
+
+        /* Main Content */
+        .main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 24px;
+            padding: 24px;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+        .page-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
+        .page-subtitle { color: var(--fg-muted); font-size: 1rem; max-width: 800px; }
+        .page-meta { margin-top: 16px; display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.85rem; color: var(--fg-muted); }
+        .page-meta strong { color: var(--fg); }
+
+        /* Filter Tabs */
+        .filter-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .filter-tab {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--fg-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+        /* Table Container */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .table-wrapper { overflow-x: auto; }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .comparison-table thead {
+            background: var(--bg);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .comparison-table th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--fg);
+            border-right: 1px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .comparison-table th:hover { background: var(--bg-elevated); }
+        .comparison-table th:last-child { border-right: none; }
+        .comparison-table th.sorted-asc::after { content: ' ▲'; margin-left: 4px; }
+        .comparison-table th.sorted-desc::after { content: ' ▼'; margin-left: 4px; }
+        .comparison-table td {
+            padding: 12px 16px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            color: var(--fg);
+            vertical-align: middle;
+        }
+        .comparison-table td:last-child { border-right: none; }
+        .comparison-table tbody tr:nth-child(even) { background: var(--bg); }
+        .comparison-table tbody tr:hover { background: var(--bg-elevated); }
+        .comparison-table tbody tr.hidden { display: none; }
+
+        /* Model Name Cell */
+        .model-name { font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; }
+        .model-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .badge-paid { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple); }
+        .badge-free { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+        .badge-top { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow); }
+
+        /* Score Cells */
+        .score-cell { font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; }
+        .score-excellent { color: var(--green); }
+        .score-good { color: var(--accent); }
+        .score-fair { color: var(--yellow); }
+        .score-poor { color: var(--red); }
+
+        /* Cost Cell */
+        .cost-cell { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg-muted); }
+        .cost-cell .prompt { color: var(--fg); font-weight: 500; }
+        .cost-cell .completion { opacity: 0.7; }
+
+        /* Gap Cell */
+        .gap-cell { font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; }
+        .gap-positive { color: var(--red); }   /* Exam > TA = bad for TA */
+        .gap-negative { color: var(--green); } /* Exam < TA = good for TA */
+        .gap-neutral { color: var(--fg-muted); }
+
+        /* Tier Badge */
+        .tier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .tier-s { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+        .tier-a { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+        .tier-b { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow); }
+        .tier-c { background: var(--red-bg); color: var(--red); border: 1px solid var(--red); }
+        .tier-na { background: var(--bg-elevated); color: var(--fg-muted); border: 1px solid var(--border); }
+
+        /* Recommendation Cards */
+        .recommendations {
+            margin-top: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        .rec-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        .rec-card:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+        .rec-card.top { border-color: var(--yellow); background: linear-gradient(135deg, var(--bg-card), var(--yellow-bg)); }
+        .rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .rec-title { font-weight: 700; font-size: 1rem; }
+        .rec-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .rec-desc { color: var(--fg-muted); font-size: 0.85rem; margin-bottom: 16px; line-height: 1.5; }
+        .rec-model { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+        .rec-metrics { display: flex; gap: 12px; font-size: 0.75rem; color: var(--fg-muted); }
+        .rec-metric { display: flex; align-items: center; gap: 4px; }
+        .rec-metric strong { color: var(--fg); }
+
+        /* Fallback Chain Box */
+        .fallback-box {
+            margin-top: 24px;
+            padding: 16px;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: var(--accent);
+        }
+        .fallback-box strong { color: var(--fg); display: block; margin-bottom: 8px; font-family: var(--font-sans); }
+
+        /* Info Box */
+        .info-box {
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: var(--blue-bg);
+            border: 1px solid var(--blue);
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            color: var(--blue);
+        }
+        .info-box strong { color: var(--fg); }
+
+        /* Config Section */
+        .config-section {
+            margin-top: 32px;
+        }
+        .config-section h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--fg); }
+        .config-section pre {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            overflow-x: auto;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            color: var(--fg-muted);
+        }
+
+        /* Footer */
+        .footer { margin-top: 32px; padding: 20px; text-align: center; color: var(--fg-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .nav-bar { padding: 10px 16px; }
+            .nav-inner { flex-direction: column; align-items: stretch; }
+            .nav-tabs { width: 100%; justify-content: center; }
+            .nav-links { width: 100%; justify-content: center; margin-left: 0; }
+            .main { padding: 16px; }
+            .page-title { font-size: 1.4rem; }
+            .comparison-table { font-size: 0.7rem; }
+            .comparison-table th, .comparison-table td { padding: 10px 12px; }
+            .recommendations { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" role="navigation" aria-label="Dashboard selection">
+        <div class="nav-inner">
+            <a class="nav-brand" href="https://token-dashboard-tau-five.vercel.app">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Hermes Dashboards
+            </a>
+            <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app'">
+                    📊 Token Usage
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/str-flow-chart.html'">
+                    📈 STR Pipeline
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/backup-flow.html'">
+                    🛡️ Backup Flow
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/llm-comparison.html'">
+                    🤖 LLM Comparison
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/openrouter-usage.html'">
+                    🔑 OpenRouter Usage
+                </button>
+                <button class="nav-tab active" role="tab" aria-selected="true">
+                    📊 FINESSE-Bench TA
+                </button>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="https://str-web-murex.vercel.app" target="_blank">STR Web</a>
+                <a class="nav-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Repo</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title">FINESSE-Bench — LLM Comparison for Technical Analysis</h1>
+            <p class="page-subtitle">Models evaluated on exam-oriented financial benchmarks (CFA, CMT, CFTe) and applied Trading/TA tasks (pattern recognition, derivatives, backtesting). Focus: STR pipeline synthesis quality vs. cost on OpenRouter.</p>
+            <div class="page-meta">
+                <span><strong>Source:</strong> FINESSE-Bench (arXiv:2605.15482v2, May 2026)</span>
+                <span><strong>Models:</strong> 30 LLMs tested</span>
+                <span><strong>Questions:</strong> 3,993 total (1,738 in trading/TA group)</span>
+                <span><strong>Updated:</strong> 2026-07-17</span>
+            </div>
+        </header>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" role="tablist" aria-label="Filter by tier">
+            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">All (30)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Paid (16)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free/Open (14)</button>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table class="comparison-table" id="comparisonTable">
+                    <thead>
+                        <tr>
+                            <th data-col="0" data-sort="string">Modelo</th>
+                            <th data-col="1" data-sort="number">Exam-like (avg)</th>
+                            <th data-col="2" data-sort="number">Trading/TA (avg)</th>
+                            <th data-col="3" data-sort="number">Gap (Exam→TA)</th>
+                            <th data-col="4" data-sort="string">OpenRouter Cost (prompt/completion per 1K)</th>
+                            <th data-col="5" data-sort="string">Tier (STR Synthesis)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Fallback Chain -->
+        <div class="fallback-box">
+            <strong>Cadeia de fallback recomendada para síntese STR (modo aula, temp 0.3, sem JSON):</strong>
+            <pre>qwen/qwen3.5-plus-02-15 (OpenRouter, ~$0/1K)
+        ↓ falha/rate-limit
+z-ai/glm-5 (OpenRouter, ~$0.000001/1K)
+        ↓ falha/rate-limit
+openai/gpt-4o-mini (OpenRouter default, $0.00015/1K)
+        ↓ falha/rate-limit
+llama3.2:3b (Ollama local)</pre>
+        </div>
+
+        <!-- Info Box -->
+        <div class="info-box">
+            <strong>Nota:</strong> Gap negativo (verde) = modelo melhora em Trading/TA vs Exam-like (ideal para aplicação prática). Gap positivo (vermelho) = sabe teoria mas falha na prática. <code>qwen3.5-9b</code> é o único com gap negativo forte (+0.058). Modelos topo (GPT-5.x, Claude 4.6) têm gaps de -0.27 a -0.30.
+        </div>
+
+        <!-- Recommendation Cards -->
+        <section class="recommendations" aria-label="Recommendations for STR synthesis">
+            <div class="rec-card top">
+                <div class="rec-header">
+                    <span class="rec-title">🏆 Melhor Custo-Benefício Geral</span>
+                    <span class="rec-badge" style="background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow);">TOP PICK</span>
+                </div>
+                <p class="rec-desc">Líder no grupo trading/TA (0.8498), custo praticamente zero, gap pequeno (-0.024). Disponível no OpenRouter free tier.</p>
+                <div class="rec-model">Kimi K2.5 (moonshotai/kimi-k2.5)</div>
+                <div class="rec-metrics">
+                    <span class="rec-metric"><strong>Exam-like:</strong> 0.8740</span>
+                    <span class="rec-metric"><strong>Trading/TA:</strong> 0.8498</span>
+                    <span class="rec-metric"><strong>Custo:</strong> ~$0.000001/1K</span>
+                </div>
+            </div>
+
+            <div class="rec-card">
+                <div class="rec-header">
+                    <span class="rec-title">🥈 Melhor Equilíbrio (Table 10 do paper)</span>
+                    <span class="rec-badge" style="background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue);">BALANCED</span>
+                </div>
+                <p class="rec-desc">Top-2 em exam-like E trading/TA simultaneamente. Menor desvio padrão entre os 3 grupos de benchmark. Custo quase zero.</p>
+                <div class="rec-model">Qwen3.5-Plus-02-15 (qwen/qwen3.5-plus-02-15)</div>
+                <div class="rec-metrics">
+                    <span class="rec-metric"><strong>Exam-like:</strong> 0.8776</span>
+                    <span class="rec-metric"><strong>Trading/TA:</strong> 0.8475</span>
+                    <span class="rec-metric"><strong>Custo:</strong> ~$0.0000003/1K</span>
+                </div>
+            </div>
+
+            <div class="rec-card">
+                <div class="rec-header">
+                    <span class="rec-title">💎 Melhor Gap Negativo (Prática > Teoria)</span>
+                    <span class="rec-badge" style="background: var(--green-bg); color: var(--green); border: 1px solid var(--green);">UNIQUE</span>
+                </div>
+                <p class="rec-desc">Único modelo que <strong>melhora</strong> no trading/TA vs exam-like (+5.8%). Modelo pequeno (9B), custo zero, ideal para síntese de alta frequência.</p>
+                <div class="rec-model">Qwen3.5-9B (qwen/qwen3.5-9b)</div>
+                <div class="rec-metrics">
+                    <span class="rec-metric"><strong>Exam-like:</strong> 0.7628</span>
+                    <span class="rec-metric"><strong>Trading/TA:</strong> 0.8205</span>
+                    <span class="rec-metric"><strong>Custo:</strong> ~$0.0000001/1K</span>
+                </div>
+            </div>
+
+            <div class="rec-card">
+                <div class="rec-header">
+                    <span class="rec-title">⚡ Melhor Pago para Produção Crítica</span>
+                    <span class="rec-badge" style="background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple);">PREMIUM</span>
+                </div>
+                <p class="rec-desc">Melhor Claude no trading/TA (0.8245), gap moderado. Use quando precisar de confiabilidade máxima e puder arcar com custo 100-1000x maior.</p>
+                <div class="rec-model">Claude Sonnet 4.6 (anthropic/claude-sonnet-4.6)</div>
+                <div class="rec-metrics">
+                    <span class="rec-metric"><strong>Exam-like:</strong> 0.8763</span>
+                    <span class="rec-metric"><strong>Trading/TA:</strong> 0.8245</span>
+                    <span class="rec-metric"><strong>Custo:</strong> $0.003/$0.015 por 1K</span>
+                </div>
+            </div>
+
+            <div class="rec-card">
+                <div class="rec-header">
+                    <span class="rec-title">🔧 Melhor Local (Ollama Fallback)</span>
+                    <span class="rec-badge" style="background: var(--bg-elevated); color: var(--fg); border: 1px solid var(--border);">LOCAL</span>
+                </div>
+                <p class="rec-desc">Para fallback local via <code>fallback_providers</code>. Não está no FINESSE-Bench mas é o padrão do seu pipeline. Combine com Qwen3.5-9B no OpenRouter para tier gratuito robusto.</p>
+                <div class="rec-model">llama3.2:3b (Ollama local)</div>
+                <div class="rec-metrics">
+                    <span class="rec-metric"><strong>Custo:</strong> $0 (hardware próprio)</span>
+                    <span class="rec-metric"><strong>Latência:</strong> ~500-2000ms CPU</span>
+                    <span class="rec-metric"><strong>Contexto:</strong> 128K</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Config Snippet -->
+        <section class="config-section">
+            <h3>Configuração recomendada para <code>~/.hermes/profiles/str/config.yaml</code></h3>
+            <pre><code>providers:
+  openrouter:
+    default_model: "qwen/qwen3.5-plus-02-15"
+    fallback_models:
+      - "z-ai/glm-5"
+      - "openai/gpt-4o-mini"
+  ollama:
+    default_model: "llama3.2:3b"
+    fallback_providers: ["openrouter"]
+
+synthesis:
+  model: "qwen/qwen3.5-plus-02-15"
+  temperature: 0.3
+  mode: "aula"
+  max_tokens: 8192
+  fallback_chain:
+    - "z-ai/glm-5"
+    - "openai/gpt-4o-mini"
+    - "llama3.2:3b"
+
+vision:
+  provider: "ollama"
+  model: "vision"
+  fallback_providers: ["openrouter"]
+  fallback_models: ["qwen/qwen3.5-plus-02-15", "z-ai/glm-5"]</code></pre>
+        </section>
+
+        <footer class="footer">
+            <p>Data source: FINESSE-Bench (arXiv:2605.15482v2) • OpenRouter pricing via API (2026-07-17) • STR Pipeline synthesis mode: gpt-4o-mini temp 0.3, EXTENSA/DETALHADA/COMPLETA, no JSON</p>
+            <p style="margin-top: 8px;">Auto-updated weekly via cron (skill: <code>hermes-dashboards-management</code>) • <a href="https://github.com/LimexAILab/FINESSE-Bench" target="_blank" style="color: var(--accent);">FINESSE-Bench Repo</a> • <a href="https://openrouter.ai" target="_blank" style="color: var(--accent);">OpenRouter</a></p>
+        </footer>
+    </main>
+
+    <script>
+        // Model data embedded from FINESSE-Bench Table 5 + OpenRouter pricing
+        const modelData = [
+            { name: "Kimi K2.5", id: "moonshotai/kimi-k2.5", tier: "free", exam: 0.8740, public: 0.9001, trading: 0.8498, prompt: 0.00000057, completion: 0.00000285, roles: "master, reasoning" },
+            { name: "Qwen3.5-Plus-02-15", id: "qwen/qwen3.5-plus-02-15", tier: "free", exam: 0.8776, public: 0.8856, trading: 0.4971, prompt: 0.00000026, completion: 0.00000156, roles: "master, coding" },
+            { name: "Claude Sonnet 4.6", id: "anthropic/claude-sonnet-4.6", tier: "paid", exam: 0.8763, public: 0.9066, trading: 0.8245, prompt: 0.000003, completion: 0.000015, roles: "master, coding, vision" },
+            { name: "GLM-5", id: "z-ai/glm-5", tier: "free", exam: 0.8727, public: 0.8685, trading: 0.8038, prompt: 0.00000095, completion: 0.00000315, roles: "master, reasoning" },
+            { name: "GLM-4.7", id: "z-ai/glm-4.5", tier: "free", exam: 0.8639, public: 0.8489, trading: 0.8038, prompt: 0.0000006, completion: 0.0000022, roles: "coding, reasoning" },
+            { name: "GPT-5.2", id: "openai/gpt-5.2", tier: "paid", exam: 0.8595, public: 0.8987, trading: 0.5650, prompt: 0.00000175, completion: 0.000014, roles: "master, coding, reasoning" },
+            { name: "Qwen3.5-122B-A17B", id: "qwen/qwen3.5-122b-a17b", tier: "free", exam: 0.8568, public: 0.8794, trading: 0.8279, prompt: 0.00000039, completion: 0.00000234, roles: "coding, reasoning" },
+            { name: "Claude Sonnet 3.7", id: "anthropic/claude-sonnet-4", tier: "paid", exam: 0.8489, public: 0.8824, trading: 0.8130, prompt: 0.000003, completion: 0.000015, roles: "master, coding, vision" },
+            { name: "Qwen3.5-397B-A17B", id: "qwen/qwen3.5-397b-a17b", tier: "free", exam: 0.8443, public: 0.8784, trading: 0.7255, prompt: 0.00000039, completion: 0.00000234, roles: "coding, reasoning" },
+            { name: "Qwen3.5-27B", id: "qwen/qwen3.5-27b", tier: "free", exam: 0.8435, public: 0.8775, trading: 0.8331, prompt: 0.000000195, completion: 0.00000156, roles: "coding, worker" },
+            { name: "Qwen3.5-Flash-02-23", id: "qwen/qwen3.5-flash-02-23", tier: "free", exam: 0.8408, public: 0.8794, trading: 0.6289, prompt: 0.000000065, completion: 0.00000026, roles: "worker, fast" },
+            { name: "Qwen3.5-35B-A3B", id: "qwen/qwen3.5-35b-a3b", tier: "free", exam: 0.8390, public: 0.8747, trading: 0.8130, prompt: 0.00000014, completion: 0.000001, roles: "coding, worker" },
+            { name: "Qwen3-235B-A22B-Thinking-2507", id: "qwen/qwen3-235b-a22b-thinking-2507", tier: "free", exam: 0.8381, public: 0.8699, trading: 0.8027, prompt: 0.0000001495, completion: 0.000001495, roles: "reasoning, coding" },
+            { name: "DeepSeek-R1-0528", id: "deepseek/deepseek-r1-0528", tier: "free", exam: 0.8266, public: 0.8571, trading: 0.8027, prompt: 0.0000005, completion: 0.00000215, roles: "reasoning, coding" },
+            { name: "MiniMax M2.5", id: "minimax/minimax-m2.5", tier: "free", exam: 0.8005, public: 0.8919, trading: 0.5783, prompt: 0.00000015, completion: 0.0000009, roles: "worker, fast" },
+            { name: "Qwen3-32B", id: "qwen/qwen3-32b", tier: "free", exam: 0.7938, public: 0.8687, trading: 0.8027, prompt: 0.00000008, completion: 0.00000028, roles: "coding, worker" },
+            { name: "Llama 4 Maverick", id: "meta-llama/llama-4-maverick", tier: "free", exam: 0.7849, public: 0.8673, trading: 0.6744, prompt: 0.0000002, completion: 0.0000008, roles: "worker, fast" },
+            { name: "MiniMax M2.1", id: "minimax/minimax-m2.1", tier: "free", exam: 0.7712, public: 0.8445, trading: 0.5495, prompt: 0.0000003, completion: 0.0000012, roles: "worker, fast" },
+            { name: "Qwen3.5-9B", id: "qwen/qwen3.5-9b", tier: "free", exam: 0.7628, public: 0.8726, trading: 0.8205, prompt: 0.0000001, completion: 0.00000015, roles: "worker, fast" },
+            { name: "Qwen3-14B", id: "qwen/qwen3-14b", tier: "free", exam: 0.7512, public: 0.8506, trading: 0.8038, prompt: 0.0000001, completion: 0.00000024, roles: "coding, worker" },
+            { name: "GPT-5.4", id: "openai/gpt-5.4", tier: "paid", exam: 0.7384, public: 0.8880, trading: 0.4661, prompt: 0.0000025, completion: 0.000015, roles: "master, coding, reasoning" },
+            { name: "DeepSeek-V3.2", id: "deepseek/deepseek-v3.2", tier: "free", exam: 0.7379, public: 0.8610, trading: 0.6744, prompt: 0.000000269, completion: 0.0000004, roles: "coding, reasoning" },
+            { name: "Qwen3-8B", id: "qwen/qwen3-8b", tier: "free", exam: 0.6891, public: 0.8571, trading: 0.6744, prompt: 0.000000117, completion: 0.000000455, roles: "worker, fast" },
+            { name: "Mistral-Small-3.2-24B", id: "mistralai/mistral-small-3.2-24b-instruct", tier: "free", exam: 0.5751, public: 0.8506, trading: 0.6744, prompt: 0.0000001, completion: 0.0000003, roles: "worker, fast" },
+            // Models without OpenRouter pricing (placeholders)
+            { name: "MiMo-V2-Flash", id: null, tier: "paid", exam: 0.5880, public: 0.8499, trading: 0.5751, prompt: null, completion: null, roles: "N/A" },
+            { name: "Fin-R1", id: null, tier: "paid", exam: 0.5650, public: 0.8571, trading: 0.6744, prompt: null, completion: null, roles: "finance-specialist" },
+            { name: "Fin-o1-8B", id: null, tier: "paid", exam: 0.5783, public: 0.8571, trading: 0.6744, prompt: null, completion: null, roles: "finance-specialist" },
+            { name: "GigaChat3-10B", id: null, tier: "paid", exam: 0.4971, public: 0.8571, trading: 0.6744, prompt: null, completion: null, roles: "N/A" },
+            { name: "YandexGPT Pro 5.1", id: null, tier: "paid", exam: 0.6289, public: 0.8571, trading: 0.6744, prompt: null, completion: null, roles: "N/A" },
+            { name: "Fino1-8B", id: null, tier: "paid", exam: 0.4661, public: 0.8571, trading: 0.6744, prompt: null, completion: null, roles: "finance-specialist" },
+            { name: "T-pro-it-2.0", id: null, tier: "paid", exam: 0.7255, public: 0.8571, trading: 0.6744, prompt: null, completion: null, roles: "N/A" },
+        ];
+
+        // Tier assignment logic for STR synthesis
+        function assignSTRModelTier(m) {
+            if (!m.id) return 'na'; // Not on OpenRouter
+            const gap = m.trading - m.exam;
+            if (m.trading >= 0.82 && m.prompt <= 0.000001) return 's'; // Top tier: high TA score + very cheap
+            if (m.trading >= 0.80 && m.prompt <= 0.000005) return 'a'; // High TA + cheap
+            if (m.trading >= 0.75) return 'b'; // Decent TA
+            return 'c';
+        }
+
+        function scoreClass(score) {
+            if (score >= 0.85) return 'score-excellent';
+            if (score >= 0.75) return 'score-good';
+            if (score >= 0.65) return 'score-fair';
+            return 'score-poor';
+        }
+
+        function gapClass(gap) {
+            if (gap < -0.05) return 'gap-negative'; // Good: TA > Exam
+            if (gap > 0.05) return 'gap-positive'; // Bad: Exam > TA
+            return 'gap-neutral';
+        }
+
+        function tierLabel(t) {
+            const labels = { s: 'S — Ideal', a: 'A — Excelente', b: 'B — Bom', c: 'C — Limitado', na: 'N/A — Off-OR' };
+            return labels[t] || '?';
+        }
+
+        function formatCost(prompt, completion) {
+            if (prompt === null) return '<span class="prompt">N/A</span> <span class="completion">(off OR)</span>';
+            return `<span class="prompt">$${prompt.toFixed(6)}</span> / <span class="completion">$${completion.toFixed(6)}</span>`;
+        }
+
+        function renderTable(filter = 'all') {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            const filtered = modelData.filter(m => {
+                if (filter === 'paid') return m.tier === 'paid';
+                if (filter === 'free') return m.tier === 'free';
+                return true;
+            });
+
+            // Sort by trading score descending by default
+            filtered.sort((a, b) => b.trading - a.trading);
+
+            filtered.forEach(m => {
+                const gap = m.trading - m.exam;
+                const strTier = assignSTRModelTier(m);
+                const isTop = strTier === 's';
+                const isFree = m.tier === 'free';
+
+                const row = document.createElement('tr');
+                row.dataset.tier = m.tier;
+                if (isTop) row.style.borderLeft = '3px solid var(--yellow)';
+
+                row.innerHTML = `
+                    <td>
+                        <span class="model-name">${m.name}</span>
+                        ${isTop ? '<span class="model-badge badge-top">TOP</span>' : ''}
+                        ${isFree && m.id ? '<span class="model-badge badge-free">FREE</span>' : (!isFree && m.id ? '<span class="model-badge badge-paid">PAID</span>' : '')}
+                    </td>
+                    <td class="score-cell ${scoreClass(m.exam)}">${m.exam.toFixed(4)}</td>
+                    <td class="score-cell ${scoreClass(m.trading)}">${m.trading.toFixed(4)}</td>
+                    <td class="gap-cell ${gapClass(gap)}">${gap >= 0 ? '+' : ''}${gap.toFixed(4)}</td>
+                    <td class="cost-cell">${formatCost(m.prompt, m.completion)}</td>
+                    <td><span class="tier-badge tier-${strTier}">${tierLabel(strTier)}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update filter tab counts
+            const paidCount = modelData.filter(m => m.tier === 'paid').length;
+            const freeCount = modelData.filter(m => m.tier === 'free').length;
+            const totalCount = modelData.length;
+            document.querySelector('[data-filter="all"]').textContent = `Todos (${totalCount})`;
+            document.querySelector('[data-filter="paid"]').textContent = `Pagos (${paidCount})`;
+            document.querySelector('[data-filter="free"]').textContent = `Free Tier (${freeCount})`;
+        }
+
+        // Column sorting
+        const sortTypes = {
+            0: 'string',  // Modelo
+            1: 'number',  // Exam-like
+            2: 'number',  // Trading/TA
+            3: 'number',  // Gap
+            4: 'string',  // Cost
+            5: 'string',  // Tier
+        };
+
+        const sortDirection = {};
+
+        function compareCells(a, b, type, dir) {
+            let valA = a.textContent.trim();
+            let valB = b.textContent.trim();
+
+            if (type === 'number') {
+                valA = parseFloat(valA) || 0;
+                valB = parseFloat(valB) || 0;
+                return dir === 'asc' ? valA - valB : valB - valA;
+            }
+            // string
+            return dir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+
+        function initSorting() {
+            const headers = document.querySelectorAll('.comparison-table th[data-col]');
+            headers.forEach(th => {
+                th.addEventListener('click', () => {
+                    const col = parseInt(th.dataset.col, 10);
+                    const type = sortTypes[col];
+                    const dir = sortDirection[col] === 'asc' ? 'desc' : 'asc';
+                    sortDirection[col] = dir;
+
+                    // Update UI arrows
+                    headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+                    th.classList.add(dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+                    // Sort rows
+                    const tbody = document.getElementById('tableBody');
+                    const rows = Array.from(tbody.querySelectorAll('tr:not(.hidden)'));
+                    rows.sort((a, b) => compareCells(a.cells[col], b.cells[col], type, dir));
+                    rows.forEach(r => tbody.appendChild(r));
+                });
+            });
+        }
+
+        // Filter tabs
+        function initFilters() {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const filter = tab.dataset.filter;
+                    renderTable(filter);
+                });
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable('all');
+            initSorting();
+            initFilters();
+        });
+    </script>
+</body>
+</html>
