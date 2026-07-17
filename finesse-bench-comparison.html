@@ -10,70 +10,54 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b1020;
-            --bg-card: #11171d;
-            --bg-hover: #1a222d;
-            --fg: #e8edf2;
-            --fg-muted: #8b9ab0;
-            --accent: #00d4aa;
-            --accent-dim: #00b894;
-            --accent-bg: rgba(0, 212, 170, 0.1);
-            --danger: #ff4757;
-            --warn: #ffa502;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-elevated: #334155;
+            --fg: #f1f5f9;
+            --fg-muted: #94a3b8;
+            --border: #334155;
+            --border-strong: #475569;
+            --accent: #22d3ee;
+            --accent-bg: #164e63;
             --blue: #3b82f6;
-            --blue-bg: rgba(59, 130, 246, 0.1);
-            --purple: #a78bfa;
-            --purple-bg: rgba(167, 139, 250, 0.1);
-            --orange: #fb923c;
-            --orange-bg: rgba(251, 146, 60, 0.1);
+            --blue-bg: #1e3a5f;
             --green: #22c55e;
-            --green-bg: rgba(34, 197, 94, 0.1);
+            --green-bg: #14532d;
+            --yellow: #eab308;
+            --yellow-bg: #713f12;
             --red: #ef4444;
-            --red-bg: rgba(239, 68, 68, 0.1);
-            --border: #232d3a;
-            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --radius: 16px;
-            --radius-sm: 8px;
-            --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-            --transition: 0.2s ease;
+            --red-bg: #7f1d1d;
+            --purple: #a855f7;
+            --purple-bg: #4c1d95;
+            --radius: 8px;
+            --radius-lg: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg: #f5f7fa;
-                --bg-card: #fff;
-                --bg-hover: #eef2f7;
-                --fg: #1a222d;
-                --fg-muted: #5a6a7a;
-                --border: #d0d9e3;
-                --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            }
-        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.6; min-height: 100vh; }
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        code { font-family: var(--font-mono); background: var(--bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; border: 1px solid var(--border); }
 
-        /* Navigation Bar - MATCHING EXISTING PAGES */
+        /* Navigation Bar */
         .nav-bar {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: var(--bg-card);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 24px;
         }
         .nav-inner {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 12px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
             flex-wrap: wrap;
+            gap: 12px;
         }
         .nav-brand {
             display: flex;
@@ -82,201 +66,194 @@
             font-weight: 700;
             font-size: 1.1rem;
             color: var(--fg);
-            letter-spacing: -0.02em;
+            text-decoration: none;
         }
-        .nav-brand svg { flex-shrink: 0; color: var(--accent); }
-        .nav-tabs {
-            display: flex;
-            gap: 4px;
-            background: var(--bg);
-            padding: 4px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-        }
+        .nav-brand svg { color: var(--accent); flex-shrink: 0; }
+        .nav-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
         .nav-tab {
             padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--fg-muted);
             background: transparent;
-            border: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--fg-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all var(--transition);
+            transition: all 0.2s ease;
             white-space: nowrap;
         }
-        .nav-tab:hover { color: var(--fg); background: var(--bg-hover); }
-        .nav-tab.active { color: var(--bg); background: var(--accent); }
-        .nav-links {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
+        .nav-tab:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+        .nav-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+        .nav-links { display: flex; gap: 12px; margin-left: auto; }
         .nav-link {
-            font-size: 0.85rem;
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             color: var(--fg-muted);
-            padding: 6px 10px;
-            border-radius: 6px;
-            transition: all var(--transition);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
-        .nav-link:hover { color: var(--accent); background: var(--accent-bg); }
+        .nav-link:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-bg); }
 
         /* Main Content */
-        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+        .main { max-width: 1400px; margin: 0 auto; padding: 24px; }
 
         /* Page Header */
         .page-header {
             margin-bottom: 24px;
             padding: 24px;
-            background: var(--bg-card);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
         }
-        .page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-        .page-subtitle { color: var(--fg-muted); font-size: 0.95rem; max-width: 800px; }
-        .page-meta { margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--fg-muted); }
-        .page-meta span { background: var(--bg); padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+        .page-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
+        .page-subtitle { color: var(--fg-muted); font-size: 1rem; max-width: 800px; }
+        .page-meta { margin-top: 16px; display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.85rem; color: var(--fg-muted); }
         .page-meta strong { color: var(--fg); }
 
         /* Filter Tabs */
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
+        .filter-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
         .filter-tab {
-            padding: 8px 16px;
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--fg-muted);
+            padding: 10px 20px;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            cursor: pointer;
-            transition: all var(--transition);
-        }
-        .filter-tab:hover { color: var(--fg); border-color: var(--accent); }
-        .filter-tab.active { color: var(--bg); background: var(--accent); border-color: var(--accent); }
-
-        /* Table */
-        .table-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-        .table-wrapper { overflow-x: auto; }
-        .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-        .comparison-table thead { position: sticky; top: 0; z-index: 10; }
-        .comparison-table th {
-            text-align: left;
-            padding: 12px 10px;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
+            border-radius: var(--radius);
             color: var(--fg-muted);
-            white-space: nowrap;
-            font-size: 0.65rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+        /* Table Container */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .table-wrapper { overflow-x: auto; }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .comparison-table thead {
+            background: var(--bg);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .comparison-table th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--fg);
+            border-right: 1px solid var(--border);
             cursor: pointer;
             user-select: none;
+            white-space: nowrap;
+            transition: background 0.2s;
         }
-        .comparison-table th:hover { color: var(--accent); background: var(--bg-hover); }
-        .comparison-table th.sorted-asc::after { content: ' ▲'; font-size: 0.7em; color: var(--accent); }
-        .comparison-table th.sorted-desc::after { content: ' ▼'; font-size: 0.7em; color: var(--accent); }
+        .comparison-table th:hover { background: var(--bg-elevated); }
+        .comparison-table th:last-child { border-right: none; }
+        .comparison-table th.sorted-asc::after { content: ' ▲'; margin-left: 4px; }
+        .comparison-table th.sorted-desc::after { content: ' ▼'; margin-left: 4px; }
         .comparison-table td {
-            padding: 10px;
+            padding: 12px 16px;
+            border-right: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
+            color: var(--fg);
             vertical-align: middle;
         }
-        .comparison-table tbody tr:hover td { background: var(--bg-hover); }
-        .comparison-table tbody tr:last-child td { border-bottom: none; }
+        .comparison-table td:last-child { border-right: none; }
+        .comparison-table tbody tr:nth-child(even) { background: var(--bg); }
+        .comparison-table tbody tr:hover { background: var(--bg-elevated); }
+        .comparison-table tbody tr.hidden { display: none; }
 
-        /* Badges */
-        .badge {
-            display: inline-flex;
-            align-items: center;
+        /* Model Name Cell */
+        .model-name { font-weight: 600; font-family: var(--font-mono); font-size: 0.78rem; }
+        .model-badge {
+            display: inline-block;
             padding: 2px 8px;
-            border-radius: 999px;
+            border-radius: 4px;
             font-size: 0.65rem;
-            font-weight: 600;
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
         }
-        .badge-free { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
-        .badge-paid { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid var(--blue); }
-        .badge-top { background: var(--warn); color: var(--bg); border: 1px solid var(--warn); }
-        .badge-yes { background: rgba(0,212,170,0.15); color: var(--accent); }
-        .badge-no { background: rgba(255,71,87,0.15); color: var(--danger); }
-        .badge-partial { background: rgba(255,165,2,0.15); color: var(--warn); }
+        .badge-paid { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple); }
+        .badge-free { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+        .badge-top { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow); }
 
-        /* Tier colors for STR synthesis */
-        .tier-s { border-left: 3px solid var(--green); }
-        .tier-a { border-left: 3px solid var(--blue); }
-        .tier-b { border-left: 3px solid var(--warn); }
-        .tier-c { border-left: 3px solid var(--danger); }
-        .tier-na { border-left: 3px solid var(--border); }
-
-        /* Cell styles */
-        .model-name { font-weight: 600; color: var(--fg); font-family: var(--font-mono); font-size: 0.7rem; }
-        .score-cell { font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; }
+        /* Score Cells */
+        .score-cell { font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; }
         .score-excellent { color: var(--green); }
         .score-good { color: var(--accent); }
-        .score-fair { color: var(--warn); }
-        .score-poor { color: var(--danger); }
-        .gap-cell { font-family: var(--font-mono); font-weight: 600; font-size: 0.75rem; }
-        .gap-negative { color: var(--green); }
-        .gap-positive { color: var(--danger); }
-        .gap-neutral { color: var(--fg-muted); }
-        .cost-cell { font-family: var(--font-mono); font-size: 0.65rem; color: var(--fg-muted); }
+        .score-fair { color: var(--yellow); }
+        .score-poor { color: var(--red); }
+
+        /* Cost Cell */
+        .cost-cell { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg-muted); }
         .cost-cell .prompt { color: var(--fg); font-weight: 500; }
         .cost-cell .completion { opacity: 0.7; }
-        .cost-free { color: var(--accent); font-weight: 600; }
 
-        /* Tier Badge for STR */
-        .str-tier-badge {
+        /* Gap Cell */
+        .gap-cell { font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; }
+        .gap-positive { color: var(--red); } /* Exam > TA = bad for TA */
+        .gap-negative { color: var(--green); } /* Exam < TA = good for TA */
+        .gap-neutral { color: var(--fg-muted); }
+
+        /* Tier Badge */
+        .tier-badge {
             display: inline-flex;
             align-items: center;
             gap: 4px;
             padding: 4px 10px;
             border-radius: 6px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
         }
-        .str-tier-s { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
-        .str-tier-a { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
-        .str-tier-b { background: var(--warn); color: var(--bg); border: 1px solid var(--warn); }
-        .str-tier-c { background: var(--red-bg); color: var(--red); border: 1px solid var(--red); }
-        .str-tier-na { background: var(--bg-hover); color: var(--fg-muted); border: 1px solid var(--border); }
+        .tier-s { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+        .tier-a { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+        .tier-b { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow); }
+        .tier-c { background: var(--red-bg); color: var(--red); border: 1px solid var(--red); }
+        .tier-na { background: var(--bg-elevated); color: var(--fg-muted); border: 1px solid var(--border); }
 
         /* Recommendation Cards */
-        .rec-grid {
+        .recommendations {
+            margin-top: 32px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 16px;
-            margin: 24px 0;
         }
         .rec-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             padding: 20px;
+            transition: all 0.2s;
         }
-        .rec-card.top { border-color: var(--warn); background: linear-gradient(135deg, var(--bg-card), var(--orange-bg)); }
-        .rec-card h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; color: var(--accent); }
-        .rec-card .rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .rec-card .rec-title { font-weight: 700; font-size: 0.9rem; color: var(--fg); }
-        .rec-card .rec-badge {
+        .rec-card:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+        .rec-card.top { border-color: var(--yellow); background: linear-gradient(135deg, var(--bg-card), var(--yellow-bg)); }
+        .rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .rec-title { font-weight: 700; font-size: 1rem; }
+        .rec-badge {
             padding: 4px 10px;
             border-radius: 6px;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             font-weight: 700;
-            font-family: var(--font-mono);
         }
-        .rec-desc { color: var(--fg-muted); font-size: 0.8rem; margin-bottom: 16px; line-height: 1.5; }
-        .rec-model { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
-        .rec-metrics { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.7rem; color: var(--fg-muted); }
+        .rec-desc { color: var(--fg-muted); font-size: 0.85rem; margin-bottom: 16px; line-height: 1.5; }
+        .rec-model { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+        .rec-metrics { display: flex; gap: 12px; font-size: 0.75rem; color: var(--fg-muted); }
         .rec-metric { display: flex; align-items: center; gap: 4px; }
         .rec-metric strong { color: var(--fg); }
 
@@ -287,7 +264,7 @@
             background: var(--accent-bg);
             border: 1px solid var(--accent);
             border-radius: var(--radius);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-family: var(--font-mono);
             color: var(--accent);
         }
@@ -300,49 +277,46 @@
             background: var(--blue-bg);
             border: 1px solid var(--blue);
             border-radius: var(--radius);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--blue);
         }
         .info-box strong { color: var(--fg); }
 
-        /* Config Section */
-        .config-section { margin-top: 24px; }
-        .config-section h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; color: var(--fg); text-transform: uppercase; letter-spacing: 0.08em; }
-        .config-section pre { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; overflow-x: auto; font-size: 0.7rem; font-family: var(--font-mono); color: var(--fg-muted); }
-
         /* Footer */
-        footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 0.8rem; text-align: center; }
+        .footer { margin-top: 32px; padding: 20px; text-align: center; color: var(--fg-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
 
-        /* Responsive */
+        /* Mobile */
         @media (max-width: 900px) {
-            .nav-tabs { order: 3; width: 100%; justify-content: center; }
-            .nav-link { display: none; }
-            .container { padding: 16px; }
+            .nav-bar { padding: 10px 16px; }
+            .nav-inner { flex-direction: column; align-items: stretch; }
+            .nav-tabs { width: 100%; justify-content: center; }
+            .nav-links { width: 100%; justify-content: center; margin-left: 0; }
+            .main { padding: 16px; }
             .page-title { font-size: 1.4rem; }
-            .comparison-table { font-size: 0.65rem; }
-            .comparison-table th, .comparison-table td { padding: 8px 6px; }
-            .rec-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.7rem; }
+            .comparison-table th, .comparison-table td { padding: 10px 12px; }
+            .recommendations { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar - IDENTICAL TO OTHER PAGES -->
-    <nav class="nav-bar" role="navigation" aria-label="Main navigation">
+    <!-- Navigation Bar -->
+    <nav class="nav-bar" role="navigation" aria-label="Dashboard selection">
         <div class="nav-inner">
-            <div class="nav-brand">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
+            <a class="nav-brand" href="https://token-dashboard-tau-five.vercel.app">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                     <polyline points="15 3 21 3 21 9"></polyline>
                     <line x1="10" y1="14" x2="21" y2="3"></line>
                 </svg>
                 Hermes Dashboards
-            </div>
+            </a>
             <div class="nav-tabs" role="tablist" aria-label="Dashboard selection">
                 <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app'">
-                    📊 Token Usage Dashboard
+                    📊 Token Usage
                 </button>
                 <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/str-flow-chart.html'">
-                    📈 STR Pipeline Flow
+                    📈 STR Pipeline
                 </button>
                 <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/backup-flow.html'">
                     🛡️ Backup Flow
@@ -353,7 +327,7 @@
                 <button class="nav-tab" role="tab" aria-selected="false" onclick="location.href='https://token-dashboard-tau-five.vercel.app/openrouter-usage.html'">
                     🔑 OpenRouter Usage
                 </button>
-                <button class="nav-tab active" role="tab" aria-selected="true" onclick="location.href='https://token-dashboard-tau-five.vercel.app/finesse-bench-ta.html'">
+                <button class="nav-tab active" role="tab" aria-selected="true">
                     📊 FINESSE-Bench TA
                 </button>
             </div>
@@ -364,7 +338,7 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main class="main">
         <!-- Page Header -->
         <header class="page-header">
             <h1 class="page-title">FINESSE-Bench — LLM Comparison for Technical Analysis</h1>
@@ -379,13 +353,13 @@
 
         <!-- Filter Tabs -->
         <div class="filter-tabs" role="tablist" aria-label="Filter by tier">
-            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">Todos (30)</button>
-            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Pagos (16)</button>
-            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (14)</button>
+            <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all">All (30)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="paid">Paid (16)</button>
+            <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free/Open (14)</button>
         </div>
 
         <!-- Comparison Table -->
-        <div class="table-card">
+        <div class="table-container">
             <div class="table-wrapper">
                 <table class="comparison-table" id="comparisonTable">
                     <thead>
@@ -423,11 +397,11 @@ llama3.2:3b (Ollama local)</pre>
         </div>
 
         <!-- Recommendation Cards -->
-        <section class="rec-grid" aria-label="Recommendations for STR synthesis">
+        <section class="recommendations" aria-label="Recommendations for STR synthesis">
             <div class="rec-card top">
                 <div class="rec-header">
                     <span class="rec-title">🏆 Melhor Custo-Benefício Geral</span>
-                    <span class="rec-badge" style="background: var(--warn); color: var(--bg); border: 1px solid var(--warn);">TOP PICK</span>
+                    <span class="rec-badge" style="background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow);">TOP PICK</span>
                 </div>
                 <p class="rec-desc">Líder no grupo trading/TA (0.8498), custo praticamente zero, gap pequeno (-0.024). Disponível no OpenRouter free tier.</p>
                 <div class="rec-model">Kimi K2.5 (moonshotai/kimi-k2.5)</div>
@@ -483,7 +457,7 @@ llama3.2:3b (Ollama local)</pre>
             <div class="rec-card">
                 <div class="rec-header">
                     <span class="rec-title">🔧 Melhor Local (Ollama Fallback)</span>
-                    <span class="rec-badge" style="background: var(--bg-hover); color: var(--fg); border: 1px solid var(--border);">LOCAL</span>
+                    <span class="rec-badge" style="background: var(--bg-elevated); color: var(--fg); border: 1px solid var(--border);">LOCAL</span>
                 </div>
                 <p class="rec-desc">Para fallback local via <code>fallback_providers</code>. Não está no FINESSE-Bench mas é o padrão do seu pipeline. Combine com Qwen3.5-9B no OpenRouter para tier gratuito robusto.</p>
                 <div class="rec-model">llama3.2:3b (Ollama local)</div>
@@ -496,9 +470,9 @@ llama3.2:3b (Ollama local)</pre>
         </section>
 
         <!-- Config Snippet -->
-        <section class="config-section">
-            <h3>Configuração recomendada para <code>~/.hermes/profiles/str/config.yaml</code></h3>
-            <pre><code>providers:
+        <section style="margin-top: 32px;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--fg);">Configuração recomendada para <code>~/.hermes/profiles/str/config.yaml</code></h3>
+            <pre style="background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; overflow-x: auto; font-size: 0.75rem; font-family: var(--font-mono); color: var(--fg-muted);"><code>providers:
   openrouter:
     default_model: "qwen/qwen3.5-plus-02-15"
     fallback_models:
@@ -525,7 +499,7 @@ vision:
   fallback_models: ["qwen/qwen3.5-plus-02-15", "z-ai/glm-5"]</code></pre>
         </section>
 
-        <footer>
+        <footer class="footer">
             <p>Data source: FINESSE-Bench (arXiv:2605.15482v2) • OpenRouter pricing via API (2026-07-17) • STR Pipeline synthesis mode: gpt-4o-mini temp 0.3, EXTENSA/DETALHADA/COMPLETA, no JSON</p>
             <p style="margin-top: 8px;">Auto-updated weekly via cron (skill: <code>hermes-dashboards-management</code>) • <a href="https://github.com/LimexAILab/FINESSE-Bench" target="_blank" style="color: var(--accent);">FINESSE-Bench Repo</a> • <a href="https://openrouter.ai" target="_blank" style="color: var(--accent);">OpenRouter</a></p>
         </footer>
@@ -570,11 +544,11 @@ vision:
 
         // Tier assignment logic for STR synthesis
         function assignSTRModelTier(m) {
-            if (!m.id) return 'na';
+            if (!m.id) return 'na'; // Not on OpenRouter
             const gap = m.trading - m.exam;
-            if (m.trading >= 0.82 && m.prompt <= 0.000001) return 's';
-            if (m.trading >= 0.80 && m.prompt <= 0.000005) return 'a';
-            if (m.trading >= 0.75) return 'b';
+            if (m.trading >= 0.82 && m.prompt <= 0.000001) return 's'; // Top tier: high TA score + very cheap
+            if (m.trading >= 0.80 && m.prompt <= 0.000005) return 'a'; // High TA + cheap
+            if (m.trading >= 0.75) return 'b'; // Decent TA
             return 'c';
         }
 
@@ -586,8 +560,8 @@ vision:
         }
 
         function gapClass(gap) {
-            if (gap < -0.05) return 'gap-negative';
-            if (gap > 0.05) return 'gap-positive';
+            if (gap < -0.05) return 'gap-negative'; // Good: TA > Exam
+            if (gap > 0.05) return 'gap-positive'; // Bad: Exam > TA
             return 'gap-neutral';
         }
 
@@ -611,6 +585,7 @@ vision:
                 return true;
             });
 
+            // Sort by trading score descending by default
             filtered.sort((a, b) => b.trading - a.trading);
 
             filtered.forEach(m => {
@@ -621,96 +596,79 @@ vision:
 
                 const row = document.createElement('tr');
                 row.dataset.tier = m.tier;
-                if (isTop) row.classList.add('tier-s');
-                else if (strTier === 'a') row.classList.add('tier-a');
-                else if (strTier === 'b') row.classList.add('tier-b');
-                else if (strTier === 'c') row.classList.add('tier-c');
-                else row.classList.add('tier-na');
+                if (isTop) row.style.borderLeft = '3px solid var(--yellow)';
 
                 row.innerHTML = `
                     <td>
                         <span class="model-name">${m.name}</span>
-                        ${isTop ? '<span class="badge badge-top">TOP</span>' : ''}
-                        ${isFree && m.id ? '<span class="badge badge-free">FREE</span>' : (!isFree && m.id ? '<span class="badge badge-paid">PAID</span>' : '')}
+                        ${isTop ? '<span class="model-badge badge-top">TOP</span>' : ''}
+                        ${isFree && m.id ? '<span class="model-badge badge-free">FREE</span>' : (!isFree && m.id ? '<span class="model-badge badge-paid">PAID</span>' : '')}
                     </td>
                     <td class="score-cell ${scoreClass(m.exam)}">${m.exam.toFixed(4)}</td>
                     <td class="score-cell ${scoreClass(m.trading)}">${m.trading.toFixed(4)}</td>
                     <td class="gap-cell ${gapClass(gap)}">${gap >= 0 ? '+' : ''}${gap.toFixed(4)}</td>
                     <td class="cost-cell">${formatCost(m.prompt, m.completion)}</td>
-                    <td><span class="str-tier-badge str-tier-${strTier}">${tierLabel(strTier)}</span></td>
+                    <td><span class="tier-badge tier-${strTier}">${tierLabel(strTier)}</span></td>
                 `;
                 tbody.appendChild(row);
             });
 
-            const paidCount = modelData.filter(m => m.tier === 'paid').length;
-            const freeCount = modelData.filter(m => m.tier === 'free').length;
-            const totalCount = modelData.length;
-            document.querySelector('[data-filter="all"]').textContent = `Todos (${totalCount})`;
-            document.querySelector('[data-filter="paid"]').textContent = `Pagos (${paidCount})`;
-            document.querySelector('[data-filter="free"]').textContent = `Free Tier (${freeCount})`;
-        }
-
-        // Column sorting
-        const sortTypes = {
-            0: 'string',
-            1: 'number',
-            2: 'number',
-            3: 'number',
-            4: 'string',
-            5: 'string',
-        };
-        const sortDirection = {};
-
-        function compareCells(a, b, type, dir) {
-            let valA = a.textContent.trim();
-            let valB = b.textContent.trim();
-
-            if (type === 'number') {
-                valA = parseFloat(valA) || 0;
-                valB = parseFloat(valB) || 0;
-                return dir === 'asc' ? valA - valB : valB - valA;
-            }
-            return dir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
-        }
-
-        function initSorting() {
-            const headers = document.querySelectorAll('.comparison-table th[data-col]');
-            headers.forEach(th => {
-                th.addEventListener('click', () => {
-                    const col = parseInt(th.dataset.col, 10);
-                    const type = sortTypes[col];
-                    const dir = sortDirection[col] === 'asc' ? 'desc' : 'asc';
-                    sortDirection[col] = dir;
-
-                    headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
-                    th.classList.add(dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
-
-                    const tbody = document.getElementById('tableBody');
-                    const rows = Array.from(tbody.querySelectorAll('tr'));
-                    rows.sort((a, b) => compareCells(a.cells[col], b.cells[col], type, dir));
-                    rows.forEach(r => tbody.appendChild(r));
-                });
-            });
+            // Update filter tab counts
+            document.querySelector('[data-filter="all"]').textContent = `All (${modelData.length})`;
+            document.querySelector('[data-filter="paid"]').textContent = `Paid (${modelData.filter(m => m.tier === 'paid').length})`;
+            document.querySelector('[data-filter="free"]').textContent = `Free (${modelData.filter(m => m.tier === 'free').length})`;
         }
 
         // Filter tabs
-        function initFilters() {
-            const tabs = document.querySelectorAll('.filter-tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    renderTable(tab.dataset.filter);
-                });
+        document.querySelectorAll('.filter-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderTable(btn.dataset.filter);
             });
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTable('all');
-            initSorting();
-            initFilters();
         });
+
+        // Column sorting
+        const sortTypes = { 0: 'string', 1: 'number', 2: 'number', 3: 'number', 4: 'string', 5: 'string' };
+        const sortDirection = { 0: 'asc', 1: 'desc', 2: 'desc', 3: 'asc', 4: 'asc', 5: 'asc' };
+
+        document.querySelectorAll('#comparisonTable th[data-col]').forEach(th => {
+            th.addEventListener('click', () => {
+                const col = parseInt(th.dataset.col);
+                const type = sortTypes[col];
+                const dir = sortDirection[col] === 'asc' ? 'desc' : 'asc';
+                sortDirection[col] = dir;
+
+                // Update UI
+                document.querySelectorAll('#comparisonTable th').forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+                th.classList.add(dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+                // Sort rows
+                const tbody = document.getElementById('tableBody');
+                const rows = Array.from(tbody.querySelectorAll('tr:not(.hidden)'));
+                rows.sort((a, b) => {
+                    const cellA = a.cells[col].textContent.trim();
+                    const cellB = b.cells[col].textContent.trim();
+
+                    let valA, valB;
+                    if (type === 'number') {
+                        valA = parseFloat(cellA.replace(/[^0-9.-]/g, ''));
+                        valB = parseFloat(cellB.replace(/[^0-9.-]/g, ''));
+                    } else {
+                        valA = cellA.toLowerCase();
+                        valB = cellB.toLowerCase();
+                    }
+
+                    if (valA < valB) return dir === 'asc' ? -1 : 1;
+                    if (valA > valB) return dir === 'asc' ? 1 : -1;
+                    return 0;
+                });
+                rows.forEach(r => tbody.appendChild(r));
+            });
+        });
+
+        // Initial render
+        renderTable('all');
     </script>
 </body>
 </html>
