@@ -241,62 +241,78 @@
             <h1>📈 STR Pipeline Flow Chart</h1>
             <p class="subtitle">Complete visualization of the Swing Trading Analysis pipeline — both Manual (on-demand) and Cron (automated) flows</p>
             <div class="meta">
-                <span>🔄 Hybrid Vision: Ollama qwen2.5vl:7b (primary, CPU) → OpenRouter gemma-4-26b-a4b:free (fallback)</span>
+                <span>🔄 Hybrid Vision: Ollama qwen2.5vl:7b (primary, CPU) → OpenRouter gemma-4-26b-a4b-it (fallback, PAID)</span>
+                <span>🧠 Analysis: qwen/qwen3.5-plus-02-15 (primary) → z-ai/glm-5 → openai/gpt-4o-mini → llama3.2:3b</span>
                 <span>⏱️ Cron: 03:00 / 05:00 / 07:00 (Watchlists A/B/C)</span>
                 <span>🚀 Deploy: Vercel (str-web-murex.vercel.app)</span>
                 <span>📱 Delivery: Telegram chat 8543961065</span>
                 <span>✅ Cross-Val: yfinance OHLCV (all B3 via auto-discovery)</span>
+                <span style="color: var(--accent); font-weight: 600;">📅 Last Updated: 2026-07-17</span>
             </div>
         </header>
 
         <!-- Visual Flow Overview -->
-                <section class="visual-flow" style="margin-bottom: 32px;">
-                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--text-strong);">🔄 Pipeline Overview</h2>
-                    <div class="flow-diagram" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; overflow-x: auto; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; white-space: pre; color: var(--text);">
-        🔵 MANUAL TRIGGER          🟣 CRON SCHEDULE
-           (Telegram on-demand)       (03:00/05:00/07:00 daily)
-                │                          │
-                ▼                          ▼
-           Parse Symbols            Warmup Ollama (3 modelos)
-                │                          │
-                ▼                          ▼
-           Check Images (mtime)      Load Watchlist A/B/C
-                │                          │
-                ▼                          ▼
-           Capture (tv_shot.js)  ─────►  Capture All (28-30 img)
-                │                          │
-                └──────────────┬───────────┘
-                               ▼
-                      🟢 HYBRID VISION PIPELINE
-                      (shared by both paths)
-                               │
-                 ┌─────────────┴─────────────┐
-                 ▼                           ▼
-            💻 Ollama Primary           ☁️ OpenRouter Fallback
-            qwen2.5vl:7b Q4_K_M         gemma-4-26b-a4b:free
-            ~90-295s/img (CPU)          ~8-20s/img
-                 │                           │
-                 └─────────────┬─────────────┘
-                               ▼
-                      ✅ Cross-Validation (yfinance OHLCV)
-                      SMC / PA / Fib / Liq / Wyckoff / VSA
-                      <b>All B3 via auto-discovery</b>
-                               │
-                               ▼
-                      📝 Outputs: analise_str.md + vision_cache.json
-                               │
-                               ▼
-                      🔷 DEPLOY & DELIVERY (shared)
-                               │
-                 ┌─────────────┼─────────────┐
-                 ▼             ▼             ▼
-            gen_html.py   Git Push        Vercel Deploy
-            (HTML gen)    (auto-commit)   (str-web-murex)
-                 │             │             │
-                 └─────────────┼─────────────┘
-                               ▼
-                      📱 Telegram (chat 8543961065)
-                      📊 STR Web Index
+                        <section class="visual-flow" style="margin-bottom: 32px;">
+                            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: var(--text-strong);">🔄 Pipeline Overview</h2>
+                            <div class="flow-diagram" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; overflow-x: auto; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; white-space: pre; color: var(--text);">
+                🔵 MANUAL TRIGGER          🟣 CRON SCHEDULE
+                   (Telegram on-demand)       (03:00/05:00/07:00 daily)
+                        │                          │
+                        ▼                          ▼
+                   Parse Symbols            Warmup Ollama (3 modelos)
+                        │                          │
+                        ▼                          ▼
+                   Check Images (mtime)      Load Watchlist A/B/C
+                        │                          │
+                        ▼                          ▼
+                   Capture (tv_shot.js)  ─────►  Capture All (28-30 img)
+                        │                          │
+                        └──────────────┬───────────┘
+                                       ▼
+                              🟢 HYBRID VISION PIPELINE
+                              (shared by both paths)
+                                       │
+                         ┌─────────────┴─────────────┐
+                         ▼                           ▼
+                    💻 Ollama Primary            ☁️ OpenRouter Fallback
+                    qwen2.5vl:7b Q4_K_M          gemma-4-26b-a4b-it (PAID)
+                    ~90-295s/img (CPU)           ~8-20s/img
+                         │                           │
+                         └─────────────┬─────────────┘
+                                       ▼
+                              ✅ Cross-Validation (yfinance OHLCV)
+                              SMC / PA / Fib / Liq / Wyckoff / VSA
+                              <b>All B3 via auto-discovery</b>
+                                       │
+                                       ▼
+                              📝 Outputs: analise_str.md + vision_cache.json
+                                       │
+                                       ▼
+                              🧠 ANALYSIS PIPELINE (Modo Aula)
+                              (shared by both paths)
+                                       │
+                         ┌─────────────┴─────────────┐
+                         ▼                           ▼
+                    🧠 qwen/qwen3.5-plus-02-15    🔄 Fallback Chain
+                    (OpenRouter paid, primary)      z-ai/glm-5 → gpt-4o-mini
+                         │                           │
+                         └─────────────┬─────────────┘
+                                       ▼
+                              📝 Outputs: analise_str.md + vision_cache.json
+                                       │
+                                       ▼
+                              🔷 DEPLOY & DELIVERY (shared)
+                                       │
+                         ┌─────────────┼─────────────┐
+                         ▼             ▼             ▼
+                    gen_html.py   Git Push        Vercel Deploy
+                    (HTML gen)    (auto-commit)   (str-web-murex)
+                         │             │             │
+                         └─────────────┼─────────────┘
+                                       ▼
+                              📱 Telegram (chat 8543961065)
+                              📊 STR Web Index
+                            </div>
                     </div>
             </div>
 
@@ -316,14 +332,14 @@
                         <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 12px 16px; color: var(--fg); border-right: 1px solid var(--border);"><strong>Visão (TradingView screenshots)</strong></td>
                             <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--green); border-right: 1px solid var(--border);">qwen2.5vl:7b (Ollama, CPU, JSON, timeout 600s)</td>
-                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--accent); border-right: 1px solid var(--border);">gemma-4-26b-a4b:free (free tier)</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--accent); border-right: 1px solid var(--border);">gemma-4-26b-a4b-it (PAID, no :free)</td>
                             <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--orange);">llama3.2:3b (Ollama)</td>
                         </tr>
                         <tr style="border-bottom: 1px solid var(--border); background: var(--bg);">
                             <td style="padding: 12px 16px; color: var(--fg); border-right: 1px solid var(--border);"><strong>Análise (Modo Aula / STR)</strong></td>
-                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--blue); border-right: 1px solid var(--border);">openai/gpt-4o-mini (OpenRouter <strong>paid</strong>, no rate limit)</td>
-                            <td style="padding: 12px 16px; color: var(--fg-muted); border-right: 1px solid var(--border);">— (rate limit resolved)</td>
-                            <td style="padding: 12px 16px; color: var(--fg-muted);">— (not used)</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--blue); border-right: 1px solid var(--border);">qwen/qwen3.5-plus-02-15 (OpenRouter paid)</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--purple); border-right: 1px solid var(--border);">z-ai/glm-5 → openai/gpt-4o-mini</td>
+                            <td style="padding: 12px 16px; font-family: var(--font-mono); color: var(--orange);">llama3.2:3b (Ollama)</td>
                         </tr>
                         <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 12px 16px; color: var(--fg); border-right: 1px solid var(--border);"><strong>Free-tier OpenRouter (custo zero)</strong></td>
@@ -343,10 +359,12 @@
 
             <div style="margin-top: 16px; padding: 12px 16px; background: var(--accent-bg); border: 1px solid var(--accent); border-radius: var(--radius); font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent);">
 <strong>Cadeia de fallback efetiva (Análise):</strong>
-<pre style="margin: 8px 0 0; color: var(--fg);">openai/gpt-4o-mini (OpenRouter paid — no rate limit)
-        ↓ (apenas falha crítica)
-google/gemini-2.5-flash (OpenRouter fallback)
-        ↓ (apenas falha crítica)
+<pre style="margin: 8px 0 0; color: var(--fg);">qwen/qwen3.5-plus-02-15 (OpenRouter paid, primary)
+        ↓ falha/rate-limit
+z-ai/glm-5 (OpenRouter fallback)
+        ↓ falha/rate-limit
+openai/gpt-4o-mini (OpenRouter fallback)
+        ↓ falha/rate-limit
 llama3.2:3b (Ollama local)</pre>
             </div>
 
@@ -408,9 +426,25 @@ flowchart TD
         V1["🚀 str_vision_batch.py\nSTR_VISION_WORKERS=1"]:::vision
         V2["💻 Ollama Primary\nqwen2.5vl:7b Q4_K_M\nCPU-only 4 vCPUs\n~90-295s/img (1W/D/240)"]:::vision
         V3{"❌ Ollama timeout /\nerror / OOM?"}:::decision
-        V4["☁️ OpenRouter Fallback\ngemma-4-26b-a4b:free\n~8-20s/img\nFree tier: ~3 req/min"]:::vision
+        V4["☁️ OpenRouter Fallback\ngemma-4-26b-a4b-it (PAID)\n~8-20s/img"]:::vision
         V5["✅ Cross-validation\nvs real OHLCV (yfinance)\nSMC / PA / Fib / Liq\nWyckoff / VSA\n<b>All B3 via auto-discovery</b>"]:::vision
         V6["📝 Generate outputs\nanalise_str.md\nvision_cache.json"]:::data
+    end
+
+    %% ============================================================
+    %% ANALYSIS PIPELINE (Modo Aula)
+    %% ============================================================
+    subgraph ANALYSIS ["ANALYSIS PIPELINE (Modo Aula)"]
+        direction TB
+        A1["🧠 str_synthesis.py\nstr_vision_batch.py output"]:::deploy
+        A2["🧠 Primary: qwen/qwen3.5-plus-02-15\nOpenRouter (paid)"]:::vision
+        A3{"❌ Primary failed\n/ rate-limit?"}:::decision
+        A4["🔄 Fallback 1: z-ai/glm-5\nOpenRouter"]:::vision
+        A5{"❌ Fallback 1 failed?"}:::decision
+        A6["🔄 Fallback 2: openai/gpt-4o-mini\nOpenRouter (paid)"]:::vision
+        A7{"❌ Fallback 2 failed?"}:::decision
+        A8["🔄 Fallback 3: llama3.2:3b\nOllama local"]:::vision
+        A9["📝 Generate outputs\nanalise_str.md\nresumo_telegram.md"]:::data
     end
 
     %% ============================================================
@@ -446,8 +480,21 @@ flowchart TD
     V4 --> V5
     V5 --> V6
 
+    %% Analysis pipeline
+    V6 --> A1 --> A2
+    A2 --> A3
+    A3 -- "Yes" --> A4
+    A3 -- "No" --> A9
+    A4 --> A5
+    A5 -- "Yes" --> A6
+    A5 -- "No" --> A9
+    A6 --> A7
+    A7 -- "Yes" --> A8
+    A7 -- "No" --> A9
+    A8 --> A9
+
     %% Deploy & delivery
-    V6 --> D1 --> D2 --> D3
+    A9 --> D1 --> D2 --> D3
     D3 --> D4
     D3 --> D5
 
@@ -539,7 +586,7 @@ flowchart TD
                 <div class="detail-list">
                     <div class="detail-item"><span class="detail-label">Primary</span><span class="detail-value">Ollama qwen2.5vl:7b Q4_K_M (CPU)</span></div>
                     <div class="detail-item"><span class="detail-label">Primary Speed</span><span class="detail-value">~90-295s/image (1W/D/240)</span></div>
-                    <div class="detail-item"><span class="detail-label">Fallback</span><span class="detail-value">OpenRouter gemma-4-26b-a4b:free</span></div>
+                    <div class="detail-item"><span class="detail-label">Fallback</span><span class="detail-value">OpenRouter gemma-4-26b-a4b-it (PAID)</span></div>
                     <div class="detail-item"><span class="detail-label">Fallback Speed</span><span class="detail-value">~8-20s/image</span></div>
                     <div class="detail-item"><span class="detail-label">Workers</span><span class="detail-value">1 (STR_VISION_WORKERS=1, avoid OOM)</span></div>
                     <div class="detail-item"><span class="detail-label">Cross-Validation</span><span class="detail-value">yfinance OHLCV (SMC/PA/Fib/Liq) — all B3 via auto-discovery</span></div>

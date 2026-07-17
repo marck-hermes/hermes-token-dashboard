@@ -487,22 +487,22 @@
     "date": "2026-07-17",
     "period": "Jul 16, 2026 \u2014 Jul 17, 2026",
     "sessions": 6,
-    "messages": 479,
-    "tool_calls": 224,
-    "user_messages": 15,
-    "input_tokens": 4656620,
-    "output_tokens": 92065,
-    "total_tokens": 25642457,
+    "messages": 566,
+    "tool_calls": 262,
+    "user_messages": 20,
+    "input_tokens": 7440101,
+    "output_tokens": 123819,
+    "total_tokens": 36330460,
     "active_time": "",
     "avg_session": "",
-    "avg_msgs_session": 79,
+    "avg_msgs_session": 94,
     "top_model": "nemotron-3-ultra-550b-a55b:f",
     "platforms": [
       {
         "platform": "cli",
         "sessions": "2",
-        "messages": "193",
-        "tokens": "10,171,463"
+        "messages": "280",
+        "tokens": "20,859,466"
       },
       {
         "platform": "telegram",
@@ -518,7 +518,7 @@
       }
     ],
     "notable": {
-      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      4h 50m             (Jul 16, 20260716_192431_)\nMost messages        265 msgs           (Jul 16, 20260716_192431_)\nMost tokens          3,037,082 tokens   (Jul 17, 20260717_105523_)\nMost tool calls      130 calls          (Jul 16, 20260716_192431_)\n"
+      "raw": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nLongest session      4h 50m             (Jul 16, 20260716_192431_)\nMost messages        265 msgs           (Jul 16, 20260716_192431_)\nMost tokens          5,852,317 tokens   (Jul 17, 20260717_105523_)\nMost tool calls      130 calls          (Jul 16, 20260716_192431_)\n"
     }
   }
 ]
