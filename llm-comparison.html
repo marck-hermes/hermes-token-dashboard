@@ -324,7 +324,12 @@
             <button class="filter-tab" role="tab" aria-selected="false" data-filter="free">Free Tier (17)</button>
         </div>
 
-        <!-- Legend -->
+        
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar modelos..." aria-label="Buscar modelos">
+        </div>
+<!-- Legend -->
         <div class="legend">
             <div class="legend-item"><span class="legend-dot" style="background: var(--accent);"></span> Free tier no OpenRouter</div>
             <div class="legend-item"><span class="legend-dot" style="background: var(--info);"></span> Modelo pago (referência)</div>
@@ -1701,7 +1706,7 @@
   openrouter:
     api_key: ${OPENROUTER_API_KEY}
     models:
-      # Pagos (produção)
+      # Pagos (100)
       - id: anthropic/claude-3.5-sonnet
         roles: [master, coding, reasoning]
       - id: openai/gpt-4o-mini
@@ -1908,5 +1913,36 @@
             });
         });
     </script>
+
+        <!-- Search Functionality -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                const tableRows = document.querySelectorAll('#comparison-table tbody tr');
+                
+                searchInput.addEventListener('input', function() {
+                    const filter = searchInput.value.toLowerCase();
+                    tableRows.forEach(row => {
+                        const modelName = row.cells[0].textContent.toLowerCase();
+                        // Also search in other columns if needed
+                        const context = row.cells[1].textContent.toLowerCase();
+                        const toolUse = row.cells[2].textContent.toLowerCase();
+                        const multimodal = row.cells[3].textContent.toLowerCase();
+                        const reasoning = row.cells[4].textContent.toLowerCase();
+                        const coding = row.cells[5].textContent.toLowerCase();
+                        const cost = row.cells[6].textContent.toLowerCase();
+                        const speed = row.cells[7].textContent.toLowerCase();
+                        
+                        if (modelName.includes(filter) || context.includes(filter) || toolUse.includes(filter) || 
+                            multimodal.includes(filter) || reasoning.includes(filter) || coding.includes(filter) || 
+                            cost.includes(filter) || speed.includes(filter)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
 </body>
 </html>
