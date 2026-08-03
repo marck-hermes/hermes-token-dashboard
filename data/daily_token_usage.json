@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "timestamp": "2026-08-03T20:40:18.387417Z",
+  "source": "hermes insights --days 1",
+  "sessions": 6,
+  "messages": 293,
+  "tool_calls": 132,
+  "input_tokens": 3534702,
+  "output_tokens": 234345,
+  "total_tokens": 19091415,
+  "active_time": "~2h 38m       Avg session:     ~53m",
+  "top_model": "",
+  "models_used": [
+    "nemotron-3-super-120b-a12b:f",
+    "nemotron-3-ultra-550b-a55b:f"
+  ],
+  "platforms": [
+    "cli",
+    "cron",
+    "telegram"
+  ]
+}
