@@ -150,12 +150,21 @@
 
         /* Platform breakdown */
         .platform-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 32px; }
-        .platform-bar { height: 12px; border-radius: 6px; overflow: hidden; background: var(--bg); margin-bottom: 8px; }
-        .platform-segment { height: 100%; transition: width 0.5s ease; }
-        .platform-segment.cli { background: linear-gradient(90deg, var(--cli), #60a5fa); }
-        .platform-segment.telegram { background: linear-gradient(90deg, var(--telegram), #22a3d8); }
-        .platform-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--fg-muted); }
-        .platform-labels span { font-family: var(--font-mono); }
+        .platform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .platform-col { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; }
+        .platform-col.cli { border-left: 4px solid var(--cli); }
+        .platform-col.cron { border-left: 4px solid #f59e0b; }
+        .platform-col.telegram { border-left: 4px solid var(--telegram); }
+        .platform-col.total { border-left: 4px solid var(--accent); }
+        .platform-col .platform-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted); margin-bottom: 8px; }
+        .platform-col .platform-value { font-size: 1.5rem; font-weight: 700; font-family: var(--font-mono); color: var(--fg); margin-bottom: 4px; }
+        .platform-col .platform-pct { font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 12px; }
+        .platform-col .platform-bar { height: 8px; background: var(--bg-card); border-radius: 4px; overflow: hidden; }
+        .platform-col .platform-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+        .platform-col.cli .platform-bar-fill { background: linear-gradient(90deg, var(--cli), #60a5fa); }
+        .platform-col.cron .platform-bar-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .platform-col.telegram .platform-bar-fill { background: linear-gradient(90deg, var(--telegram), #22a3d8); }
+        .platform-col.total .platform-bar-fill { background: linear-gradient(90deg, var(--accent), #00d4aa); }
 
         /* History table */
         .table-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
@@ -175,12 +184,14 @@
             .charts-grid { grid-template-columns: 1fr; }
             .table-header, .table-row { grid-template-columns: 100px 70px 70px 120px 120px 120px 1fr; font-size: 0.75rem; }
             .chart-wrapper { height: 250px; }
+            .platform-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 600px) {
             body { padding: 16px; }
             .grid { grid-template-columns: 1fr 1fr; }
             .table-header, .table-row { grid-template-columns: 90px 60px 60px 100px 100px 100px 1fr; font-size: 0.7rem; }
             .card .value { font-size: 1.5rem; }
+            .platform-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -225,7 +236,7 @@
             <h1>📊 Hermes Token Usage Dashboard</h1>
             <p class="subtitle">Tracking API token consumption across CLI, Telegram, and Cron platforms</p>
             <div class="meta">
-                <span>📅 Generated: 2026-08-03 21:00 UTC</span>
+                <span>📅 Generated: 2026-08-03 21:15 UTC</span>
                 <span>📈 Days tracked: 32</span>
                 <span>🤖 Model: <code id="top-model"></code></span>
                 <span>💰 Cost: <code id="est-cost">Free tier</code></span>
@@ -269,21 +280,9 @@
         <!-- Platform Breakdown -->
         <div class="platform-card">
             <h3 style="margin-bottom: 12px;">📱 Platform Distribution (Last 7 Days)</h3>
-            <div id="platform-breakdown">
-<div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">1,739,312</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">84,781</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">28,088,144</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">184,437</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">1,583,226</span></div>
-<div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">1,899,258</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">205,023</span></div>
-<div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">2,187,874</span></div>
-<div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">0</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">6,477,474</span></div>
-<div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">645,927</span></div>
-<div class="platform-item"><span class="platform-name">cli</span><span class="platform-tokens">17 794 287</span></div>
-<div class="platform-item"><span class="platform-name">cron</span><span class="platform-tokens">645 927</span></div>
-<div class="platform-item"><span class="platform-name">telegram</span><span class="platform-tokens">4 175 048</span></div>
+            <div id="platform-breakdown" class="platform-grid">
+                <!-- Injected by generate_dashboard.py -->
+            </div>
         </div>
 
         <!-- Charts -->
@@ -623,7 +622,7 @@
                 📖 Como Acompanhar Este Dashboard (clique para expandir)
             </summary>
             <div style="padding: 20px; font-size: 0.85rem; line-height: 1.7;">
-                
+
                 <h4 style="margin: 16px 0 8px; color: var(--accent);">1. 📱 Relatório Diário Automático (Telegram)</h4>
                 <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
                     <thead>
@@ -710,7 +709,7 @@ hermes insights --days 7
                 </table>
 
                 <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 0.8rem;">
-                    <strong>Pipeline automático:</strong> 
+                    <strong>Pipeline automático:</strong>
                     <code>hermes insights (cron 22h30)</code> → <code>generate_dashboard.py</code> → <code>git push</code> → <code>GitHub webhook → Vercel</code> → <code>https://token-dashboard-tau-five.vercel.app</code>
                 </p>
             </div>
@@ -725,9 +724,9 @@ hermes insights --days 7
 
     <script>
         // Inject data
-        const CHART_DATA = {"dates":["2026-07-03","2026-07-04","2026-07-05","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-11","2026-07-12","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-18","2026-07-19","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-01","2026-08-02","2026-08-03"],"input_tokens":[27708330,817866,27320385,10322890,24379716,6786894,2754052,7953927,14069728,10123727,8973057,16093329,3723739,3019897,6071514,273553,1298506,1630103,435242,230919,538598,892463,148269,305509,338024,338024,16522666,10088906,1162802,508909,1412436,3699734],"output_tokens":[134606,16357,115006,62312,104636,70538,85991,109347,219816,159197,164467,148379,78919,47449,92746,5745,29689,37371,17581,5100,12980,22260,2353,8714,10741,10741,278663,707296,22637,16980,54489,238153],"total_tokens":[46734968,2934063,56506751,20577586,41866240,11022296,12512083,53653268,113254024,86574745,51621748,77456377,16484386,21040926,21696548,649218,4174403,5001773,2402519,405747,3933082,6833443,307294,1780847,1824093,1824093,50470177,29511964,3483295,2392897,7123885,20075487],"sessions":[10,4,5,6,15,13,12,11,14,11,11,11,7,6,5,4,6,6,4,4,5,4,3,2,3,3,86,622,6,8,5,6],"messages":[920,113,557,403,888,382,423,962,1080,1080,846,1112,363,385,329,42,160,147,87,26,147,174,23,64,74,74,2666,5307,158,133,163,322],"platform_dates":["2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-01","2026-08-02","2026-08-03"],"cli_tokens":[84781,28088144,184437,1583226,205023,6477474,17794287],"telegram_tokens":[0,0,0,0,0,0,4175048]};
+        const CHART_DATA = {"dates":["2026-07-03","2026-07-04","2026-07-05","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-11","2026-07-12","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-18","2026-07-19","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-01","2026-08-02","2026-08-03"],"input_tokens":[27708330,817866,27320385,10322890,24379716,6786894,2754052,7953927,14069728,10123727,8973057,16093329,3723739,3019897,6071514,273553,1298506,1630103,435242,230919,538598,892463,148269,305509,338024,338024,16522666,10088906,1162802,508909,1412436,3699734],"output_tokens":[134606,16357,115006,62312,104636,70538,85991,109347,219816,159197,164467,148379,78919,47449,92746,5745,29689,37371,17581,5100,12980,22260,2353,8714,10741,10741,278663,707296,22637,16980,54489,238153],"total_tokens":[46734968,2934063,56506751,20577586,41866240,11022296,12512083,53653268,113254024,86574745,51621748,77456377,16484386,21040926,21696548,649218,4174403,5001773,2402519,405747,3933082,6833443,307294,1780847,1824093,1824093,50470177,29511964,3483295,2392897,7123885,20075487],"sessions":[10,4,5,6,15,13,12,11,14,11,11,11,7,6,5,4,6,6,4,4,5,4,3,2,3,3,86,622,6,8,5,6],"messages":[920,113,557,403,888,382,423,962,1080,1080,846,1112,363,385,329,42,160,147,87,26,147,174,23,64,74,74,2666,5307,158,133,163,322],"platform_dates":["2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-01","2026-08-02","2026-08-03"],"cli_tokens":[84781,28088144,184437,1583226,205023,6477474,17794287],"telegram_tokens":[0,0,0,0,0,0,6124526]};
         const OPENROUTER_STATUS = {"ok":true,"source":"check_openrouter.py (/api/v1/auth/key)","timestamp":"2026-08-03T21:00:28.156603Z","key_valid":true,"limit":10,"usage":42.582951415,"remaining":-32.582951415,"models_available":false,"missing_models":["poolside/laguna-m.1:free"]};
-        const LATEST_METRICS = {"date":"2026-08-03","period":"Aug 03, 2026 — Aug 03, 2026","sessions":6,"messages":322,"tool_calls":145,"user_messages":0,"input_tokens":3699734,"output_tokens":238153,"total_tokens":20075487,"active_time":"~2h 38m       Avg session:     ~53m","avg_session":"","avg_msgs_session":53,"top_model":"","platforms":[{"platform":"cli","sessions":"3","messages":"229","tokens":"17 794 287"},{"platform":"cron","sessions":"2","messages":"26","tokens":"645 927"},{"platform":"telegram","sessions":"1","messages":"116","tokens":"4 175 048"}],"notable":{"raw":""}};
+        const LATEST_METRICS = {"date":"2026-08-03","period":"Aug 03, 2026 — Aug 03, 2026","sessions":6,"messages":322,"tool_calls":145,"user_messages":0,"input_tokens":3699734,"output_tokens":238153,"total_tokens":20075487,"active_time":"~2h 38m       Avg session:     ~53m","avg_session":"","avg_msgs_session":53,"top_model":"","platforms":[{"platform":"cli","sessions":"3","messages":"229","tokens":"17 794 287"},{"platform":"cron","sessions":"2","messages":"26","tokens":"645 927"},{"platform":"telegram","sessions":"1","messages":"143","tokens":"6 124 526"}],"notable":{"raw":""}};
 
         // Format numbers
         function fmt(n) { return n.toLocaleString(); }
@@ -822,6 +821,33 @@ hermes insights --days 7
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => v >= 1e6 ? (v/1e6).toFixed(1)+'M' : v >= 1e3 ? (v/1e3).toFixed(0)+'K' : v } } } }
         });
+
+        // Render Platform Breakdown (4 columns)
+        (function() {
+            const platforms = LATEST_METRICS.platforms || [];
+            const totals = { cli: 0, cron: 0, telegram: 0 };
+            platforms.forEach(p => {
+                const val = parseInt(p.tokens.replace(/[,\s]/g, ''), 10);
+                if (totals.hasOwnProperty(p.platform)) totals[p.platform] = val;
+            });
+            const grandTotal = totals.cli + totals.cron + totals.telegram;
+            const container = document.getElementById('platform-breakdown');
+            if (!container) return;
+            const cols = [
+                { key: 'cli', label: 'CLI', color: 'cli', total: totals.cli },
+                { key: 'cron', label: 'CRON', color: 'cron', total: totals.cron },
+                { key: 'telegram', label: 'TELEGRAM', color: 'telegram', total: totals.telegram },
+                { key: 'total', label: 'TOTAL', color: 'total', total: grandTotal },
+            ];
+            container.innerHTML = cols.map(c => `
+                <div class="platform-col ${c.color}">
+                    <div class="platform-label">${c.label}</div>
+                    <div class="platform-value">${fmt(c.total)}</div>
+                    <div class="platform-pct">${grandTotal > 0 ? ((c.total / grandTotal) * 100).toFixed(1) + '%' : '0%'}</div>
+                    <div class="platform-bar"><div class="platform-bar-fill" style="width: ${grandTotal > 0 ? (c.total / grandTotal) * 100 : 0}%"></div></div>
+                </div>
+            `).join('');
+        })();
     </script>
 </body>
 </html>
