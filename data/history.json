@@ -1076,15 +1076,15 @@
     "platforms": [
       {
         "platform": "cli",
-        "sessions": "1",
-        "messages": "195",
-        "tokens": "13 021 970"
+        "sessions": "0",
+        "messages": "0",
+        "tokens": "0"
       },
       {
         "platform": "telegram",
-        "sessions": "1",
-        "messages": "190",
-        "tokens": "10 211 892"
+        "sessions": "0",
+        "messages": "0",
+        "tokens": "0"
       }
     ],
     "notable": {
