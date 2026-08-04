@@ -1077,14 +1077,14 @@
       {
         "platform": "cli",
         "sessions": "1",
-        "messages": "143",
-        "tokens": "7 698 668"
+        "messages": "195",
+        "tokens": "13 021 970"
       },
       {
         "platform": "telegram",
         "sessions": "1",
-        "messages": "186",
-        "tokens": "9 845 354"
+        "messages": "190",
+        "tokens": "10 211 892"
       }
     ],
     "notable": {
