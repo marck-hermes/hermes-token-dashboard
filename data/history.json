@@ -1077,8 +1077,8 @@
       {
         "platform": "cli",
         "sessions": "1",
-        "messages": "58",
-        "tokens": "1 282 117"
+        "messages": "74",
+        "tokens": "2 253 849"
       },
       {
         "platform": "telegram",
