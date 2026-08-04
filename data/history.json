@@ -1053,12 +1053,6 @@
         "sessions": "1",
         "messages": "175",
         "tokens": "8 933 953"
-      },
-      {
-        "platform": "cron",
-        "sessions": "1",
-        "messages": "8",
-        "tokens": "136 101"
       }
     ],
     "notable": {
