@@ -1044,9 +1044,9 @@
     "platforms": [
       {
         "platform": "cli",
-        "sessions": "3",
-        "messages": "229",
-        "tokens": "17 794 287"
+        "sessions": "2",
+        "messages": "4",
+        "tokens": "19 423"
       },
       {
         "platform": "cron",
