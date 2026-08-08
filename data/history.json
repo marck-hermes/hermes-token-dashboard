@@ -1180,8 +1180,8 @@
       {
         "platform": "telegram",
         "sessions": "2",
-        "messages": "104",
-        "tokens": "2 269 557"
+        "messages": "204",
+        "tokens": "8 706 661"
       },
       {
         "platform": "cli",
