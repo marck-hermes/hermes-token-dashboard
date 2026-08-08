@@ -1176,7 +1176,14 @@
     "avg_session": "",
     "avg_msgs_session": 0,
     "top_model": "",
-    "platforms": [],
+    "platforms": [
+      {
+        "platform": "telegram",
+        "sessions": "1",
+        "messages": "31",
+        "tokens": "338 312"
+      }
+    ],
     "notable": {
       "raw": ""
     }
