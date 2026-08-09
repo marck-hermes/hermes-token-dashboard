@@ -1193,5 +1193,37 @@
     "notable": {
       "raw": ""
     }
+  },
+  {
+    "date": "2026-08-09",
+    "period": "Aug 09, 2026 \u2014 Aug 09, 2026",
+    "sessions": 4,
+    "messages": 256,
+    "tool_calls": 103,
+    "user_messages": 0,
+    "input_tokens": 2956943,
+    "output_tokens": 46677,
+    "total_tokens": 14146532,
+    "active_time": "~18h 17m      Avg session:     ~6h 5m",
+    "avg_session": "",
+    "avg_msgs_session": 64,
+    "top_model": "",
+    "platforms": [
+      {
+        "platform": "telegram",
+        "sessions": "2",
+        "messages": "254",
+        "tokens": "14 145 527"
+      },
+      {
+        "platform": "cli",
+        "sessions": "2",
+        "messages": "2",
+        "tokens": "0"
+      }
+    ],
+    "notable": {
+      "raw": ""
+    }
   }
 ]
