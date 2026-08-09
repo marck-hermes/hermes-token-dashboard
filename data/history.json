@@ -1210,12 +1210,6 @@
     "top_model": "",
     "platforms": [
       {
-        "platform": "cli",
-        "sessions": "2",
-        "messages": "2",
-        "tokens": "0"
-      },
-      {
         "platform": "telegram",
         "sessions": "1",
         "messages": "176",
