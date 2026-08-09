@@ -1211,9 +1211,15 @@
     "platforms": [
       {
         "platform": "telegram",
-        "sessions": "1",
-        "messages": "202",
-        "tokens": "15 728 645"
+        "sessions": "0",
+        "messages": "0",
+        "tokens": "0"
+      },
+      {
+        "platform": "cli",
+        "sessions": "0",
+        "messages": "0",
+        "tokens": "0"
       }
     ],
     "notable": {
