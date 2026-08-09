@@ -1,15 +1,21 @@
 {
   "ok": true,
-  "timestamp": "2026-08-08T02:00:29.608779Z",
+  "timestamp": "2026-08-09T02:00:02.637300Z",
   "source": "hermes insights --days 1",
-  "sessions": 0,
-  "messages": 0,
-  "tool_calls": 0,
-  "input_tokens": 0,
-  "output_tokens": 0,
-  "total_tokens": 0,
-  "active_time": "",
+  "sessions": 4,
+  "messages": 256,
+  "tool_calls": 103,
+  "input_tokens": 2956943,
+  "output_tokens": 46677,
+  "total_tokens": 14146532,
+  "active_time": "~18h 17m      Avg session:     ~6h 5m",
   "top_model": "",
-  "models_used": [],
-  "platforms": []
+  "models_used": [
+    "nemotron-3-ultra-550b-a55b:f",
+    "gemini-3.6-flash"
+  ],
+  "platforms": [
+    "telegram",
+    "cli"
+  ]
 }
