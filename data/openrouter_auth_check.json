@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "check_openrouter.py (/api/v1/auth/key)",
-  "timestamp": "2026-08-11T12:00:23.446201Z",
+  "timestamp": "2026-08-11T12:30:23.729713Z",
   "key_valid": true,
   "limit": 10,
   "usage": 42.630634165,
