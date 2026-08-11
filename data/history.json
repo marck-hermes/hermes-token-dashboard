@@ -1237,9 +1237,9 @@
     "platforms": [
       {
         "platform": "telegram",
-        "sessions": "1",
-        "messages": "61",
-        "tokens": "943 229"
+        "sessions": "0",
+        "messages": "0",
+        "tokens": "0"
       }
     ],
     "notable": {
