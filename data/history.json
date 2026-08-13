@@ -1308,9 +1308,9 @@
     "platforms": [
       {
         "platform": "telegram",
-        "sessions": "1",
-        "messages": "99",
-        "tokens": "2 231 117"
+        "sessions": "0",
+        "messages": "0",
+        "tokens": "0"
       }
     ],
     "notable": {
