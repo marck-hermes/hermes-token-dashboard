@@ -1334,9 +1334,9 @@
     "platforms": [
       {
         "platform": "telegram",
-        "sessions": "4",
-        "messages": "389",
-        "tokens": "17 120 428"
+        "sessions": "3",
+        "messages": "144",
+        "tokens": "3 492 408"
       }
     ],
     "notable": {
