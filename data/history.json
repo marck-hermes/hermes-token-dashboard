@@ -1360,7 +1360,7 @@
     "platforms": [
       {
         "platform": "telegram",
-        "sessions": "2",
+        "sessions": "1",
         "messages": "266",
         "tokens": "12 650 089"
       }
