@@ -1360,9 +1360,9 @@
     "platforms": [
       {
         "platform": "telegram",
-        "sessions": "3",
-        "messages": "278",
-        "tokens": "12 732 446"
+        "sessions": "2",
+        "messages": "266",
+        "tokens": "12 650 089"
       }
     ],
     "notable": {
