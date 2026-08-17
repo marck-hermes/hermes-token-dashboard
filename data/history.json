@@ -1404,16 +1404,16 @@
     "top_model": "",
     "platforms": [
       {
+        "platform": "cli",
+        "sessions": "4",
+        "messages": "4",
+        "tokens": "0"
+      },
+      {
         "platform": "telegram",
         "sessions": "3",
         "messages": "155",
         "tokens": "2 676 928"
-      },
-      {
-        "platform": "cli",
-        "sessions": "1",
-        "messages": "1",
-        "tokens": "0"
       }
     ],
     "notable": {
