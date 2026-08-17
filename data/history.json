@@ -1405,9 +1405,9 @@
     "platforms": [
       {
         "platform": "cli",
-        "sessions": "4",
-        "messages": "4",
-        "tokens": "0"
+        "sessions": "5",
+        "messages": "6",
+        "tokens": "4 270"
       },
       {
         "platform": "telegram",
