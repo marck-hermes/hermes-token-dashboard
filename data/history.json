@@ -1443,9 +1443,9 @@
       },
       {
         "platform": "telegram",
-        "sessions": "3",
-        "messages": "210",
-        "tokens": "3 472 383"
+        "sessions": "2",
+        "messages": "205",
+        "tokens": "3 432 428"
       }
     ],
     "notable": {
