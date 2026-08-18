@@ -1437,15 +1437,15 @@
     "platforms": [
       {
         "platform": "cli",
-        "sessions": "6",
-        "messages": "8",
+        "sessions": "5",
+        "messages": "7",
         "tokens": "8 876"
       },
       {
         "platform": "telegram",
-        "sessions": "2",
-        "messages": "308",
-        "tokens": "9 359 003"
+        "sessions": "1",
+        "messages": "50",
+        "tokens": "677 185"
       }
     ],
     "notable": {
