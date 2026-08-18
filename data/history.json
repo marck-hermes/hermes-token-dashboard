@@ -1405,15 +1405,15 @@
     "platforms": [
       {
         "platform": "cli",
-        "sessions": "5",
-        "messages": "6",
-        "tokens": "4 270"
+        "sessions": "6",
+        "messages": "8",
+        "tokens": "8 876"
       },
       {
         "platform": "telegram",
         "sessions": "3",
-        "messages": "155",
-        "tokens": "2 676 928"
+        "messages": "165",
+        "tokens": "2 739 509"
       }
     ],
     "notable": {
