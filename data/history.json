@@ -1437,8 +1437,8 @@
     "platforms": [
       {
         "platform": "cli",
-        "sessions": "5",
-        "messages": "7",
+        "sessions": "3",
+        "messages": "5",
         "tokens": "8 876"
       },
       {
