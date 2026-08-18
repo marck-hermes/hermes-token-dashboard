@@ -1,11 +1,11 @@
 {
   "ok": true,
   "source": "check_openrouter.py (/api/v1/auth/key)",
-  "timestamp": "2026-08-18T19:00:33.543183Z",
+  "timestamp": "2026-08-18T19:30:33.779837Z",
   "key_valid": true,
   "limit": 10,
-  "usage": 42.642852523,
-  "remaining": -32.642852523,
+  "usage": 42.644806273,
+  "remaining": -32.644806273,
   "models_available": false,
   "missing_models": [
     "poolside/laguna-m.1:free"
