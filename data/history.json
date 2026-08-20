@@ -1492,12 +1492,6 @@
         "sessions": "1",
         "messages": "4",
         "tokens": "33 796"
-      },
-      {
-        "platform": "telegram",
-        "sessions": "1",
-        "messages": "41",
-        "tokens": "959 385"
       }
     ],
     "notable": {
