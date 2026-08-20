@@ -1492,6 +1492,12 @@
         "sessions": "2",
         "messages": "110",
         "tokens": "2 646 146"
+      },
+      {
+        "platform": "cron",
+        "sessions": "1",
+        "messages": "1",
+        "tokens": "0"
       }
     ],
     "notable": {
