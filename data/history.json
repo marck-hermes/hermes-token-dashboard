@@ -1471,5 +1471,31 @@
     "notable": {
       "raw": ""
     }
+  },
+  {
+    "date": "2026-08-20",
+    "period": "Aug 20, 2026 \u2014 Aug 20, 2026",
+    "sessions": 2,
+    "messages": 110,
+    "tool_calls": 44,
+    "user_messages": 0,
+    "input_tokens": 1233976,
+    "output_tokens": 26339,
+    "total_tokens": 2647035,
+    "active_time": "",
+    "avg_session": "",
+    "avg_msgs_session": 55,
+    "top_model": "",
+    "platforms": [
+      {
+        "platform": "telegram",
+        "sessions": "2",
+        "messages": "110",
+        "tokens": "2 646 146"
+      }
+    ],
+    "notable": {
+      "raw": ""
+    }
   }
 ]
